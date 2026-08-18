@@ -1,0 +1,221 @@
+/* ============================================================================
+   RADIANT SMILES DENTAL CARE - LOCKED DESIGN TOKENS (dual surface SSOT)
+   slug: radiantsmiles   stage: (1) BRAND-CARD, owner PICKED concept D
+   ----------------------------------------------------------------------------
+   SOURCE OF TRUTH for the light block: the LOCKED winning brand card
+     _design/_tournament/brand-card/brand-card-d/brand-card.html
+   All 51 identity declarations are carried VERBATIM (parsed from that file, never
+   retyped or re-tuned). Owner-supplied hexes #F7FAFA / #0B3D3A / #128C7E / #FFD447
+   are a directive and appear exactly as supplied.
+
+   The dark flip is DERIVED here, because concept D never had a token flip: its own
+   dark panels set background / color / border-color as component PROPERTIES rather
+   than variable overrides. Every derived value below is stated with the WCAG 2.1
+   ratio that justified it, measured against the WORST-case ground composite #0C4944
+   (the signature radial at .10 over the gradient's lightest stop #0B423E).
+
+   MEASURED FLOORS this sheet is built to:
+     text            >= 4.5:1 required, 7:1 TARGET (primary audience is 40+, where
+                     contrast sensitivity, not size alone, is the binding constraint)
+     UI boundary     >= 3:1
+     #FFD447         1.36:1 on the light canvas. Decorative on light, never text and
+                     never a text ground there. On dark it becomes a FOREGROUND.
+     #128C7E         3.94:1 on light and 2.47:1 on dark. Carries text in NEITHER
+                     direction. Boundaries and graphics only.
+     #0B3D3A         11.48:1 on canvas, and 2.91:1 on the signature (which is why the
+                     signature is never a ground for it).
+
+   THE TRAP THIS SHEET DOES NOT REPEAT: sibling concepts shipped a flip that set
+   --ds-primary to the accent. Because .btn--solid pins its label to
+   --ds-ink-on-dark, that painted near-white on yellow at 1.18-1.24:1 everywhere a
+   foreground was not individually overridden. Here --ds-primary stays a teal FILL
+   that carries --ds-ink-on-dark at 7.23:1.
+
+   SYSTEM FAMILIES (z-index / opacity / motion extension) are brand-agnostic and are
+   grafted into the light block by scripts/graft-system-tokens.mjs. They are surface
+   INVARIANT and never appear in the dark flip.
+   UTF-8, no BOM. ASCII only.
+   ============================================================================ */
+
+:root{
+  /* OWNER-SUPPLIED, carried verbatim from concept D. These four are a directive. */
+  --ds-canvas:#F7FAFA;                                     /* owner. cool near-white page ground, L 97 */
+  --ds-primary-deep:#0B3D3A;                               /* owner. authority ink + dark ground. 11.48:1 on canvas */
+  --ds-signature:#128C7E;                                  /* owner. NON-TEXT. 3.94:1 both ways, boundaries + graphics only */
+  --ds-accent:#FFD447;                                     /* owner. DECORATIVE. 1.36:1 on canvas. NEVER a text ground on light */
+
+  /* DERIVED STEPS, tuned to AAA 7:1 for a primary audience aged 40+ (presbyopia
+     costs acuity AND contrast sensitivity, so the bar is 7:1, not AA 4.5:1). */
+  --ds-bg-surface:#EDF5F4;                                 /* signature 4.5% into canvas. Cards STEP DOWN, not up */
+  --ds-bg-band:#E0EFEE;                                    /* signature 10% into canvas. The band */
+  --ds-primary-soft:#D2E8E6;                               /* signature 16% into canvas. The teal-on-teal solve */
+  --ds-primary:#0D504A;                                    /* 8.84:1 on canvas; carries ink-on-dark at 8.21:1 as a fill */
+  --ds-ink:#09302D;                                        /* black 22% into primary-deep. Body ink. 13.59:1. Not #000000 */
+  --ds-ink-heading:var(--ds-primary-deep);                 /* heading ink aliases the authority anchor */
+  --ds-ink-soft:#23504D;                                   /* secondary ink. 8.60:1 on canvas */
+  --ds-ink-on-dark:#E9F3F3;                                /* cool near-white for dark grounds. SOLID, never alpha */
+  --ds-accent-soft:#F9F2D3;                                /* accent 22% into canvas. A wash, never a text colour */
+  --ds-line:#CDD8D7;                                       /* primary-deep 18% into canvas. DECORATIVE hairline only */
+  --ds-line-control:#547674;                               /* the 3:1 UI boundary. 4.74:1 on canvas */
+  --ds-dark-2:#0B423E;                                     /* the lighter stop of the dark ground gradient */
+  --ds-scrim:rgba(9,48,45,.62);                            /* image legibility scrim on light */
+
+  /* THE KEYLINE RULE. #FFD447 is 1.36:1 on this canvas, so a bare yellow mark is a
+     ghost. Every yellow mark on a LIGHT ground carries a 1px deep-teal keyline
+     (8.47:1 against the yellow, 11.48:1 against the canvas). That is what makes it
+     read. On DARK grounds the yellow needs no keyline: it is 8.47:1 on primary-deep. */
+  --ds-accent-keyline:0 0 0 1px var(--ds-primary-deep);
+
+  /* TYPE. TYPOGRAPHY-PAIRINGS.md #52. Both families already ship on the client site. */
+  --ds-font-display:"Roboto Slab",Georgia,"Times New Roman",serif;
+  --ds-font-body:"Roboto",system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+  --ds-font-mono:"Roboto Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+
+  /* RADIUS. The CONSTRAINED 3-role set only (BRAND-TOKEN-SCHEMA.md). */
+  --ds-r-control:8px;
+  --ds-r-surface:14px;
+  --ds-r-pill:999px;
+
+  /* SHADOW. Tinted toward the TEAL ink, never pure black, negative spread. */
+  --ds-shadow-rest:0 1px 2px rgba(11,61,58,.06);
+  --ds-shadow-card:0 1px 2px rgba(11,61,58,.06),0 12px 28px -10px rgba(11,61,58,.18);
+  --ds-shadow-lift:0 2px 4px rgba(11,61,58,.08),0 22px 46px -14px rgba(11,61,58,.26);
+
+  /* GLOBALS OVERLAY (_MODERN-WOW-SPEC sections 1 and 3). */
+  --ds-hairline:rgba(11,61,58,.14);
+  --ds-inset-hi:inset 0 1px 0 rgba(255,255,255,.80);
+  --ds-glass-bg:rgba(237,245,244,.66);
+  --ds-glass-blur:blur(14px) saturate(150%);
+  --ds-glass-border:rgba(11,61,58,.10);
+  --ds-glow:0 0 0 3px rgba(18,140,126,.40);                /* focus ring is DEEP TEAL on light, never yellow */
+  --ds-glow-wash:radial-gradient(62% 78% at 8% 0%,rgba(18,140,126,.04),transparent 68%);
+  --ds-grid:linear-gradient(rgba(11,61,58,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(11,61,58,.022) 1px,transparent 1px);
+  --ds-grid-size:44px 44px;
+  --ds-grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='.44'/%3E%3C/svg%3E");
+  --ds-opacity-texture:.18;
+
+  /* MOTION. */
+  --ds-dur-fast:160ms;
+  --ds-dur:220ms;
+  --ds-dur-slow:600ms;
+  --ds-ease:cubic-bezier(.05,.5,.3,1);
+  --ds-ease-out:cubic-bezier(.2,.6,.2,1);
+
+  /* SPACING / LAYOUT. */
+  --ds-space-2xs:4px;
+  --ds-space-xs:8px;
+  --ds-space-sm:14px;
+  --ds-space-md:24px;
+  --ds-space-lg:40px;
+  --ds-space-xl:64px;
+  --ds-space-2xl:96px;
+  --ds-container-max:1180px;
+
+  /* z-index (system, grafted) - grafted by graft-system-tokens.mjs (FIX #3) */
+  --ds-z-below: -1;
+  --ds-z-base: 0;
+  --ds-z-raised: 1;
+  --ds-z-sticky: 1000;
+  --ds-z-overlay: 1040;
+  --ds-z-drawer: 1050;
+  --ds-z-modal: 1060;
+  --ds-z-toast: 1080;
+
+  /* opacity (system, grafted) - grafted by graft-system-tokens.mjs (FIX #3) */
+  --ds-opacity-muted: .72;
+  --ds-opacity-disabled: .45;
+  --ds-opacity-faint: .12;
+  --ds-opacity-scrim: .55;
+  --ds-opacity-veil: .85;
+
+  /* motion (system, grafted) - grafted by graft-system-tokens.mjs (FIX #3) */
+  --ds-dur-data: 1.4s;
+}
+
+/* ----------------------------------------------------------------------------
+   THE DARK FLIP - the SAME variable names, re-derived for the dark ground.
+   ---------------------------------------------------------------------------- */
+.surface-dark{
+  /* GROUND. The dark ground is the gradient the locked concept actually paints:
+     linear-gradient(180deg,#0B3D3A,#0B423E) with a signature radial at .10 on the
+     top-right. The radial's worst-case composite over the linear's lightest stop is
+     0.10*#128C7E over #0B423E = #0C4944, and EVERY ratio below is measured against
+     that WORST stop, not against the darker top stop. --ds-canvas is kept SOLID so
+     it stays safe wherever a component sets background-color rather than background. */
+  --ds-canvas:#0B3D3A;                                     /* ground, top stop. Solid, background-color safe */
+  --ds-bg-surface:#0B423E;                                 /* raised card = the gradient's lower stop. ink-on-dark 9.97:1 */
+  --ds-bg-band:#09312E;                                    /* sunk band, primary-deep 20% into black. ink-on-dark 12.47:1 */
+  --ds-primary-soft:#D2E8E6;                               /* INVERSE chip. Carries primary-deep at 9.42:1, 8.00:1 vs ground */
+
+  /* BRAND ANCHORS held across the flip, each for a measured reason.
+     --ds-primary-deep does NOT flip: on the dark surface its role is the ink that sits
+     ON a light or accent fill (8.47:1 on the yellow), which is exactly how the locked
+     concept paints its dark CTA. Flipping it to near-white would re-create the trap
+     from the other side: near-white on #FFD447 is 1.24:1.
+     --ds-signature does NOT flip: it is 2.47:1 on the worst dark stop, so on dark it is
+     DECORATION ONLY. It carries no text and no load-bearing boundary in either
+     direction. Every boundary that must be seen goes through --ds-line-control.
+     --ds-accent does NOT flip in VALUE, only in ROLE: decorative on light (1.36:1),
+     a genuine FOREGROUND on dark (7.19:1 on the worst stop, 8.47:1 on the top stop). */
+  --ds-primary-deep:#0B3D3A;                               /* ink ON a light/accent fill + the ground anchor */
+  --ds-signature:#128C7E;                                  /* 2.47:1 on dark. DECORATION ONLY here */
+  --ds-accent:#FFD447;                                     /* now a FOREGROUND. 7.19:1 worst / 8.47:1 top stop */
+  --ds-accent-soft:rgba(255,212,71,.10);                   /* accent tint OVER the ground. ink-on-dark 7.37:1 on it */
+
+  /* --ds-primary is the SOLID FILL role (.btn--solid background, whose label is pinned
+     to --ds-ink-on-dark). THE TRAP THIS AVOIDS: setting it to the accent paints
+     near-white on #FFD447 at 1.24:1. It is instead primary-deep 36% toward signature,
+     the LIGHTEST step on that ramp that still carries #E9F3F3 at AAA (7.23:1).
+     Its fill-to-ground separation is only 1.25:1 - that is geometrically unavoidable
+     (a colour cannot be 7:1 under near-white AND 3:1 above this ground at once), so a
+     solid fill on dark takes its EDGE from --ds-line-control, not from its own ground. */
+  --ds-primary:#0E5952;                                    /* fill. ink-on-dark 7.23:1. Edge via --ds-line-control */
+
+  /* INK. Every text token flips to the near-white family, so any run that is NOT
+     individually overridden still lands legible on the dark ground. */
+  --ds-ink:#E9F3F3;                                        /* body ink. 9.05:1 worst / 10.66:1 top stop */
+  --ds-ink-heading:var(--ds-ink-on-dark);                  /* headings INVERT (light aliases primary-deep) */
+  --ds-ink-soft:#CADBDB;                                   /* ink-on-dark 14% into the worst stop. 7.15:1 worst / 8.42:1 top. SOLID */
+  --ds-ink-on-dark:#E9F3F3;                                /* pinned. The dark-surface text colour */
+
+  /* LINE. Two distinct jobs, so two distinct strengths. */
+  --ds-line:rgba(233,243,243,.22);                         /* DECORATIVE hairline. 1.77:1. Never a control edge */
+  --ds-line-control:rgba(233,243,243,.52);                 /* the 3:1 UI boundary. 3.66:1 ground / 3.17:1 on the fill */
+
+  --ds-dark-2:#0B423E;                                     /* the ground gradient's lower stop, unchanged */
+  --ds-scrim:rgba(6,32,30,.74);                            /* deeper than light. ink-on-dark 10.78:1 over mid-grey */
+
+  /* On dark the yellow already measures 8.47:1, so the keyline that rescues it on
+     light is removed rather than recoloured. Every use site is a standalone
+     box-shadow:var(--ds-accent-keyline), so 'none' is a valid value at all 10 of them. */
+  --ds-accent-keyline:none;
+
+  /* SHADOW. Same geometry as light, tint flipped to near-black and deepened, because a
+     teal-tinted shadow is invisible on a teal ground. */
+  --ds-shadow-rest:0 1px 2px rgba(3,18,17,.50);
+  --ds-shadow-card:0 1px 2px rgba(3,18,17,.50),0 12px 28px -10px rgba(3,18,17,.62);
+  --ds-shadow-lift:0 2px 4px rgba(3,18,17,.55),0 22px 46px -14px rgba(3,18,17,.70);
+
+  /* MATERIAL. Hairline, inset and glass all flip from ink-tinted to light-tinted. */
+  --ds-hairline:rgba(233,243,243,.16);
+  --ds-inset-hi:inset 0 1px 0 rgba(233,243,243,.16);
+  --ds-glass-bg:rgba(11,66,62,.62);
+  --ds-glass-border:rgba(233,243,243,.16);
+
+  /* FOCUS. The light ring is a teal halo; on a teal ground that is invisible, so the
+     ring flips to the near-white the locked concept already uses on its dark CTA.
+     3.94:1 against the worst dark stop, clearing the 3:1 non-text indicator bar. */
+  --ds-glow:0 0 0 3px rgba(233,243,243,.55);
+
+  /* TEXTURE. The light grid/wash are ink-on-paper values and vanish on dark, so both
+     flip to light-on-dark at the strength the locked concept's own dark panels use. */
+  --ds-glow-wash:radial-gradient(120% 140% at 100% 0%,rgba(18,140,126,.10),transparent 62%);
+  --ds-grid:linear-gradient(rgba(233,243,243,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(233,243,243,.03) 1px,transparent 1px);
+
+  /* the class PAINTS its ground, so dropping class="surface-dark" onto a section is
+     enough to re-skin it. Non-var properties here match the canonical template, which
+     carries color-scheme in the same block. */
+  background:linear-gradient(180deg,#0B3D3A,#0B423E);
+  color:var(--ds-ink);
+  color-scheme:dark;
+}

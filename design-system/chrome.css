@@ -1,0 +1,692 @@
+/* radiantsmiles-chrome.css - the LOCKED chrome sheet (P9 winner: concept A).
+   Extracted verbatim from the approved tournament carrier. Cascade position: after
+   radiantsmiles-tokens.css, before radiantsmiles-structural.css (build.mjs deriveDesignSheets).
+   Token-pure: every colour is a var(--ds-*); zero off-palette hex. */
+/* ==========================================================================
+   0 · RESET + PAGE GROUND
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--ds-canvas);
+  color:var(--ds-ink);
+  font-family:var(--ds-font-body);
+  font-size:18px;
+  line-height:1.70;
+  overflow-x:clip;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+button{font:inherit;color:inherit;background:none;border:0;}
+h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-heading);line-height:1.18;font-weight:600;}
+p{margin:0;}
+ul{margin:0;padding:0;list-style:none;}
+
+.container{width:100%;max-width:var(--ds-container-max);margin-inline:auto;padding-inline:var(--ds-space-md);}
+
+/* A sticky bar this tall will swallow the top of anything an in-page link scrolls to,
+   so every anchorable node reserves the bar's height. Two values, one per header shape. */
+[id],section,main{scroll-margin-top:180px;}
+@media (max-width:1100px){[id],section,main{scroll-margin-top:96px;}}
+
+/* Eyebrows are the ONLY tracked caps runs, and never longer than three words. */
+.eyebrow{
+  font-size:14px;font-weight:700;line-height:1.4;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ds-ink-soft);
+}
+
+/* ---- focus: --ds-glow halo + a solid control-weight ring so it survives any ground -- */
+:focus-visible{
+  outline:2px solid var(--ds-line-control);
+  outline-offset:3px;
+  box-shadow:var(--ds-glow);
+  border-radius:var(--ds-r-control);
+}
+
+/* ---- skip link: first focusable element, visible on focus --------------------------- */
+.skip-link{
+  position:fixed;top:var(--ds-space-xs);left:var(--ds-space-xs);
+  z-index:var(--ds-z-toast);
+  transform:translateY(-180%);
+  display:inline-flex;align-items:center;min-height:48px;
+  padding:0 var(--ds-space-md);
+  background:var(--ds-primary-deep);color:var(--ds-ink-on-dark);
+  font-size:18px;font-weight:700;text-decoration:none;
+  border-radius:var(--ds-r-control);
+  box-shadow:var(--ds-shadow-lift);
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.skip-link:focus{transform:translateY(0);}
+
+/* ==========================================================================
+   1 · SHARED CONTROLS
+   ========================================================================== */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  min-height:52px;padding:0 24px;
+  font-size:18px;font-weight:700;line-height:1.3;text-decoration:none;
+  border-radius:var(--ds-r-control);
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease),
+             transform var(--ds-dur-fast) var(--ds-ease);
+}
+/* The ONLY legal accent pairing: #0B3D3A on #FFD447 = 8.46:1. The 1px deep-teal keyline
+   is the token sheet's KEYLINE RULE, carried as a border so it never collapses. */
+.btn--accent{
+  background:var(--ds-accent);
+  color:var(--ds-primary-deep);
+  border:1px solid var(--ds-primary-deep);
+  box-shadow:var(--ds-shadow-rest);
+}
+.btn--accent:hover{box-shadow:var(--ds-shadow-card);transform:translateY(-1px);}
+.btn--ghost{
+  background:transparent;color:var(--ds-ink-heading);
+  border:1px solid var(--ds-line-control);
+}
+.btn--ghost:hover{background:var(--ds-bg-surface);}
+/* A label that WRAPS inside a 52px control is a broken control. The short label is the same
+   promise in fewer words, swapped in only where the full one measurably does not fit. */
+.lbl-short{display:none;}
+
+/* quiet text link with an animated rule (the institution does not shout its links) */
+.qlink{
+  position:relative;display:inline-block;
+  font-size:18px;font-weight:700;text-decoration:none;
+  color:var(--ds-ink-heading);
+  padding-bottom:6px;
+}
+.qlink::after{
+  content:"";position:absolute;left:0;right:0;bottom:0;height:2px;
+  background:var(--ds-signature);
+  transform:scaleX(.26);transform-origin:left center;
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.qlink:hover::after,.qlink:focus-visible::after{transform:scaleX(1);}
+
+/* ==========================================================================
+   2 · THE HEADER. NAV-PATTERNS.md #7, two rows, centred wordmark on the upper row.
+   LIGHT + SOLID from the first pixel. Scroll state = CONDENSE, not reveal.
+   ========================================================================== */
+.site-header{
+  position:sticky;top:0;
+  z-index:var(--ds-z-sticky);
+  background:var(--ds-canvas);
+  border-bottom:1px solid transparent;
+  transition:box-shadow var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease);
+}
+/* --ds-grid substrate at token strength, painted over the ground and under the type.
+   z-index:-1 keeps this ancestor UNPOSITIONED, so the mega still anchors to the header. */
+.site-header::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background-image:var(--ds-grid);
+  background-size:var(--ds-grid-size);
+}
+.site-header.is-condensed{
+  box-shadow:var(--ds-shadow-card);
+  border-bottom-color:var(--ds-line);
+}
+
+/* ---- upper row: wordmark centred and ALONE, quiet utility at the two corners -------- */
+.hdr-row--identity{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  align-items:center;
+  gap:var(--ds-space-md);
+  padding-block:20px;
+  transition:padding-block var(--ds-dur) var(--ds-ease);
+}
+.is-condensed .hdr-row--identity{padding-block:8px;}
+
+.hdr-utility{font-size:18px;line-height:1.4;color:var(--ds-ink-soft);}
+.hdr-utility--right{
+  display:flex;align-items:center;justify-content:flex-end;
+  gap:var(--ds-space-md);
+}
+.hdr-link{
+  display:inline-flex;align-items:center;min-height:48px;
+  font-size:18px;font-weight:500;text-decoration:none;
+  color:var(--ds-ink-heading);
+  border-bottom:2px solid transparent;
+  transition:border-color var(--ds-dur) var(--ds-ease);
+}
+.hdr-link:hover{border-bottom-color:var(--ds-signature);}
+
+.wordmark{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:4px;min-height:48px;text-decoration:none;color:var(--ds-primary-deep);
+}
+.wordmark__name{
+  font-family:var(--ds-font-display);
+  font-weight:600;font-size:32px;line-height:1.1;letter-spacing:-.005em;
+  transition:font-size var(--ds-dur) var(--ds-ease);
+}
+.wordmark__lockup{
+  font-size:14px;font-weight:700;letter-spacing:.30em;text-transform:uppercase;
+  color:var(--ds-ink-soft);
+  transition:opacity var(--ds-dur) var(--ds-ease);
+}
+.is-condensed .wordmark__name{font-size:25px;}
+.is-condensed .wordmark__lockup{opacity:0;}
+
+/* ---- lower row: the grouped mega-nav, separated by the ledger hairline -------------- */
+.hdr-row--nav{border-top:1px solid var(--ds-line);}
+.nav{display:flex;align-items:stretch;justify-content:center;}
+.nav__group{display:flex;align-items:stretch;}
+.nav__group--drop{position:relative;}     /* dropdowns anchor to their own item */
+                                          /* mega groups stay static, so they anchor to the header */
+.nav__trigger,.nav__link{
+  display:inline-flex;align-items:center;gap:8px;
+  min-height:60px;padding:0 22px;
+  font-size:18px;font-weight:500;line-height:1.4;text-decoration:none;
+  color:var(--ds-ink-heading);
+  border-bottom:3px solid transparent;
+  cursor:pointer;
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease);
+}
+.nav__trigger:hover,.nav__link:hover,
+.nav__group:focus-within > .nav__trigger,
+.nav__group.is-open > .nav__trigger{
+  background:var(--ds-bg-surface);
+  border-bottom-color:var(--ds-signature);
+}
+.caret{flex:none;transition:transform var(--ds-dur) var(--ds-ease);}
+.nav__group.is-open .caret,
+.nav__group:hover .caret{transform:rotate(180deg);}
+
+/* ---- hamburger: G13 canonical selector. RIGHTMOST element at 375. ------------------- */
+.site-header__hamburger{
+  display:none;
+  align-items:center;justify-content:center;
+  width:52px;height:52px;
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-control);
+  color:var(--ds-primary-deep);
+  background:var(--ds-canvas);
+  cursor:pointer;
+  justify-self:end;
+}
+
+/* ==========================================================================
+   3 · MEGA-MENU + DROPDOWNS
+   Hover-intent is implemented ALL THREE WAYS at once:
+     (a) group scope: trigger and panel share ONE :hover / :focus-within parent (the li)
+     (b) zero dead-gap: the trigger stretches to the header's bottom edge and the panel
+         opens at top:100% of that edge; a ::before bridge overlaps the seam
+     (c) close-delay: 240ms JS timer on mouseleave, cleared on re-enter
+   ========================================================================== */
+.mega,.drop-panel{
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(-8px);
+  transition:opacity var(--ds-dur) var(--ds-ease-out),
+             transform var(--ds-dur) var(--ds-ease-out),
+             visibility 0s linear var(--ds-dur);
+}
+.nav__group:hover > .mega,
+.nav__group:focus-within > .mega,
+.nav__group.is-open > .mega,
+.nav__group:hover > .drop-panel,
+.nav__group:focus-within > .drop-panel,
+.nav__group.is-open > .drop-panel{
+  opacity:1;visibility:visible;pointer-events:auto;
+  transform:translateY(0);
+  transition-delay:0s;
+}
+/* (b) the invisible hover-bridge spanning the trigger/panel seam */
+.mega::before,.drop-panel::before{
+  content:"";position:absolute;left:0;right:0;top:-18px;height:18px;
+}
+
+/* ---- the mega panel: FULL-BLEED, glass, layered shadow, inset highlight ------------- */
+.mega{
+  position:absolute;top:100%;left:0;right:0;
+  /* GLASS OVER AN OPAQUE TOKEN BASE. --ds-glass-bg is rgba(237,245,244,.66): at 66% the page
+     text behind the panel ghosted through as a visible smudge behind the office names (caught
+     at the P9 full-res read). Stacking the same glass layer over --ds-canvas keeps the glass
+     tint and the soft backdrop edge while making the panel opaque. Token-pure, no new hex. */
+  background:linear-gradient(var(--ds-glass-bg),var(--ds-glass-bg)),var(--ds-canvas);
+  backdrop-filter:var(--ds-glass-blur);
+  -webkit-backdrop-filter:var(--ds-glass-blur);
+  border-top:1px solid var(--ds-line);
+  border-bottom:1px solid var(--ds-glass-border);
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+  max-height:76vh;overflow-y:auto;
+}
+.mega__inner{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 288px;
+  gap:var(--ds-space-xl);
+  align-items:stretch;
+  padding-block:var(--ds-space-lg);
+}
+.mega__head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:var(--ds-space-md);
+  padding-bottom:var(--ds-space-sm);
+}
+.mega__note{font-size:18px;color:var(--ds-ink-soft);}
+
+/* the accent-glow wash on the active column (radial, --ds-signature at .04).
+   Flex column so the closing ledger rule PINS to the bottom of the panel: the air between
+   the last category row and that rule is then deliberate, not a ragged edge. */
+.mega__cols{position:relative;display:flex;flex-direction:column;background-image:var(--ds-glow-wash);}
+
+/* the ledger's closing row: the same hairline system, holding the utility links */
+.mega__foot{
+  margin-top:auto;
+  display:flex;flex-wrap:wrap;align-items:center;
+  gap:0 var(--ds-space-lg);
+  padding-top:var(--ds-space-sm);
+  border-top:1px solid var(--ds-line);
+}
+.mega__foot a{
+  display:inline-flex;align-items:center;min-height:48px;
+  font-size:18px;font-weight:500;text-decoration:none;color:var(--ds-ink-soft);
+  border-bottom:2px solid transparent;
+  transition:color var(--ds-dur) var(--ds-ease),border-color var(--ds-dur) var(--ds-ease);
+}
+.mega__foot a:hover{color:var(--ds-ink-heading);border-bottom-color:var(--ds-signature);}
+
+/* ---- the calm 2x3 ledger of category cards. Hairline dividers, NOT raised cards. ---- */
+.cat-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:1px solid var(--ds-line);
+}
+.cat{
+  display:flex;align-items:flex-start;gap:16px;
+  min-height:112px;padding:22px 20px;
+  text-decoration:none;color:var(--ds-ink-heading);
+  border-bottom:1px solid var(--ds-line);
+  box-shadow:inset 0 0 0 0 var(--ds-signature);
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.cat:nth-child(2n){border-left:1px solid var(--ds-line);}
+/* the lift is a background wash + a --ds-signature left rule. No shadow pop. */
+.cat:hover,.cat:focus-visible{
+  background:var(--ds-bg-surface);
+  box-shadow:inset 3px 0 0 0 var(--ds-signature);
+}
+.cat__icon{flex:none;color:var(--ds-signature);margin-top:2px;}
+.cat__label{display:block;font-size:18px;font-weight:700;line-height:1.4;}
+.cat__desc{display:block;font-size:16px;font-weight:400;line-height:1.5;color:var(--ds-ink-soft);margin-top:2px;}
+
+/* ---- reveal-on-open: staggered fade + rise down the ledger -------------------------- */
+.mega .cat,.mega .loc,.mega .feat{
+  opacity:0;transform:translateY(8px);
+  transition:opacity var(--ds-dur) var(--ds-ease-out),transform var(--ds-dur) var(--ds-ease-out);
+}
+.nav__group:hover > .mega .cat,.nav__group:focus-within > .mega .cat,.nav__group.is-open > .mega .cat,
+.nav__group:hover > .mega .loc,.nav__group:focus-within > .mega .loc,.nav__group.is-open > .mega .loc,
+.nav__group:hover > .mega .feat,.nav__group:focus-within > .mega .feat,.nav__group.is-open > .mega .feat{
+  opacity:1;transform:translateY(0);
+}
+.mega .cat:nth-child(1),.mega .loc:nth-child(1){transition-delay:40ms;}
+.mega .cat:nth-child(2),.mega .loc:nth-child(2){transition-delay:70ms;}
+.mega .cat:nth-child(3),.mega .loc:nth-child(3){transition-delay:100ms;}
+.mega .cat:nth-child(4),.mega .loc:nth-child(4){transition-delay:130ms;}
+.mega .cat:nth-child(5),.mega .loc:nth-child(5){transition-delay:160ms;}
+.mega .cat:nth-child(6),.mega .loc:nth-child(6){transition-delay:190ms;}
+.mega .loc:nth-child(7){transition-delay:220ms;}
+.mega .feat{transition-delay:120ms;}
+
+/* ---- the seven-office ledger inside the Locations mega ------------------------------ */
+.loc-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  border-top:1px solid var(--ds-line);
+}
+.loc{
+  padding:12px 20px;
+  border-bottom:1px solid var(--ds-line);
+  box-shadow:inset 0 0 0 0 var(--ds-signature);
+  transition:background-color var(--ds-dur) var(--ds-ease),box-shadow var(--ds-dur) var(--ds-ease);
+}
+.loc:nth-child(2n){border-left:1px solid var(--ds-line);}
+.loc:hover{background:var(--ds-bg-surface);box-shadow:inset 3px 0 0 0 var(--ds-signature);}
+.loc__name{
+  display:flex;align-items:center;min-height:48px;
+  font-size:18px;font-weight:700;text-decoration:none;color:var(--ds-ink-heading);
+}
+/* GRAFT from concept B (the wayfinder): the city + ZIP under each office name, so the directory
+   answers "which one is mine" and not only "what is it called". Every value verified 7/7 against
+   _handoff/briefs/<office>.md. 16px keeps it above the 14px floor for the 40+ primary audience. */
+.loc__where{
+  margin:0 0 2px;font-size:16px;line-height:1.4;color:var(--ds-ink-soft);
+}
+.loc__tel{
+  display:inline-flex;align-items:center;gap:9px;min-height:48px;
+  font-size:20px;font-weight:500;text-decoration:none;color:var(--ds-primary);
+  font-variant-numeric:tabular-nums;
+}
+.loc__tel:hover{text-decoration:underline;text-underline-offset:4px;}
+.loc__tel svg{flex:none;color:var(--ds-signature);}
+
+/* ---- the featured zone: RIGHT, portrait crop, thin accent keyline frame ------------- */
+/* The featured column is a FLEX column and the frame takes the slack, so the photograph
+   grows to whatever height the category ledger opposite it needs. Both columns therefore
+   end on the same line and the panel has no ragged hole under the shorter one. */
+.feat{display:flex;flex-direction:column;}
+.feat__frame{
+  position:relative;overflow:hidden;
+  flex:1 1 auto;min-height:300px;
+  border-radius:var(--ds-r-surface);
+  /* KEYLINE RULE: the 2px yellow ring reads only because a 1px deep-teal ring sits
+     outside it (8.46:1 against the yellow, 11.48:1 against the canvas). */
+  box-shadow:0 0 0 2px var(--ds-accent),0 0 0 3px var(--ds-primary-deep),var(--ds-shadow-card);
+  margin-block:var(--ds-space-sm) var(--ds-space-md);
+}
+.feat__frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(.42) contrast(1.05) brightness(1.08);}
+/* The duotone is a BRAND grade, not a dimmer: multiply the deep teal in, lift the mids back
+   with a screened signature, and keep the scrim to the bottom third so a dark source
+   photograph (the operatory) still reads as a room rather than as mud. */
+.grade{position:absolute;inset:0;pointer-events:none;}
+.grade--multiply{background:var(--ds-primary-deep);mix-blend-mode:multiply;opacity:.34;}
+.grade--screen{background:var(--ds-signature);mix-blend-mode:screen;opacity:.14;}
+.grade--scrim{background:linear-gradient(to top,var(--ds-scrim),transparent 46%);}
+.feat__line{font-size:18px;line-height:1.70;color:var(--ds-ink-soft);margin-bottom:var(--ds-space-sm);}
+
+/* ---- the caret dropdowns ------------------------------------------------------------ */
+.drop-panel{
+  position:absolute;top:100%;
+  background:var(--ds-glass-bg);
+  backdrop-filter:var(--ds-glass-blur);
+  -webkit-backdrop-filter:var(--ds-glass-blur);
+  border:1px solid var(--ds-glass-border);
+  border-top:1px solid var(--ds-line);
+  border-radius:0 0 var(--ds-r-surface) var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+  padding:var(--ds-space-sm) 0 var(--ds-space-xs);
+}
+.drop-panel--simple{left:0;width:340px;}
+.drop-panel--wide{right:0;width:600px;display:grid;grid-template-columns:minmax(0,1fr) 196px;gap:var(--ds-space-md);padding:var(--ds-space-md);}
+.drop-link{
+  display:flex;align-items:center;min-height:52px;
+  padding:0 22px;
+  font-size:18px;font-weight:500;text-decoration:none;color:var(--ds-ink-heading);
+  border-left:3px solid transparent;
+  transition:background-color var(--ds-dur) var(--ds-ease),border-color var(--ds-dur) var(--ds-ease);
+}
+.drop-panel--wide .drop-link{padding-inline:14px;}
+.drop-link:hover{background:var(--ds-bg-surface);border-left-color:var(--ds-signature);}
+.dot{
+  width:9px;height:9px;flex:none;margin-right:12px;border-radius:var(--ds-r-pill);
+  background:var(--ds-accent);
+  box-shadow:var(--ds-accent-keyline);   /* decorative accent mark, keyline per the sheet */
+}
+.drop-feat__frame{
+  position:relative;overflow:hidden;aspect-ratio:3/4;
+  border-radius:var(--ds-r-surface);
+  box-shadow:0 0 0 2px var(--ds-accent),0 0 0 3px var(--ds-primary-deep),var(--ds-shadow-card);
+  margin-block:8px 12px;
+}
+.drop-feat__frame img{width:100%;height:100%;object-fit:cover;object-position:50% 22%;filter:grayscale(.52) contrast(1.06);}
+
+/* ==========================================================================
+   4 · FILLER MAIN. Scaffold only, deliberately quiet. The chrome is the subject.
+   ========================================================================== */
+.band{padding-block:var(--ds-space-2xl);}
+.band--surface{background:var(--ds-bg-band);}
+.band--grid{background-image:var(--ds-grid);background-size:var(--ds-grid-size);}
+.band__h{font-size:34px;max-width:20ch;}
+.band__p{margin-top:var(--ds-space-sm);max-width:62ch;font-size:18px;line-height:1.70;color:var(--ds-ink-soft);}
+.band__rule{height:1px;background:var(--ds-line);margin-top:var(--ds-space-lg);}
+.band__blocks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-md);margin-top:var(--ds-space-lg);}
+.band__block{min-height:210px;border:1px solid var(--ds-line);border-radius:var(--ds-r-surface);background:var(--ds-bg-surface);box-shadow:var(--ds-inset-hi);}
+#scroll-sentinel{display:block;width:100%;height:1px;}
+
+/* ==========================================================================
+   5 · PRE-FOOTER / CLOSING CTA. A designed moment on the dark surface.
+   ========================================================================== */
+.closing{position:relative;overflow:hidden;padding-block:var(--ds-space-2xl);}
+.closing__glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(58% 74% at 16% 6%,var(--ds-accent),transparent 62%);
+  opacity:.13;
+}
+.closing__wash{position:absolute;inset:0;pointer-events:none;background:var(--ds-glow-wash);}
+.closing__grid{position:absolute;inset:0;pointer-events:none;background-image:var(--ds-grid);background-size:var(--ds-grid-size);}
+.closing__inner{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr);gap:var(--ds-space-xl);align-items:end;}
+.closing__h{font-size:60px;line-height:1.06;letter-spacing:-.02em;max-width:15ch;color:var(--ds-ink-heading);}
+.closing__lede{margin-top:var(--ds-space-md);max-width:52ch;font-size:20px;line-height:1.70;color:var(--ds-ink);}
+.guarantee{
+  display:flex;gap:14px;align-items:flex-start;
+  margin-top:var(--ds-space-md);padding:18px 22px;
+  max-width:58ch;
+  border:1px solid var(--ds-line-control);
+  border-left:3px solid var(--ds-accent);
+  border-radius:var(--ds-r-surface);
+  background:var(--ds-accent-soft);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+  font-size:18px;line-height:1.70;color:var(--ds-ink);
+}
+.guarantee svg{flex:none;margin-top:4px;color:var(--ds-accent);}
+.closing__acts{display:flex;flex-direction:column;gap:var(--ds-space-sm);align-items:stretch;}
+.closing__acts .btn{width:100%;}
+.closing__offer{font-size:18px;line-height:1.70;color:var(--ds-ink-soft);}
+/* the inline offer link is a real target, not 21px of text: 48px minimum like everything else */
+.closing__offer a{
+  display:inline-flex;align-items:center;min-height:48px;
+  color:var(--ds-ink);font-weight:700;text-underline-offset:4px;
+}
+
+/* ==========================================================================
+   6 · THE FOOTER. FOOTER-STYLES.md #14 Hours-and-contact prominent.
+   Three columns of contact / hours / act, then the SEVEN-OFFICE LEDGER.
+   ========================================================================== */
+.site-footer{background:var(--ds-bg-surface);border-top:1px solid var(--ds-line);}
+.foot-top{
+  display:grid;grid-template-columns:1.25fr 1fr .85fr;gap:var(--ds-space-xl);
+  padding-block:var(--ds-space-xl);
+}
+.foot-word{display:flex;flex-direction:column;gap:4px;text-decoration:none;color:var(--ds-primary-deep);}
+.foot-word__name{font-family:var(--ds-font-display);font-weight:600;font-size:28px;line-height:1.1;}
+.foot-word__lockup{font-size:14px;font-weight:700;letter-spacing:.30em;text-transform:uppercase;color:var(--ds-ink-soft);}
+.foot-blurb{margin-top:var(--ds-space-sm);max-width:38ch;font-size:18px;line-height:1.70;color:var(--ds-ink-soft);}
+.foot-h{font-size:20px;margin-bottom:var(--ds-space-xs);}
+.foot-hours{font-size:18px;line-height:1.70;color:var(--ds-ink-soft);max-width:34ch;}
+.foot-hours strong{color:var(--ds-ink);}
+.foot-acts{display:flex;flex-direction:column;gap:var(--ds-space-sm);}
+
+/* ---- the institutional ledger: seven offices, seven direct lines -------------------- */
+.directory{border-top:1px solid var(--ds-line);padding-block:var(--ds-space-lg);}
+.directory__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--ds-space-md);flex-wrap:wrap;}
+.directory__h{font-size:28px;}
+.ledger{margin-top:var(--ds-space-md);border-top:1px solid var(--ds-line);}
+.ledger__row{
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) auto;
+  gap:var(--ds-space-md);align-items:center;
+  padding-block:10px;
+  border-bottom:1px solid var(--ds-line);
+  transition:background-color var(--ds-dur) var(--ds-ease);
+}
+.ledger__row:hover{background:var(--ds-bg-band);}
+.ledger__office{
+  display:flex;align-items:center;min-height:48px;
+  font-size:18px;font-weight:700;text-decoration:none;color:var(--ds-ink-heading);
+}
+.ledger__tel{
+  display:inline-flex;align-items:center;gap:10px;min-height:48px;
+  font-size:20px;font-weight:500;text-decoration:none;color:var(--ds-primary);
+  font-variant-numeric:tabular-nums;
+}
+.ledger__tel:hover{text-decoration:underline;text-underline-offset:4px;}
+.ledger__tel svg{flex:none;color:var(--ds-signature);}
+.ledger__go{
+  display:inline-flex;align-items:center;min-height:48px;
+  font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  text-decoration:none;color:var(--ds-ink-soft);white-space:nowrap;
+}
+.ledger__go:hover{color:var(--ds-ink-heading);}
+
+.foot-links{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-lg);
+  border-top:1px solid var(--ds-line);padding-block:var(--ds-space-lg);
+}
+.foot-links h3{font-size:18px;margin-bottom:6px;}
+.foot-links a{
+  display:flex;align-items:center;min-height:48px;
+  font-size:18px;text-decoration:none;color:var(--ds-ink-soft);
+}
+.foot-links a:hover{color:var(--ds-ink-heading);}
+
+.foot-legal{
+  border-top:1px solid var(--ds-line);
+  display:flex;flex-wrap:wrap;gap:var(--ds-space-sm) var(--ds-space-md);
+  align-items:center;justify-content:space-between;
+  padding-block:var(--ds-space-sm) var(--ds-space-md);
+}
+.foot-legal p,.foot-legal a{font-size:16px;line-height:1.6;color:var(--ds-ink-soft);}
+.foot-legal ul{display:flex;flex-wrap:wrap;gap:var(--ds-space-md);}
+.foot-legal a{display:inline-flex;align-items:center;min-height:48px;text-decoration:none;}
+.foot-legal a:hover{color:var(--ds-ink-heading);text-decoration:underline;text-underline-offset:4px;}
+
+/* ==========================================================================
+   7 · MOBILE DRAWER + STICKY CTA BAR
+   ========================================================================== */
+.drawer-scrim{
+  position:fixed;inset:0;z-index:var(--ds-z-overlay);
+  background:var(--ds-scrim);
+  opacity:0;visibility:hidden;
+  transition:opacity var(--ds-dur) var(--ds-ease),visibility 0s linear var(--ds-dur);
+}
+.drawer-scrim.is-open{opacity:1;visibility:visible;transition-delay:0s;}
+
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;z-index:var(--ds-z-drawer);
+  width:min(92vw,420px);
+  display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+  background:var(--ds-canvas);
+  border-left:1px solid var(--ds-line);
+  box-shadow:var(--ds-shadow-lift);
+  transform:translateX(102%);
+  visibility:hidden;
+  transition:transform var(--ds-dur-slow) var(--ds-ease),visibility 0s linear var(--ds-dur-slow);
+}
+.drawer.is-open{transform:translateX(0);visibility:visible;transition-delay:0s;}
+.drawer__head{
+  display:flex;align-items:center;justify-content:space-between;gap:var(--ds-space-sm);
+  padding:14px var(--ds-space-md);
+  border-bottom:1px solid var(--ds-line);
+}
+.drawer__close{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:52px;height:52px;flex:none;
+  border:1px solid var(--ds-line-control);border-radius:var(--ds-r-control);
+  color:var(--ds-primary-deep);cursor:pointer;
+}
+/* T1 FIX: the scroll region reserves room for the drawer's own sticky foot.
+   The foot is ALSO its own grid row, so the last item can never sit under it. */
+.drawer__scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:132px;}
+.drawer__foot{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  padding:14px var(--ds-space-md) calc(14px + env(safe-area-inset-bottom,0px));
+  border-top:1px solid var(--ds-line);
+  background:var(--ds-bg-surface);
+  box-shadow:var(--ds-shadow-card);
+}
+.drawer__foot .btn{min-height:52px;padding:0 12px;font-size:17px;}
+
+.acc{border-bottom:1px solid var(--ds-line);}
+.acc__trigger{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+  width:100%;min-height:60px;padding:0 var(--ds-space-md);
+  font-size:18px;font-weight:700;text-align:left;color:var(--ds-ink-heading);
+  cursor:pointer;
+}
+.acc__trigger[aria-expanded="true"]{background:var(--ds-bg-surface);box-shadow:inset 3px 0 0 0 var(--ds-signature);}
+.acc__body{display:none;padding-bottom:var(--ds-space-xs);background:var(--ds-bg-surface);}
+.acc__trigger[aria-expanded="true"] + .acc__body{display:block;}
+.acc__link{
+  display:flex;align-items:center;min-height:52px;
+  padding:0 var(--ds-space-md) 0 34px;
+  font-size:18px;text-decoration:none;color:var(--ds-ink-soft);
+  border-left:3px solid transparent;
+}
+.acc__link:hover{color:var(--ds-ink-heading);border-left-color:var(--ds-signature);}
+.acc__office{padding:6px var(--ds-space-md) 8px 34px;border-bottom:1px solid var(--ds-line);}
+.acc__office:last-child{border-bottom:0;}
+.acc__office .loc__name{min-height:44px;font-size:18px;}
+.acc__office .loc__tel{font-size:20px;}
+.drawer .nav__link{min-height:60px;padding:0 var(--ds-space-md);border-bottom:0;width:100%;font-weight:700;}
+
+/* STICKY CTA BAR (mobile). It is HIDDEN by default, REVEALED once past the hero, and
+   HIDDEN AGAIN the moment the real closing CTA (.cta-band) or the .site-footer enters the
+   viewport, so it can never double up over the page's own bottom CTA. */
+.sticky-cta{
+  position:fixed;left:0;right:0;bottom:0;z-index:var(--ds-z-sticky);
+  display:none;grid-template-columns:1fr 1fr;gap:12px;
+  padding:12px var(--ds-space-md) calc(12px + env(safe-area-inset-bottom,0px));
+  background:var(--ds-bg-surface);
+  border-top:1px solid var(--ds-line);
+  box-shadow:var(--ds-shadow-lift);
+  transform:translateY(118%);
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.sticky-cta.is-revealed{transform:translateY(0);}
+.sticky-cta .btn{min-height:52px;padding:0 10px;font-size:17px;}
+
+/* ==========================================================================
+   8 · BREAKPOINTS
+   T2: five nav items + a phone affordance + a Book CTA do NOT fit at ~900px.
+   The bar collapses to the drawer at <=1100px, not <=768px.
+   ========================================================================== */
+@media (max-width:1100px){
+  .hdr-row--identity{grid-template-columns:1fr auto;padding-block:12px;}
+  .hdr-utility{display:none;}
+  .wordmark{align-items:flex-start;justify-self:start;}
+  .wordmark__name{font-size:26px;}
+  .is-condensed .wordmark__name{font-size:22px;}
+  .hdr-row--nav{display:none;}
+  .site-header__hamburger{display:inline-flex;}   /* T4: rightmost element in the bar */
+  .sticky-cta{display:grid;}
+  body{padding-bottom:92px;}
+  .closing__inner{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);align-items:start;}
+  .closing__h{font-size:42px;}
+  .foot-top{grid-template-columns:1fr;gap:var(--ds-space-lg);padding-block:var(--ds-space-lg);}
+  .band__blocks{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:900px){
+  .ledger__row{grid-template-columns:minmax(0,1fr) auto;row-gap:0;}
+  .ledger__go{grid-column:2;grid-row:1;}
+  .ledger__tel{grid-column:1;grid-row:2;}
+  .foot-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-md);}
+}
+@media (max-width:640px){
+  .band{padding-block:var(--ds-space-xl);}
+  .band__h{font-size:28px;}
+  .band__blocks{grid-template-columns:minmax(0,1fr);}
+  .closing__h{font-size:34px;}
+  .foot-links{grid-template-columns:minmax(0,1fr);}
+  .foot-legal{justify-content:flex-start;}
+}
+/* Below this width the two-up CTA rows can no longer carry their full labels on one line
+   (measured, not assumed: "Book Appointment" wrapped at 375/390/430, "Call nearest office"
+   ran to two lines). The short labels swap in and the columns re-weight to the longer one. */
+@media (max-width:480px){
+  .lbl-full{display:none;}
+  .lbl-short{display:inline;}
+  .sticky-cta{grid-template-columns:.72fr 1.28fr;gap:10px;padding-inline:14px;}
+  .drawer__foot{padding-inline:16px;}
+  .sticky-cta .btn,.drawer__foot .btn{font-size:16px;padding:0 10px;gap:8px;}
+}
+@media (max-width:400px){
+  .container{padding-inline:16px;}
+  .wordmark__name{font-size:23px;}
+}
+
+/* ==========================================================================
+   9 · REDUCED-MOTION KILL SWITCH. Every non-essential motion is opt-out.
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;animation-iteration-count:1!important;
+    transition-duration:.001ms!important;transition-delay:0s!important;
+    scroll-behavior:auto!important;
+  }
+  .mega,.drop-panel,.mega .cat,.mega .loc,.mega .feat{transform:none!important;}
+  .qlink::after{transform:scaleX(1)!important;}
+  .btn--accent:hover{transform:none!important;}
+}

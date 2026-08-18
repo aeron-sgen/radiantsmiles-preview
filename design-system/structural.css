@@ -1,0 +1,3886 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap");
+/* ============================================================================
+   radiantsmiles-structural.css
+   (3) FOUNDATION tournament, CONCEPT C: "THE WARM CARD SYSTEM"
+   ----------------------------------------------------------------------------
+   THE BODY DESIGN LANGUAGE. This is the reusable system every page is built
+   from, not one-off page CSS. Cascade position: after radiantsmiles-tokens.css
+   (LOCKED) and after radiantsmiles-chrome.css (LOCKED). The chrome owns the
+   header / mega / drawer / footer and is untouched here.
+
+   THE READ: friendly, modular, immediately scannable. Every offer is a tangible
+   object you could tap. Built for a patient skimming on a phone deciding which
+   office to call.
+
+   DESIGN-SYSTEM PROVENANCE. What this sheet implements, and from where:
+     library    _MODERN-WOW-SPEC              sections 1 depth, 2 motion,
+                                              3 texture, 5 light, 6 layout
+     library    _MODERN-DESIGN-PATTERN-LIBRARY TOP-12 #3 shadow, #4 reveal,
+                                              #7 image-zoom, #10 eyebrow rule,
+                                              #11 section rhythm, #12b wash
+     blueprint  composition-medical-health    the section sequence + the
+                                              medical A2 arc / H2 mask signature
+     menu       SURFACE-PATTERNS.md #10 Soft-shadow-lift    the card chrome
+     menu       SURFACE-PATTERNS.md #13 Glass-translucent   the hero float
+     menu       SURFACE-PATTERNS.md #35 Circular-mask       the medallion
+     menu       SURFACE-PATTERNS.md #34 Soft-rounded        the image frames
+     menu       MOTION-PATTERNS.md #10 Lift                 card hover
+     menu       MOTION-PATTERNS.md #12 Image-zoom           frame hover
+     menu       MOTION-PATTERNS.md #29 Stagger-grid         scroll entrance
+     menu       MOTION-PATTERNS.md #3 Underline-grow        the quiet link
+     menu       CARD-VARIATIONS.md #4 Circle-icon service card with arrow link
+     menu       CARD-VARIATIONS.md #5 Stat tile 4-up
+     menu       CARD-VARIATIONS.md #8 Team bio card
+     menu       SECTION-COMPONENTS.md #11 (+ the MEDIA+CARDS composition law)
+     menu       DIVIDER-PATTERNS.md #2 Wave smooth (single curve)
+     menu       CTA-PATTERNS.md #7 Multi-CTA cluster
+     menu       CTA-PATTERNS.md #6 Ghost text-link with arrow
+     menu       TYPOGRAPHY-PAIRINGS.md #52   inherited from the locked tokens
+
+   THE SIGNATURE, and no other concept has it: THE GROUND IS INVERTED.
+   --ds-bg-surface is the dominant page ground and --ds-canvas cards sit ON it,
+   so the cards come FORWARD out of the page rather than sinking into it. Three
+   grounds only, one card colour:
+       --ds-bg-surface   the dominant ground
+       --ds-bg-band      the deeper beat (hero, why-us, testimonials)
+       .surface-dark     the two anchor beats (the offer, the closing CTA)
+       --ds-canvas       ALWAYS and ONLY the card
+
+   DEPTH: exactly TWO elevation levels, never three.
+       E1 rest   var(--ds-shadow-card) + var(--ds-inset-hi)
+       E2 raised var(--ds-shadow-lift) + var(--ds-inset-hi)
+   The --ds-inset-hi top-edge highlight is what makes a card feel physical
+   rather than printed. It is not optional on a card.
+
+   WARMTH THROUGH LIGHT (the concept's one indulgence, kept disciplined):
+     1. --ds-glow-wash spotlights behind the key card systems.
+     2. An --ds-accent glow that TRACKS the pointer across the hovered card
+        (--rs-mx / --rs-my, defaulted in CSS so the sheet stands alone).
+     3. A soft accent keyline (--rs-key-accent) on the SINGLE most important
+        CTA card, and nowhere else on the page.
+   All three die under prefers-reduced-motion.
+
+   TOKEN PURITY. Zero hex literals live in this sheet. Every colour, radius,
+   shadow, duration and spacing value is a var(--ds-*), or a documented
+   --rs-* alias derived from one. The --rs-* aliases exist for a single reason:
+   a handful of roles must RE-POINT across the surface flip (a card ground, a
+   figure colour, a decorative rule), and re-pointing an alias is how a section
+   gets re-skinned by dropping class="surface-dark" on it with nothing else
+   changed.
+
+   THE CONTRAST LAW, as it lands in this sheet (measured, non-negotiable):
+     - #FFD447 --ds-accent is 1.36:1 on the canvas. DECORATIVE on light: dots,
+       keylines, glows. It NEVER carries text on light and is never a text
+       ground on light. On dark it becomes a genuine foreground (7.19:1 worst
+       stop) and is used as one, deliberately.
+     - Text ON an accent fill is PINNED to --ds-primary-deep (8.46:1) with an
+       explicit colour declaration, so it cannot inherit --ds-ink inside a
+       .surface-dark subtree.
+     - #128C7E --ds-signature carries NO text in either direction. It appears
+       here only as a rule, a chip fill under a >=24px icon, and a focus ring.
+     - Body pairing is --ds-ink on the card ground: 13.59:1.
+
+   THE AUDIENCE LAW: 40+ primary. Presbyopia makes contrast sensitivity, not
+   size alone, the binding constraint. Body 18px / 1.70. Nothing below 14px
+   anywhere in this sheet. Every interactive target is at least 48px on its
+   short side. Phone numbers are first-class UI at 20px.
+
+   UTF-8, no BOM. ASCII only. No em or en dashes.
+   ============================================================================ */
+
+/* ==========================================================================
+   0 . DERIVED ALIASES. The only role tokens this sheet owns, each one an
+   alias over a --ds-* token, each one re-pointed on the dark surface.
+   ========================================================================== */
+:root{
+  /* the card ground. Light: the canvas card sits on the bg-surface ground.
+     Dark: --ds-canvas flips to the ground itself, so a card must step to
+     --ds-bg-surface (the gradient's lower stop) or it would vanish. */
+  --rs-card-bg:var(--ds-canvas);
+  /* the card edge. Light: a decorative hairline is enough because the shadow
+     does the separating. Dark: the fill-to-ground separation is only 1.25:1
+     by geometry, so the edge must come from the 3:1 control line instead. */
+  --rs-card-line:var(--ds-hairline);
+  /* the figure colour for oversized numerals. Light: --ds-primary at 8.84:1.
+     Dark: --ds-primary is a FILL, not a foreground, so numerals re-point to
+     the accent, which is 7.19:1 on the worst dark stop. */
+  --rs-figure:var(--ds-primary);
+  /* a decorative rule / accent mark. The signature reads on light and nearly
+     vanishes on dark (2.47:1), where the accent takes over the job. */
+  --rs-rule:var(--ds-signature);
+  /* a standalone link or phone number. */
+  --rs-link:var(--ds-primary);
+  /* THE ACCENT KEYLINE for the one featured CTA card. On light the yellow is
+     1.36:1 and needs the deep-teal outer ring to read at all (the token
+     sheet's KEYLINE RULE). On dark the yellow is already 8.47:1 and the outer
+     ring is dropped rather than recoloured. */
+  --rs-key-accent:0 0 0 2px var(--ds-accent),0 0 0 3px var(--ds-primary-deep);
+  /* the two elevation levels, and there is no third. */
+  --rs-e1:var(--ds-shadow-card),var(--ds-inset-hi);
+  --rs-e2:var(--ds-shadow-lift),var(--ds-inset-hi);
+  /* image frame radii. The token sheet ships a constrained 3-role radius set,
+     so the large-radius medical frame is expressed as a documented MULTIPLE of
+     --ds-r-surface rather than as a new magic number. */
+  --rs-r-frame:calc(var(--ds-r-surface) * 2);
+  --rs-r-hero:calc(var(--ds-r-surface) * 3);
+  /* the vertical rhythm. Bounded top and bottom by real spacing tokens. */
+  --rs-sec-pad:clamp(var(--ds-space-xl),8vw,var(--ds-space-2xl));
+}
+
+.surface-dark{
+  --rs-card-bg:var(--ds-bg-surface);
+  --rs-card-line:var(--ds-line-control);
+  --rs-figure:var(--ds-accent);
+  --rs-rule:var(--ds-accent);
+  --rs-link:var(--ds-accent);
+  --rs-key-accent:0 0 0 2px var(--ds-accent);
+  /* THE ELEVATION ALIASES HAVE TO BE RE-DECLARED HERE, not just inherited.
+     --rs-e1/--rs-e2 are declared on :root above as var(--ds-shadow-*),var(--ds-inset-hi).
+     A custom property has its var()s substituted where it is DECLARED, so both aliases
+     freeze to their LIGHT values at :root and inherit down already-resolved. The token
+     sheet's dark flip of --ds-shadow-card / --ds-shadow-lift / --ds-inset-hi (tokens
+     .surface-dark) therefore could not reach them: a card on this ground computed
+     --ds-inset-hi correctly as rgba(233,243,243,.16) while still painting the light
+     inset 0 1px 0 rgba(255,255,255,.80) — a 7.9:1 white hairline where the dark flip
+     intends a 1.56:1 whisper — and drew a teal-tinted drop shadow on a teal ground,
+     i.e. no elevation at all. Re-declaring them here re-runs the substitution against
+     THIS element's dark tokens. Same two levels, no third; light mode is untouched. */
+  --rs-e1:var(--ds-shadow-card),var(--ds-inset-hi);
+  --rs-e2:var(--ds-shadow-lift),var(--ds-inset-hi);
+}
+
+/* ==========================================================================
+   1 . BASE. Mirrors the locked chrome reset verbatim so this sheet renders
+   standalone in the specimen, and is a no-op in the built cascade where the
+   chrome has already set the same values. THE ONE DELIBERATE DIFFERENCE is the
+   body ground: the concept inverts it to --ds-bg-surface.
+   ========================================================================== */
+*,*::before,*::after{box-sizing:border-box;}
+html{-webkit-text-size-adjust:100%;}
+body{
+  margin:0;
+  background:var(--ds-bg-surface);
+  color:var(--ds-ink);
+  font-family:var(--ds-font-body);
+  font-size:18px;
+  line-height:1.70;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;}
+button{font:inherit;color:inherit;background:none;border:0;}
+p{margin:0;}
+ul,ol{margin:0;padding:0;list-style:none;}
+h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-heading);line-height:1.18;font-weight:600;}
+
+/* ==========================================================================
+   2 . SECTION RHYTHM + CONTAINER + GROUNDS + TEXTURE + THE ARC SEAM
+   ========================================================================== */
+.rs-wrap{
+  position:relative;
+  width:100%;
+  max-width:var(--ds-container-max);
+  margin-inline:auto;
+  padding-inline:var(--ds-space-md);
+}
+.rs-wrap--narrow{max-width:calc(var(--ds-container-max) - var(--ds-space-2xl) * 2);}
+
+.rs-sec{position:relative;padding-block:var(--rs-sec-pad);}
+/* :not(.surface-dark) so a section re-skinned by the token class keeps the
+   token sheet's own gradient. Without the guard this rule, being later in the
+   cascade at equal specificity, would silently repaint every dark band. */
+.rs-sec:not(.surface-dark){background:var(--ds-bg-surface);}
+.rs-sec--band:not(.surface-dark){background:var(--ds-bg-band);}
+/* G1: top and bottom padding differ on purpose where a section leads or closes. */
+.rs-sec--lead{padding-block:calc(var(--rs-sec-pad) + var(--ds-space-lg)) calc(var(--rs-sec-pad) + var(--ds-space-xl));}
+.rs-sec--close{padding-block:var(--rs-sec-pad) calc(var(--rs-sec-pad) + var(--ds-space-md));}
+
+/* texture layers. Absolutely positioned, never interactive, always under the
+   content (the .rs-wrap inside is position:relative and therefore above). */
+.rs-tex{position:absolute;inset:0;pointer-events:none;}
+.rs-tex--wash{background-image:var(--ds-glow-wash);}
+.rs-tex--grid{background-image:var(--ds-grid);background-size:var(--ds-grid-size);}
+.rs-tex--grain{
+  background-image:var(--ds-grain);
+  opacity:var(--ds-opacity-texture);
+  mix-blend-mode:multiply;
+}
+
+/* A2 "circle up" arc divider, the medical vertical's defining seam per
+   composition-medical-health. Catalogued as DIVIDER-PATTERNS.md #2 Wave smooth
+   (single curve), built the CSS-only way the pattern library's A1 note allows
+   (a border-radius arc, no SVG asset). The block carries the NEXT section's
+   ground and is pulled up over the section above, so the two grounds meet on a
+   dome instead of a hard rectangle edge. */
+.rs-arc{
+  --rs-arc-h:clamp(36px,4.5vw,64px);
+  position:relative;
+  z-index:var(--ds-z-raised);
+  height:var(--rs-arc-h);
+  margin-top:calc(-1 * var(--rs-arc-h));
+  background:var(--ds-bg-surface);
+  border-radius:50% 50% 0 0 / 100% 100% 0 0;
+}
+
+/* the section header block: eyebrow, rule, heading, optional sub. */
+.rs-head{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  margin-bottom:var(--ds-space-lg);
+  max-width:none;
+}
+.rs-head--split{
+  gap:var(--ds-space-md);
+}
+.rs-head__act{margin-top:var(--ds-space-2xs);}
+
+@media (min-width:900px){
+  .rs-head--split{
+    flex-direction:row;
+    align-items:flex-end;
+    justify-content:space-between;
+  }
+  .rs-head--split .rs-head__act{margin-top:0;flex:none;}
+}
+
+/* ==========================================================================
+   3 . TYPE. Display face on headings only, calm grotesk body. Nothing under
+   14px. Body measure is set in ch on the elements that own the body font.
+   ========================================================================== */
+.rs-eyebrow{
+  display:flex;
+  align-items:center;
+  gap:var(--ds-space-sm);
+  font-size:14px;
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ds-ink-soft);
+}
+/* the short accent rule that sits beside the kicker. Decorative only. */
+.rs-eyebrow::after{
+  content:"";
+  flex:none;
+  width:var(--ds-space-lg);
+  height:3px;
+  border-radius:var(--ds-r-pill);
+  background:var(--rs-rule);
+}
+
+.rs-h1{
+  font-size:clamp(38px,6vw,62px);
+  line-height:1.06;
+  letter-spacing:-.02em;
+  max-width:15ch;
+}
+.rs-h2{
+  font-size:clamp(30px,4vw,44px);
+  line-height:1.10;
+  letter-spacing:-.015em;
+  max-width:20ch;
+}
+.rs-h3{
+  font-size:clamp(22px,2.4vw,28px);
+  line-height:1.20;
+  letter-spacing:-.01em;
+}
+.rs-h4{
+  font-size:20px;
+  line-height:1.30;
+}
+
+p.rs-lede{
+  font-size:clamp(19px,2vw,22px);
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+  max-width:56ch;
+}
+p.rs-copy{
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink-soft);
+  max-width:64ch;
+}
+.rs-copy{font-size:18px;line-height:1.70;color:var(--ds-ink-soft);}
+.rs-meta{font-size:16px;line-height:1.55;color:var(--ds-ink-soft);}
+.rs-strong{color:var(--ds-ink);font-weight:700;}
+
+/* the source line under a cited figure. 16px, never smaller: this is the copy
+   that replaces the superlatives, so it has to be readable. */
+.rs-source{
+  font-size:16px;
+  line-height:1.55;
+  color:var(--ds-ink-soft);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ==========================================================================
+   4 . THE CARD SYSTEM. One grammar, repeated at different scales and spans.
+   SURFACE-PATTERNS.md #10 Soft-shadow-lift is the card chrome, upgraded with
+   the --ds-inset-hi top-edge highlight that _MODERN-WOW-SPEC section 1 calls
+   for. MOTION-PATTERNS.md #10 Lift is the hover.
+   The card radius is --ds-r-surface exactly, per the locked direction: the
+   LARGE radius belongs to the image frames (the medical signature), not to
+   the cards, or the two stop reading as different objects.
+   ========================================================================== */
+.rs-card{
+  --rs-mx:50%;
+  --rs-my:0%;
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  background:var(--rs-card-bg);
+  border:1px solid var(--rs-card-line);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--rs-e1);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease);
+}
+/* the pointer-tracked accent glow. It is the concept's warmth move: a soft
+   light that follows the hand across the card it is over. Painted UNDER the
+   content, clipped to the card radius, and off at rest. */
+.rs-card::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  border-radius:inherit;
+  background:radial-gradient(42% 60% at var(--rs-mx) var(--rs-my),var(--ds-accent),transparent 72%);
+  opacity:0;
+  transition:opacity var(--ds-dur) var(--ds-ease);
+}
+.rs-card > *{position:relative;z-index:1;}
+.rs-card:hover::before,
+.rs-card:focus-within::before{opacity:var(--ds-opacity-faint);}
+.rs-card:hover,
+.rs-card:focus-within{
+  transform:translateY(-4px);
+  box-shadow:var(--rs-e2);
+}
+
+.rs-card__body{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  padding:var(--ds-space-md);
+  flex:1 1 auto;
+}
+.rs-card__body--roomy{padding:var(--ds-space-lg);}
+.rs-card__body--tight{padding:var(--ds-space-sm) var(--ds-space-md);}
+.rs-card__title{
+  font-family:var(--ds-font-display);
+  font-size:22px;
+  line-height:1.25;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+.rs-card__text{
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink-soft);
+}
+.rs-card__foot{
+  margin-top:auto;
+  padding-top:var(--ds-space-2xs);
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--ds-space-sm) var(--ds-space-md);
+}
+
+/* the media-led card. The photograph runs to the card edge, so the card clips. */
+.rs-card--media{overflow:hidden;}
+.rs-card--media .rs-frame{border-radius:0;}
+
+/* the featured card. E2 at rest plus the accent keyline, and this treatment
+   appears ONCE per page, on the single most important CTA. */
+.rs-card--feature{
+  box-shadow:var(--rs-e2),var(--rs-key-accent);
+}
+.rs-card--feature:hover,
+.rs-card--feature:focus-within{
+  transform:translateY(-4px);
+  box-shadow:var(--rs-e2),var(--rs-key-accent);
+}
+
+/* the pending card. Used where a real asset does not exist yet and inventing
+   one is prohibited. It is designed to look deliberate, not broken. */
+.rs-card--pending{
+  background:transparent;
+  border-style:dashed;
+  border-color:var(--ds-line-control);
+  box-shadow:none;
+}
+.rs-card--pending:hover,
+.rs-card--pending:focus-within{transform:none;box-shadow:none;}
+.rs-card--pending::before{display:none;}
+
+/* the whole-card link. The card is the target, so the target is the card. */
+.rs-card__link{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:48px;
+  font-size:18px;
+  font-weight:700;
+  text-decoration:none;
+  color:var(--ds-ink-heading);
+}
+.rs-card__link::after{
+  content:"";
+  width:22px;
+  height:2px;
+  border-radius:var(--ds-r-pill);
+  background:var(--rs-rule);
+  transition:width var(--ds-dur) var(--ds-ease-out);
+}
+.rs-card:hover .rs-card__link::after,
+.rs-card__link:focus-visible::after{width:36px;}
+.rs-card__link svg{flex:none;transition:transform var(--ds-dur) var(--ds-ease-out);}
+.rs-card:hover .rs-card__link svg{transform:translateX(4px);}
+
+/* the spotlight behind a key card system. --ds-glow-wash at token strength. */
+/* overflow-x:clip, not hidden. The ::before glow below is inset by a NEGATIVE
+   --ds-space-lg (40px) on every side, and the horizontal part of that bleed escaped the
+   container and grew the document by 16px at 375, 390, 768, 900 and 1100 (measured:
+   scrollWidth 391 vs 375, 1116 vs 1100). `clip` kills the horizontal escape without
+   creating a scroll container, so sticky descendants keep working and the vertical
+   glow is untouched. `hidden` would do both jobs but also make this a scroll container. */
+.rs-spot{position:relative;overflow-x:clip;}
+.rs-spot::before{
+  content:"";
+  position:absolute;
+  inset:calc(-1 * var(--ds-space-lg));
+  pointer-events:none;
+  background-image:var(--ds-glow-wash);
+  border-radius:var(--rs-r-hero);
+}
+.rs-spot > *{position:relative;}
+
+/* ==========================================================================
+   5 . GRIDS. Mobile first: one column, then intrinsic, then bento spans.
+   ========================================================================== */
+.rs-grid{display:grid;gap:var(--ds-space-md);}
+.rs-grid--2,
+.rs-grid--3,
+.rs-grid--4{grid-template-columns:minmax(0,1fr);}
+
+@media (min-width:640px){
+  .rs-grid--2,
+  .rs-grid--3,
+  .rs-grid--4{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (min-width:900px){
+  .rs-grid--3{grid-template-columns:repeat(3,minmax(0,1fr));}
+  .rs-grid--4{grid-template-columns:repeat(4,minmax(0,1fr));}
+}
+
+/* the bento. A 6-track grid at the top breakpoint so cards can take 2, 3, 4
+   or 6 tracks and the services menu never reads as a table of equal boxes. */
+.rs-bento{display:grid;gap:var(--ds-space-md);grid-template-columns:minmax(0,1fr);}
+@media (min-width:640px){
+  .rs-bento{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (min-width:1060px){
+  .rs-bento{grid-template-columns:repeat(6,minmax(0,1fr));}
+  .rs-bento > *{grid-column:span 2;}
+  .rs-bento .rs-span-3{grid-column:span 3;}
+  .rs-bento .rs-span-4{grid-column:span 4;}
+  .rs-bento .rs-span-6{grid-column:span 6;}
+}
+
+/* the asymmetric split: a copy column beside a card system. */
+.rs-split{display:grid;gap:var(--ds-space-md);grid-template-columns:minmax(0,1fr);}
+@media (min-width:1060px){
+  .rs-split{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;}
+  .rs-split--flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);}
+}
+.rs-stack{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+
+/* THE MEDIA + CARDS LAW (CARD-VARIATIONS.md / SECTION-COMPONENTS.md #11, the
+   top-of-file composition law in both menus). When one feature photograph is
+   paired with a small set of cards, the cards form a 2-COLUMN GRID and the
+   media column STRETCHES to that grid's height. The BANNED arm is a single
+   aspect-ratio-capped media beside a 1xN vertical card stack, because the
+   short capped media leaves a tall band of dead space beside the stack. The
+   frame therefore drops its aspect-ratio cap on the desktop split and takes
+   the slack, and re-acquires a sane cap once stacked. */
+.rs-media-grid{display:grid;gap:var(--ds-space-md);grid-template-columns:minmax(0,1fr);}
+.rs-media-grid__media{width:100%;min-width:0;}
+.rs-media-grid__cards{display:grid;gap:var(--ds-space-md);grid-template-columns:minmax(0,1fr);}
+@media (min-width:640px){
+  .rs-media-grid__cards{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .rs-media-grid__cards .rs-wide{grid-column:1 / -1;}
+}
+@media (min-width:1060px){
+  .rs-media-grid{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);align-items:stretch;}
+  .rs-media-grid__media{align-self:stretch;}
+  .rs-media-grid__media > .rs-card{height:100%;}
+  /* the cap comes OFF on the desktop split: the frame stretches to the card
+     grid's height instead of leaving a void beside it. */
+  .rs-media-grid__media .rs-frame{aspect-ratio:auto;flex:1 1 auto;min-height:360px;}
+}
+
+/* ==========================================================================
+   6 . IMAGERY. Large radius and circle masks, never a hard rectangle, and
+   every photograph graded to the palette so it reads as brand.
+   SURFACE-PATTERNS.md #34 Soft-rounded is the frame, #35 Circular-mask is the
+   medallion, and MOTION-PATTERNS.md #12 Image-zoom is the hover.
+   ========================================================================== */
+.rs-frame{
+  position:relative;
+  overflow:hidden;
+  border-radius:var(--rs-r-frame);
+  background:var(--ds-primary-soft);
+}
+.rs-frame--hero{border-radius:var(--rs-r-hero);box-shadow:var(--rs-e2);}
+.rs-frame--wide{aspect-ratio:16 / 10;}
+.rs-frame--tall{aspect-ratio:4 / 5;}
+.rs-frame--portrait{aspect-ratio:4 / 5;}
+.rs-frame img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:50% 50%;
+  filter:saturate(.94) contrast(1.04);
+  transition:transform var(--ds-dur-slow) var(--ds-ease-out);
+}
+.rs-frame--face img{object-position:50% 26%;}
+.rs-card:hover .rs-frame img{transform:scale(1.04);}
+
+/* the duotone grade. Multiply the deep teal in, screen the signature back
+   through the mids, and reserve the scrim for frames that carry text. */
+.rs-grade{position:absolute;inset:0;pointer-events:none;}
+.rs-grade--tint{background:var(--ds-primary-deep);mix-blend-mode:multiply;opacity:var(--ds-opacity-texture);}
+.rs-grade--lift{background:var(--ds-signature);mix-blend-mode:screen;opacity:var(--ds-opacity-faint);}
+.rs-grade--soft{background:var(--ds-primary-deep);mix-blend-mode:multiply;opacity:var(--ds-opacity-faint);}
+.rs-grade--scrim{background:linear-gradient(to top,var(--ds-scrim),transparent 58%);}
+
+/* H2 circle mask. The medical signature, spent once per page, on the element
+   that overlaps the hero frame's corner. */
+.rs-medallion{
+  position:relative;
+  overflow:hidden;
+  width:clamp(112px,15vw,168px);
+  aspect-ratio:1 / 1;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-primary-soft);
+  box-shadow:var(--rs-e2);
+  border:3px solid var(--rs-card-bg);
+}
+.rs-medallion img{width:100%;height:100%;object-fit:cover;object-position:50% 34%;filter:saturate(.94) contrast(1.04);}
+
+/* ==========================================================================
+   7 . PRIMITIVES: list, hairline rows, quote, stat, chip, note
+   ========================================================================== */
+.rs-list{display:grid;gap:var(--ds-space-xs);}
+.rs-list li{
+  position:relative;
+  padding-left:30px;
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink-soft);
+}
+/* a decorative accent dot. On light it only reads because of the deep-teal
+   keyline the token sheet mandates; on dark that keyline resolves to none. */
+.rs-list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:11px;
+  width:11px;
+  height:11px;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-accent);
+  box-shadow:var(--ds-accent-keyline);
+}
+
+.rs-rows{border-top:1px solid var(--ds-line);}
+.rs-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:var(--ds-space-2xs) var(--ds-space-sm);
+  padding-block:10px;
+  border-bottom:1px solid var(--ds-line);
+}
+.rs-row__k{font-size:18px;line-height:1.5;color:var(--ds-ink-soft);}
+.rs-row__v{
+  font-size:18px;
+  line-height:1.5;
+  font-weight:700;
+  color:var(--ds-ink);
+  font-variant-numeric:tabular-nums;
+}
+
+.rs-quote{
+  font-family:var(--ds-font-display);
+  font-size:clamp(22px,2.6vw,30px);
+  line-height:1.35;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  border-left:3px solid var(--rs-rule);
+  padding-left:var(--ds-space-md);
+}
+
+.rs-stat{display:flex;flex-direction:column;gap:var(--ds-space-2xs);}
+.rs-stat__n{
+  font-family:var(--ds-font-display);
+  font-size:clamp(44px,6vw,68px);
+  line-height:1.0;
+  letter-spacing:-.03em;
+  font-weight:600;
+  color:var(--rs-figure);
+  font-variant-numeric:tabular-nums;
+}
+.rs-stat__l{font-size:18px;line-height:1.5;color:var(--ds-ink-soft);}
+
+.rs-chip{
+  display:inline-flex;
+  align-items:center;
+  min-height:48px;
+  padding:0 18px;
+  border-radius:var(--ds-r-pill);
+  border:1px solid var(--ds-line-control);
+  background:var(--rs-card-bg);
+  font-size:16px;
+  font-weight:500;
+  line-height:1.4;
+  color:var(--ds-ink);
+  text-decoration:none;
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease);
+}
+a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-soft);}
+.rs-chips{display:flex;flex-wrap:wrap;gap:var(--ds-space-xs);}
+
+/* CARD-VARIATIONS.md #4 Circle-icon service card with arrow link, delivered
+   with the squircle chip this brand's radius language uses rather than a
+   circle. I5 icon-box fill-on-hover. The glyph is 26px, which clears the 24px
+   floor at which --ds-signature is a legal graphic. The resting fill is
+   --ds-primary-soft carrying --ds-primary-deep at 9.49:1; the hover fill is
+   the signature carrying the near-white glyph at 3.66:1, legal for a
+   non-text graphic and never used for a label. */
+.rs-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:56px;
+  height:56px;
+  flex:none;
+  border-radius:var(--ds-r-surface);
+  background:var(--ds-primary-soft);
+  color:var(--ds-primary-deep);
+  box-shadow:var(--ds-inset-hi);
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             color var(--ds-dur) var(--ds-ease);
+}
+.rs-card:hover .rs-icon{background:var(--ds-signature);color:var(--ds-ink-on-dark);}
+
+/* the flagged note. Where a fact is missing, the gap is SHOWN, not filled. */
+.rs-note{
+  display:flex;
+  gap:var(--ds-space-sm);
+  align-items:flex-start;
+  padding:14px 18px;
+  border:1px solid var(--ds-line-control);
+  border-left:3px solid var(--ds-accent);
+  border-radius:var(--ds-r-control);
+  background:var(--ds-accent-soft);
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ds-ink);
+}
+.rs-note svg{flex:none;margin-top:3px;color:var(--rs-figure);}
+
+/* ==========================================================================
+   8 . CONTROLS. 52px tall, 18px labels, named-property transitions.
+   CTA-PATTERNS.md #7 Multi-CTA cluster (primary beside secondary) is the act
+   pair; CTA-PATTERNS.md #6 Ghost text-link with arrow is the in-card link;
+   MOTION-PATTERNS.md #3 Underline-grow is the quiet text link.
+   ========================================================================== */
+.rs-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  min-height:52px;
+  padding:0 24px;
+  border-radius:var(--ds-r-control);
+  font-size:18px;
+  font-weight:700;
+  line-height:1.3;
+  text-decoration:none;
+  cursor:pointer;
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             color var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease),
+             transform var(--ds-dur-fast) var(--ds-ease);
+}
+/* THE ONLY legal accent pairing. The label colour is PINNED, not inherited,
+   so it cannot pick up --ds-ink inside a .surface-dark subtree, and the 1px
+   deep-teal keyline is carried as a border so it can never collapse. */
+.rs-btn--accent{
+  background:var(--ds-accent);
+  color:var(--ds-primary-deep);
+  border:1px solid var(--ds-primary-deep);
+  box-shadow:var(--ds-shadow-rest);
+}
+.rs-btn--accent:hover{box-shadow:var(--ds-shadow-card);transform:translateY(-1px);}
+.rs-btn--solid{
+  background:var(--ds-primary);
+  color:var(--ds-ink-on-dark);
+  border:1px solid var(--ds-line-control);
+  box-shadow:var(--ds-shadow-rest);
+}
+.rs-btn--solid:hover{box-shadow:var(--ds-shadow-card);transform:translateY(-1px);}
+.rs-btn--ghost{
+  background:transparent;
+  color:var(--ds-ink-heading);
+  border:1px solid var(--ds-line-control);
+}
+.rs-btn--ghost:hover{background:var(--rs-card-bg);}
+.rs-btn--block{width:100%;}
+.rs-acts{display:flex;flex-wrap:wrap;gap:var(--ds-space-sm);}
+
+/* the phone number. First-class UI for a seven-office practice: 20px, tabular,
+   a real 48px target, and never smaller than the body text around it. */
+.rs-tel{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  min-height:48px;
+  font-size:20px;
+  font-weight:500;
+  line-height:1.3;
+  text-decoration:none;
+  color:var(--rs-link);
+  font-variant-numeric:tabular-nums;
+}
+.rs-tel:hover{text-decoration:underline;text-underline-offset:4px;}
+.rs-tel svg{flex:none;color:var(--rs-rule);}
+
+/* the quiet text link with the growing rule, matched to the locked chrome. */
+.rs-qlink{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  min-height:48px;
+  font-size:18px;
+  font-weight:700;
+  text-decoration:none;
+  color:var(--ds-ink-heading);
+}
+.rs-qlink::after{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:10px;
+  height:2px;
+  background:var(--rs-rule);
+  transform:scaleX(.26);
+  transform-origin:left center;
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.rs-qlink:hover::after,
+.rs-qlink:focus-visible::after{transform:scaleX(1);}
+
+/* ==========================================================================
+   9 . FOCUS. A solid control-weight ring plus the token halo, so it survives
+   the card ground, the band ground and the dark ground alike.
+   ========================================================================== */
+:focus-visible{
+  outline:2px solid var(--ds-line-control);
+  outline-offset:3px;
+  box-shadow:var(--ds-glow);
+  border-radius:var(--ds-r-control);
+}
+
+/* ==========================================================================
+   10 . MOTION. MOTION-PATTERNS.md #29 Stagger-grid (on-view sequence): a
+   scroll entrance with sibling stagger, gated on a class the page script only
+   adds when reduced motion is NOT requested, so the content is visible by
+   default and can never be stranded at opacity 0.
+   ========================================================================== */
+.rs-js .rs-rise{
+  opacity:0;
+  transform:translateY(18px);
+  transition:opacity var(--ds-dur-slow) var(--ds-ease-out),
+             transform var(--ds-dur-slow) var(--ds-ease-out);
+}
+.rs-js .rs-rise.is-in{opacity:1;transform:none;}
+/* the stagger index is set inline per element, so the selector is guarded on
+   the inline declaration that guarantees it. */
+.rs-js .rs-rise[style*="--rs-i"]{transition-delay:calc(var(--rs-i) * 70ms);}
+
+/* ==========================================================================
+   11 . HERO. HERO-COMPOSITIONS.md #1 Split-text-left + photo-right, carrying
+   the floating-card overlay device of HERO-COMPOSITIONS.md #7 (Full-bleed
+   image + floating cards/stats overlay) so the hero states the card grammar in
+   its first move. Closed by the A2 arc.
+   ========================================================================== */
+.rs-hero{position:relative;}
+.rs-hero__inner{
+  position:relative;
+  display:grid;
+  gap:var(--ds-space-lg);
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+}
+.rs-hero__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);align-items:flex-start;}
+.rs-hero__art{position:relative;}
+.rs-hero__medal{
+  position:absolute;
+  right:calc(-1 * var(--ds-space-xs));
+  top:calc(-1 * var(--ds-space-md));
+  z-index:var(--ds-z-raised);
+}
+/* the floating card that overlaps the frame. Glass, and per the token sheet's
+   rule the glass sits over an OPAQUE token base so its contrast cannot change
+   with whatever scrolls behind it. */
+.rs-float{
+  position:relative;
+  margin-top:calc(-1 * var(--ds-space-lg));
+  margin-inline:var(--ds-space-md);
+  z-index:var(--ds-z-raised);
+  background:linear-gradient(var(--ds-glass-bg),var(--ds-glass-bg)),var(--rs-card-bg);
+  backdrop-filter:var(--ds-glass-blur);
+  -webkit-backdrop-filter:var(--ds-glass-blur);
+  border:1px solid var(--ds-glass-border);
+  border-radius:var(--rs-r-frame);
+  box-shadow:var(--rs-e2);
+  padding:var(--ds-space-md);
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-xs);
+}
+
+@media (min-width:1060px){
+  .rs-hero__inner{grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:var(--ds-space-xl);}
+  .rs-float{
+    position:absolute;
+    left:calc(-1 * var(--ds-space-lg));
+    bottom:var(--ds-space-lg);
+    margin:0;
+    max-width:330px;
+  }
+}
+
+/* ==========================================================================
+   12 . OFFICE CARD. The densest card in the system: seven of them, so the
+   grammar tightens rather than changing.
+   ========================================================================== */
+.rs-office{gap:var(--ds-space-xs);}
+.rs-office__name{
+  font-family:var(--ds-font-display);
+  font-size:20px;
+  line-height:1.25;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  text-decoration:none;
+}
+.rs-office__addr{font-size:16px;line-height:1.55;color:var(--ds-ink-soft);font-style:normal;}
+
+/* ==========================================================================
+   13 . REDUCED MOTION. Every non-essential motion in this sheet is opt-out,
+   including the two signature light moves.
+   ========================================================================== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    transition-delay:0s !important;
+    scroll-behavior:auto !important;
+  }
+  .rs-card:hover,
+  .rs-card:focus-within,
+  .rs-card--feature:hover,
+  .rs-btn--accent:hover,
+  .rs-btn--solid:hover{transform:none !important;}
+  .rs-card:hover .rs-frame img{transform:none !important;}
+  .rs-card:hover .rs-card__link svg{transform:none !important;}
+  .rs-card::before{display:none !important;}
+  .rs-qlink::after{transform:scaleX(1) !important;}
+  .rs-js .rs-rise{opacity:1 !important;transform:none !important;}
+}
+
+/* ---- OWNER-LOCKED DOM GRAMMAR PRIMITIVES ----------------------------------
+   The locked body grammar is  section > .container > .row > .col > OBJECT
+   (verify-dom-structure.mjs). This sheet was authored around its own wrap
+   container, so that wrap carries the .container ROLE and these three are
+   LAYOUT-ONLY pass-throughs, exactly as the gate defines them: structure
+   classes carry layout only, the component skin lives on the OBJECT inside
+   the .col. Declared here so every page built from this foundation inherits
+   them. Deliberately inert: no colour, no type, no spacing, so inserting them
+   cannot disturb this sheet's card elevation rhythm. */
+.container{width:100%;}
+.row{display:block;}
+.col{display:block;min-width:0;}
+
+/* ==========================================================================
+   7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
+   Decisive" (owner pick 2026-08-14).
+   ----------------------------------------------------------------------------
+   PROMOTED VERBATIM out of the concept fragment inline <style>. A shipped page
+   carries zero inline styling: the globals live in the sheets the page LINKS,
+   which is what verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police from a different angle. All three failed
+   the promote battery for this one cause and for no other (49 of 52 gates
+   passed alongside them).
+   COLLISION AUDIT before the move: 46 classes, 45 of them cc-* namespaced and
+   absent from every linked sheet. The single shared name, .rs-frame, is never
+   redefined here - it appears only as the descendant rule
+   .cc-pillars__media > .rs-frame, scoped inside this template at specificity
+   (0,2,0) so it modifies the base .rs-frame (line 534) exactly where the
+   concept intended and nowhere else. Neither -chrome.css nor -tokens.css
+   contains a cc-* or .rs-frame selector, so moving these rules ahead of the
+   chrome sheet in the cascade changes nothing.
+   APPENDED LAST, which preserves the order the concept was authored and
+   rendered under (its inline block sat after every linked sheet).
+   Desktop-base with additive max-width step-downs, per the mobile rule.
+   ========================================================================== */
+/* ============================================================================
+   T-FEATURE CONCEPT C - "THE DECISION SHEET"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css. It adds only the
+   shapes this concept needs that the foundation kit does not already ship.
+
+   TOKEN PURITY: zero hex literals. Every colour, radius, shadow, duration and
+   space value below is a var(--ds-*) role token.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule in this
+   sheet is an ADDITIVE @media (max-width:N) override, never a min-width one,
+   so nothing here can strand a layout above its own breakpoint.
+
+   THE THESIS, in CSS terms: rank is carried by TYPE SIZE and by ONE focal
+   object per section, never by ornament. No card system on this page is a row
+   of equals: every one has a member that is deliberately wider, larger or
+   lifted off the rhythm of its siblings.
+   ============================================================================ */
+
+/* ---- shared -------------------------------------------------------------- */
+.cc-tex{background-image:var(--ds-grid);background-size:var(--ds-grid-size);}
+
+/* the ONE card chrome recipe, reused at four scales so the page reads as one
+   object family: card ground, card edge, E1 elevation, surface radius.
+   RE-POINTED to the structural sheet's own surface aliases rather than to the
+   raw tokens. On light --rs-card-bg IS --ds-canvas and --rs-card-line IS
+   --ds-hairline, so this is a pixel no-op there. On .surface-dark --ds-canvas
+   flips to the GROUND itself, so a panel painted with it would vanish; the
+   alias steps the panel to --ds-bg-surface and takes its edge from the 3:1
+   --ds-line-control instead, which is the mechanism the locked sheet documents
+   at radiantsmiles-structural.css:60 for re-skinning a section by class alone. */
+.cc-panel{
+  background:var(--rs-card-bg);
+  border:1px solid var(--rs-card-line);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+}
+
+/* the inline figure. A comparing reader scans for numbers, so every figure in
+   the running prose is promoted typographically WITHOUT the sentence around it
+   being split, reordered or reworded. This is the page's scannability engine
+   and it is why no stat tile is needed anywhere. */
+.cc-fig{
+  font-family:var(--ds-font-display);
+  font-weight:700;
+  font-size:1.12em;
+  letter-spacing:-.012em;
+  color:var(--ds-ink);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+/* a multi-word figure must NOT be held on one line: forcing it there punches a
+   ragged hole in the paragraph it is promoted inside. */
+.cc-fig--phrase{white-space:normal;}
+
+/* ---- 1 . HERO. Photo left, copy right. ----------------------------------- */
+.cc-hero{
+  display:grid;
+  grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+/* the media cell. The concept carried it as an unstyled wrapper with no rule in
+   any sheet, which verify-no-orphan-classes correctly reads as a class that
+   resolves to nothing. It is a real grid cell, so it gets the thing a grid cell
+   actually needs: min-width:0, without which the column refuses to shrink below
+   the image's intrinsic width and the mirror split stops collapsing cleanly at
+   the narrow end of its range. */
+.cc-hero__art{min-width:0;}
+.cc-hero__frame{
+  width:100%;
+  aspect-ratio:4 / 5;
+  max-height:clamp(340px,52vh,520px);
+}
+.cc-hero__copy{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:flex-start;
+}
+@media (max-width:1023px){
+  .cc-hero{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .cc-hero__frame{aspect-ratio:16 / 11;max-height:clamp(240px,42vh,380px);}
+}
+
+/* ---- 2 . PROBLEM FRAMING. Argument left, cited evidence + room right. ----- */
+.cc-problem{
+  display:grid;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+/* the right column is a stack: the cited panel, then the room under it. The
+   frame is held to a LANDSCAPE ratio rather than being allowed to stretch: the
+   source file is a 2:3 portrait, and letting it run at its own ratio made the
+   right column 769px against a 450px argument and opened a void bigger than
+   the one it was added to close. 16:10 lands the two columns within about
+   200px of each other, which is ordinary editorial rag rather than a hole. */
+.cc-problem__side{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  min-width:0;
+}
+.cc-problem__frame{aspect-ratio:16 / 10;}
+/* the crop is pulled BELOW centre so the window lands on the seating and the
+   planting rather than on the ceiling, which is what the alt text names. */
+.cc-problem__frame img{object-position:50% 64%;}
+.cc-arg{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+/* the opening statement is the section's focal object: display face, one step
+   under the h2 scale, so the eye enters at the top and never hunts. */
+p.cc-arg__lead{
+  font-family:var(--ds-font-display);
+  font-size:clamp(23px,2.5vw,31px);
+  line-height:1.30;
+  letter-spacing:-.015em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:26ch;
+}
+/* the evidence panel, keyed by a signature top rule. That hue carries no text
+   in either direction; a 3:1 boundary is the one job it is legal for. The rule
+   is painted with --rs-rule, not with --ds-signature directly: the signature is
+   3.94:1 on light and 2.47:1 on dark, so the locked sheet re-points the rule
+   role to the accent on .surface-dark. Identical on light, legible on both. */
+.cc-evidence{
+  border-top:3px solid var(--rs-rule);
+  padding:var(--ds-space-lg);
+}
+@media (max-width:1023px){
+  .cc-problem{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+}
+
+/* ---- 3 . MEDIA + CARDS, media INVERTED to the right ----------------------- */
+/* Obeys the media-and-cards LAW at the head of CARD-VARIATIONS.md: the cards
+   are a 2-COLUMN GRID in the 2-then-1 arrangement the law prescribes for three
+   items, and the media column STRETCHES to that grid's height rather than
+   sitting capped beside it. The inversion is the defended part: see the ledger. */
+.cc-pillars{
+  display:grid;
+  grid-template-columns:minmax(0,1.16fr) minmax(0,.84fr);
+  gap:var(--ds-space-md);
+  align-items:stretch;
+}
+.cc-pillars__cards{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  /* the second row takes the slack, so the card column ends LEVEL with the
+     stretched media instead of leaving a void under it. The lead card stays
+     tight to its own copy; only the two supporting cards grow. */
+  grid-template-rows:auto 1fr;
+  gap:var(--ds-space-md);
+  min-width:0;
+}
+.cc-pillars__cards .cc-wide{grid-column:1 / -1;}
+.cc-pillars__media{min-width:0;display:flex;align-self:stretch;}
+.cc-pillars__media > .rs-frame{flex:1 1 auto;width:100%;min-height:400px;}
+/* the lead pillar outranks its two siblings by type size, not by chrome. */
+.cc-pillar__t{
+  font-family:var(--ds-font-display);
+  font-size:clamp(24px,2.4vw,30px);
+  line-height:1.20;
+  letter-spacing:-.012em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+@media (max-width:1023px){
+  .cc-pillars{grid-template-columns:minmax(0,1fr);}
+  .cc-pillars__cards{grid-template-rows:auto;}
+  /* order:-1 REMOVED. It hoisted the media above the cards once the grid collapsed
+     to one column, which put the photograph 349px (375) / 585px (768) ABOVE the
+     heading it belongs to, "Chew on both sides again." verify-mobile-quality
+     classes that as an owner-class media-before-heading defect and it is right:
+     on a phone the picture arrived first and its heading arrived half a screen
+     later. Source order is cards then media, which is the correct reading order,
+     so the fix is simply to stop overriding it. Desktop is untouched - the
+     stretch-to-grid-height behaviour this section was picked for lives in the
+     two-column rule above, not here. */
+  .cc-pillars__media > .rs-frame{min-height:0;aspect-ratio:16 / 10;}
+}
+@media (max-width:619px){
+  .cc-pillars__cards{grid-template-columns:minmax(0,1fr);}
+}
+
+/* ---- 4 . THE NUMBERED LADDER. Re-grounded onto the dark surface. ---------- */
+/* Nothing in this block is re-composed for the dark ground: the rows, the
+   numeral scale, the hairline rhythm and the one lifted row are unchanged. The
+   only edit is the numeral COLOUR role, below. The section carries no .cc-tex,
+   deliberately: .surface-dark paints its ground as a background-IMAGE gradient,
+   so a later background-image rule on the same element would erase it and the
+   band would be dark by class name only. */
+.cc-ladder{display:flex;flex-direction:column;}
+.cc-ladder__row{
+  display:grid;
+  grid-template-columns:minmax(0,140px) minmax(0,1fr);
+  gap:var(--ds-space-lg);
+  align-items:start;
+  padding-block:var(--ds-space-lg);
+  border-top:1px solid var(--ds-line);
+}
+.cc-ladder__row:last-child{border-bottom:1px solid var(--ds-line);}
+/* the oversized numeral takes the sheet's FIGURE role, not a raw token. Light:
+   --ds-primary at 8.84:1. Dark: --ds-primary is a FILL and would sit at 1.25:1
+   on this ground, so the alias re-points to the accent, which is a genuine
+   foreground there. That re-point is the whole reason the accent exists on the
+   dark surface and it is what makes 01 to 05 the loudest thing on the page. */
+.cc-ladder__n{
+  font-family:var(--ds-font-display);
+  font-size:clamp(42px,5vw,64px);
+  line-height:.92;
+  letter-spacing:-.03em;
+  font-weight:600;
+  color:var(--rs-figure);
+  font-variant-numeric:tabular-nums;
+}
+.cc-ladder__c{display:flex;flex-direction:column;gap:var(--ds-space-xs);max-width:39.2rem;}
+/* ONE step is lifted off the hairline rhythm onto the panel chrome. It is the
+   step a reader comparing practices actually shops on, so it is the step that
+   breaks the pattern. Without this the five rows would read as a template. */
+.cc-ladder__row--mark{
+  border-top:0;
+  padding:var(--ds-space-lg);
+  margin-block:var(--ds-space-xs);
+}
+@media (max-width:767px){
+  .cc-ladder__row{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-xs);padding-block:var(--ds-space-md);}
+  .cc-ladder__row--mark{padding:var(--ds-space-md);}
+}
+
+/* ---- 5 . PROOF. The sourced record left, the room right. ------------------ */
+.cc-proof{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+p.cc-proof__record{
+  font-family:var(--ds-font-display);
+  font-size:clamp(25px,3vw,37px);
+  line-height:1.26;
+  letter-spacing:-.018em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:20ch;
+}
+p.cc-proof__scope{
+  margin-top:var(--ds-space-md);
+  padding-top:var(--ds-space-md);
+  border-top:1px solid var(--ds-line);
+  /* max-width:42ch removed - it never applied; p.rs-copy's 64ch outranked it.
+     See the note at p.cc-faq__a. */
+}
+.cc-proof__frame{width:100%;aspect-ratio:4 / 5;max-height:clamp(280px,46vh,460px);}
+@media (max-width:1023px){
+  .cc-proof{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .cc-proof__frame{aspect-ratio:16 / 10;max-height:clamp(220px,38vh,340px);}
+}
+
+/* ---- 6 . ONE ROSTER. The doctor portrait row, circle-masked. -------------- */
+.cc-inhouse{
+  display:grid;
+  grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+.cc-roster{
+  display:grid;
+  grid-template-columns:repeat(10,minmax(0,1fr));
+  gap:var(--ds-space-sm);
+  margin-top:var(--ds-space-lg);
+}
+/* the circle mask is this vertical's portrait convention and it is spent HERE,
+   once, as a system rather than as a single ornament somewhere else. */
+.cc-face{
+  position:relative;
+  overflow:hidden;
+  aspect-ratio:1 / 1;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-primary-soft);
+  /* the medallion ring takes the card-ground alias so it stays --ds-canvas on
+     light and steps with the surface on dark, rather than being painted with a
+     token that flips to the ground itself. */
+  border:3px solid var(--rs-card-bg);
+  box-shadow:var(--ds-shadow-card);
+}
+.cc-face img{
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:50% 28%;
+  filter:saturate(.94) contrast(1.04);
+}
+@media (max-width:1023px){
+  .cc-inhouse{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .cc-roster{grid-template-columns:repeat(5,minmax(0,1fr));}
+}
+@media (max-width:479px){
+  .cc-roster{gap:var(--ds-space-2xs);}
+}
+
+/* ---- 7 . THE CROSS-LINK RAIL --------------------------------------------- */
+.cc-rail{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+.cc-rail__grp{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-xs);}
+.cc-rail__k{
+  font-family:var(--ds-font-display);
+  font-size:19px;
+  line-height:1.4;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  flex:none;
+  margin-right:var(--ds-space-2xs);
+}
+.cc-rail__dot{color:var(--ds-ink-soft);font-size:18px;line-height:1;padding-inline:var(--ds-space-2xs);}
+@media (max-width:519px){
+  .cc-rail__dot{display:none;}
+}
+
+/* ---- 8 . THE ACCORDION. Real disclosure, no script. ----------------------- */
+.cc-faq{display:grid;gap:var(--ds-space-md);max-width:50.58rem;}
+.cc-faq__item{padding-inline:var(--ds-space-lg);}
+.cc-faq__item[open]{box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);}
+.cc-faq__q{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--ds-space-md);
+  min-height:68px;
+  padding-block:var(--ds-space-md);
+  cursor:pointer;
+  list-style:none;
+}
+.cc-faq__q::-webkit-details-marker{display:none;}
+.cc-faq__qt{
+  font-family:var(--ds-font-display);
+  font-size:clamp(20px,2.1vw,25px);
+  line-height:1.28;
+  letter-spacing:-.01em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+.cc-faq__ind{
+  position:relative;
+  flex:none;
+  width:32px;
+  height:32px;
+  border-radius:var(--ds-r-pill);
+  border:1px solid var(--ds-line-control);
+  transition:border-color var(--ds-dur) var(--ds-ease);
+}
+.cc-faq__ind::before,
+.cc-faq__ind::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:13px;
+  height:2px;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-primary);
+  transform:translate(-50%,-50%);
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.cc-faq__ind::after{transform:translate(-50%,-50%) rotate(90deg);}
+.cc-faq__item[open] .cc-faq__ind::after{transform:translate(-50%,-50%) rotate(0deg);}
+.cc-faq__item[open] .cc-faq__ind{border-color:var(--ds-signature);}
+/* DEAD DECLARATION REMOVED (max-width:70ch). It never applied. This element is
+   class="rs-copy cc-faq__a", and p.rs-copy (line 299) already sets max-width:64ch
+   at specificity (0,1,1); the concept's bare .cc-faq__a was (0,1,0) and lost, so
+   the paragraph has always measured 64ch = 647px, which is the rendering the
+   owner approved. Type-qualifying the selector to satisfy G8's A3 check made it
+   (0,1,1) too, and source order then handed it to this rule instead - silently
+   re-wrapping the text the owner had already signed off. Same story at
+   p.cc-offer__terms and p.cc-proof__scope. The measure stays where it actually
+   lives, on p.rs-copy. */
+p.cc-faq__a{padding-bottom:var(--ds-space-lg);}
+
+/* ---- 9 . THE OFFER BAND. The page's CLOSING figure and ground inversion. --- */
+.cc-offer{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:center;
+  text-align:center;
+  max-width:44rem;
+  margin-inline:auto;
+}
+.cc-offer__deal{
+  font-family:var(--ds-font-display);
+  font-size:clamp(28px,3.6vw,46px);
+  line-height:1.22;
+  letter-spacing:-.022em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+/* CORRECTED 2026-08-14, and the correction is the honest half of this repair.
+   This comment used to read that the accent is spent ONCE on this page and spent
+   here. That is no longer true, and it stopped being true the moment the page
+   took its second and third .surface-dark bands. The LOCKED structural sheet
+   re-points three role aliases on .surface-dark: --rs-figure, --rs-rule and
+   --rs-link all become --ds-accent there, because the signature measures 2.47:1
+   on that ground and --ds-primary measures 1.25:1, so neither can carry a figure
+   or a boundary. So the ladder numerals at section 4 and the keyed rule and quiet
+   link at section 6 are now accent as well. That is the sheet's own mechanism and
+   not a choice made here, but it does sit against imagery-system.md section 1,
+   which records the accent as spent once and signalling the offer and nothing
+   else. NEEDS-OWNER: the two documents disagree and only the owner can settle it.
+   What is still true is the ROLE split: on light the accent is decorative and
+   carries no text, and here on the dark ground it is a genuine foreground. */
+.cc-offer__price{
+  color:var(--ds-accent);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+.cc-offer__rule{
+  width:var(--ds-space-xl);
+  height:2px;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-accent);
+}
+/* RULE REMOVED. Its only declaration was max-width:60ch, which never applied -
+   p.rs-copy's 64ch outranked it. See the note at p.cc-faq__a. */
+
+/* ==========================================================================
+   SECTION 8 - T-HUB TEMPLATE LAYER (hb-*)
+   The promoted body layer for the ten HUB pages, from T-HUB concept B,
+   "The Guided Path" (owner pick 2026-08-14).
+   ----------------------------------------------------------------------------
+   PROMOTED VERBATIM out of the concept fragment inline <style>, exactly as
+   section 7 was. A shipped page carries zero inline styling: the globals live in
+   the sheets the page LINKS, which is what verify-shell-purity,
+   verify-globals-overlay and verify-no-orphan-classes each police from a
+   different angle. All three failed the promote battery for this one cause and
+   for no other (49 of 52 gates passed alongside them) - the same 49/52 signature
+   section 7's promotion produced.
+   COLLISION AUDIT before the move, run comment-stripped rather than by grep over
+   raw text (a first pass read the block's own header comment as a redefinition of
+   .rs-copy and was wrong): of every rule in the block, ZERO have a selector that
+   does not carry an hb-* token. The names it merely REFERENCES - .surface-dark,
+   .rs-btn--accent, .rs-copy, .rs-qlink - appear only in prose inside comments or
+   as context, never on the left of a brace. And `grep -c hb-` is 0 in all three
+   linked sheets, so nothing here can shadow or be shadowed by them.
+   .rs-frame IS shared with section 7's template but is never redefined by either:
+   section 7 scopes it as .cc-pillars__media > .rs-frame, and this block only ever
+   puts hb-* classes ON an element that also carries .rs-frame
+   (<span class="rs-frame hb-route__shot">), which composes rather than overrides.
+   APPENDED LAST, after section 7, which preserves the order the concept was
+   authored and rendered under (its inline block sat after every linked sheet).
+   Desktop-base with additive max-width step-downs, per the mobile rule.
+   ONE RULE IN HERE IS NOT THE OWNER'S ORIGINAL PICK and is called out so nobody
+   re-derives it: .hb-route's shot column and row padding were changed 2026-08-17
+   from 176px/--ds-space-md to 136px/--ds-space-sm, with the 1023 step 160 -> 124.
+   The reason, the six builds it was measured on and the alternatives not taken are
+   in the block's own comment below and in _audit/T-HUB-DENSITY-FINDING.md.
+   ========================================================================== */
+/* ============================================================================
+   T-HUB CONCEPT B - "THE GUIDED PATH"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css (which now also
+   carries the promoted T-FEATURE section 7). It adds only the shapes this
+   concept needs that the foundation kit does not already ship.
+
+   NAMESPACE: every class here is hb-* (hub). The cc-* prefix belongs to the
+   promoted T-FEATURE template and is live in the linked structural sheet, so
+   nothing here may be named cc-*. Checked: no hb-* token appears in
+   radiantsmiles-tokens.css, -chrome.css or -structural.css.
+
+   TOKEN PURITY: zero hex literals. Every colour, radius, shadow, duration and
+   spacing value below is a var(--ds-*) role token, or a calc() over one.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule is an
+   ADDITIVE max-width override, never a min-width one.
+
+   THE THESIS, in CSS terms: the page is a decision, and the decision NARROWS.
+   Section 1 is a fork with two doors, section 2 is a field of six read top to
+   bottom, and every beat after it is a single argument that gets tighter, until
+   the last one is one sentence and two actions on the page's deepest ground.
+   Nothing here is a card grid, because a grid is a shop window and this page is
+   a route.
+
+   THE SPECIFICITY NOTE, read before editing. The foundation sheet declares
+   p.rs-copy{...max-width:64ch} at (0,1,1). Every paragraph in this concept that
+   needs its OWN measure carries an hb-* class and NOT rs-copy, and its rule is
+   type-qualified (p.hb-*) so it is (0,1,1) and later in source order. No element
+   in this fragment carries rs-copy AND an hb-* measure at the same time.
+   ============================================================================ */
+
+/* ---- shared ------------------------------------------------------------- */
+
+/* the dark hero ground, re-declared so the signature grid can ride ON the
+   gradient instead of erasing it. .surface-dark paints its ground as a
+   background-IMAGE, so a later background-image rule on the same element
+   REPLACES it; the gradient is therefore restated here from its own role
+   tokens (--ds-primary-deep and --ds-dark-2 are exactly the two stops the token
+   sheet uses) with --ds-grid stacked above it. Three layers, three sizes. */
+.hb-band{
+  background-image:var(--ds-grid),linear-gradient(180deg,var(--ds-primary-deep),var(--ds-dark-2));
+  background-size:var(--ds-grid-size),var(--ds-grid-size),auto;
+}
+
+/* the INVERSE panel. The one place on this page where a light surface sits
+   INSIDE a .surface-dark band. --ds-primary-soft is the token sheet's declared
+   inverse chip (it does NOT flip on dark) and carries --ds-primary-deep at
+   9.42:1. Every ink on it is PINNED rather than inherited, exactly as
+   .rs-btn--accent pins its label, because inside a .surface-dark subtree
+   --ds-ink and --ds-ink-heading are both near-white and would vanish here. The
+   two role aliases are re-pointed for the same reason: --rs-rule resolves to the
+   accent on dark, which is about 1.2:1 on this pale ground, so the rule role
+   goes back to the signature, which is a legal non-text boundary. */
+.hb-invert{
+  background:var(--ds-primary-soft);
+  color:var(--ds-primary-deep);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--rs-e2);
+  --rs-rule:var(--ds-signature);
+  --rs-link:var(--ds-primary-deep);
+}
+
+/* the inline figure. One number on this page is worth scanning for, and it is
+   promoted WITHOUT its sentence being split, reordered or reworded, so the
+   source and the fetch date travel with it. */
+.hb-fig{
+  font-family:var(--ds-font-display);
+  font-weight:700;
+  font-size:1.1em;
+  letter-spacing:-.012em;
+  color:var(--ds-ink);
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+}
+
+/* ---- 1 . THE FORK. Two doors, one for each kind of reader. --------------- */
+.hb-fork{
+  display:grid;
+  grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+/* the left door keeps the vertical hairline the split-screen pattern asks for.
+   It is the divider between two offers, not decoration. */
+.hb-fork__ask{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:flex-start;
+  min-width:0;
+  padding-right:var(--ds-space-xl);
+  border-right:1px solid var(--ds-line);
+}
+.hb-fork__else{min-width:0;display:flex;flex-direction:column;}
+.hb-fork__frame{width:100%;min-width:0;aspect-ratio:16 / 11;}
+/* the panel is PULLED UP over the frame's bottom edge, so the two read as one
+   object rather than as a photograph with a caption under it. */
+.hb-fork__panel{
+  position:relative;
+  z-index:var(--ds-z-raised);
+  margin-top:calc(-1 * var(--ds-space-xl));
+  margin-inline:var(--ds-space-lg);
+  padding:var(--ds-space-lg);
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  align-items:flex-start;
+}
+h2.hb-fork__t{
+  font-family:var(--ds-font-display);
+  font-size:clamp(22px,2.2vw,29px);
+  line-height:1.22;
+  letter-spacing:-.012em;
+  font-weight:600;
+  color:var(--ds-primary-deep);
+}
+p.hb-fork__p{
+  font-size:18px;
+  line-height:1.65;
+  color:var(--ds-primary-deep);
+  max-width:34ch;
+}
+/* a ghost text-link with a growing rule, rebuilt locally because the
+   foundation's .rs-qlink takes --ds-ink-heading, which is near-white inside this
+   dark band and would be invisible on the pale panel. */
+a.hb-fork__go{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--ds-space-xs);
+  min-height:48px;
+  font-size:18px;
+  font-weight:700;
+  line-height:1.3;
+  text-decoration:none;
+  color:var(--ds-primary-deep);
+}
+a.hb-fork__go::after{
+  content:"";
+  width:24px;
+  height:2px;
+  border-radius:var(--ds-r-pill);
+  background:var(--rs-rule);
+  transition:width var(--ds-dur) var(--ds-ease-out);
+}
+a.hb-fork__go:hover::after,
+a.hb-fork__go:focus-visible::after{width:40px;}
+
+/* ---- 2 . THE FIELD. Six routes, read down, not browsed across. ----------- */
+.hb-field{display:flex;flex-direction:column;}
+/* THE SHOT COLUMN IS 136 AND THE ROW PADDING IS sm. This rule went 220 -> 176 on
+   2026-08-14 and 176 -> 136 with md -> sm padding on 2026-08-17, both times for the same
+   reason, and the second time with the whole row range BUILT and MEASURED rather than
+   estimated. An index row's height is governed by the tallest thing in it: at 220 the 4:3
+   shot rendered 165px beside a body block of 98px, and at 176 it still rendered 132px, so
+   34px of slack survived the first narrowing. 136 brings the shot to 102px and
+   var(--ds-space-sm) takes the whole row from 181px to 131px. The SAME 4:3 crop is kept
+   throughout: no photograph is re-framed and no alt text changes. The cascade steps
+   136 -> 124 at 1023 -> 104 at 767 -> 76 at 479.
+   WHY THIS IS A TEMPLATE-LEVEL RULE AND NOT A TASTE ONE. verify-section-density fails a
+   section that is BOTH over 1.65 viewports AND under 400 text density. The ten T-HUB pages
+   render TWO to TEN rows, not the "4 to 11" this comment used to claim, which was the COPY
+   block count taken before the escape block moves into the hero. Measured at 176/md on six
+   real builds at 1440x900, the field crossed 1.65vh between seven and eight rows, and above
+   that line the section was held up only by how wordy that page's copy happened to be:
+   team PASSED ten rows on 1467 characters, restorations FAILED eight on 701, periodontics
+   FAILED nine on 856. That is not a property a template can be said to have. At 136/sm
+   every count clears: 2 rows 0.51vh, 6 rows 1.20, 7 rows 1.26, 8 rows 1.38, 9 rows 1.52,
+   10 rows 1.76, the lowest density being 391.7 at eight rows against a floor that only
+   applies over 1.65vh. The width the shot gives up goes to the leader, which is the one
+   column whose job is to BE the gap. */
+.hb-route{
+  display:grid;
+  grid-template-columns:minmax(0,136px) minmax(0,560px) minmax(0,1fr) auto;
+  gap:var(--ds-space-lg);
+  align-items:center;
+  padding-block:var(--ds-space-sm);
+  border-top:1px solid var(--ds-line);
+  text-decoration:none;
+  color:inherit;
+}
+.hb-field li:last-child .hb-route{border-bottom:1px solid var(--ds-line);}
+.hb-route__shot{width:100%;min-width:0;aspect-ratio:4 / 3;}
+.hb-route__body{display:flex;flex-direction:column;gap:var(--ds-space-2xs);min-width:0;}
+/* the leader. An index row's text column ends where its measure ends, and the
+   action sits at the ledger's right edge, so the space between them is a real
+   gap that has to be structure rather than a hole. This is the dot-leader
+   convention, drawn as one hairline. */
+.hb-route__lead{
+  align-self:center;
+  min-width:0;
+  height:1px;
+  background:var(--ds-line);
+  transition:background-color var(--ds-dur) var(--ds-ease);
+}
+.hb-route:hover .hb-route__lead{background:var(--ds-line-control);}
+h2.hb-route__t{
+  font-family:var(--ds-font-display);
+  font-size:clamp(22px,2.2vw,29px);
+  line-height:1.20;
+  letter-spacing:-.012em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  transition:color var(--ds-dur) var(--ds-ease);
+}
+p.hb-route__p{
+  font-size:18px;
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+}
+/* the arrow-circle affordance. It is the row's only control, sized to a real
+   target rather than to a glyph. */
+.hb-route__go{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:52px;
+  height:52px;
+  flex:none;
+  border-radius:var(--ds-r-pill);
+  border:1px solid var(--ds-line-control);
+  color:var(--ds-ink-heading);
+  transition:transform var(--ds-dur) var(--ds-ease-out),
+             background-color var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease);
+}
+.hb-route:hover .hb-route__t,
+.hb-route:focus-visible .hb-route__t{color:var(--ds-primary);}
+.hb-route:hover .hb-route__go,
+.hb-route:focus-visible .hb-route__go{
+  background:var(--ds-primary-soft);
+  border-color:var(--ds-signature);
+  transform:translateX(var(--ds-space-2xs));
+}
+.hb-route:hover .hb-route__shot img{transform:scale(1.04);}
+/* the one level down. The field does not stop at six: the first route opens
+   again, and this note is what that looks like. An OPTIONAL template slot: the
+   other nine T-HUB pages have no equivalent line in their copy and simply omit
+   this element. */
+p.hb-field__note{
+  margin-top:var(--ds-space-lg);
+  padding-left:var(--ds-space-md);
+  border-left:3px solid var(--rs-rule);
+  font-size:18px;
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+  max-width:70ch;
+}
+
+/* ---- 3 . WHY THIS ONE. The two arrangements, side by side, unlabelled. --- */
+.hb-why{
+  display:grid;
+  grid-template-columns:minmax(0,.62fr) minmax(0,1.38fr);
+  gap:var(--ds-space-xl);
+  align-items:stretch;
+}
+/* the media cell IS the frame, and it carries the grid-track width anchor
+   (width:100% plus min-width:0) that a stretched media with a min-height needs,
+   so it can never compute its width from its height and overlap the argument. */
+.hb-why__media{
+  width:100%;
+  min-width:0;
+  align-self:stretch;
+  min-height:360px;
+}
+.hb-why__args{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--ds-space-md);
+  align-content:start;
+}
+p.hb-why__was,
+p.hb-why__is{
+  font-family:var(--ds-font-display);
+  font-size:clamp(19px,1.8vw,23px);
+  line-height:1.34;
+  letter-spacing:-.008em;
+  font-weight:600;
+  padding:var(--ds-space-lg);
+  border-radius:var(--ds-r-surface);
+}
+/* the arrangement this practice is not. Flat, unlifted, hairline only. */
+p.hb-why__was{
+  color:var(--ds-ink-soft);
+  border:1px solid var(--ds-line);
+}
+/* ours. The card chrome plus the keyed top rule, so the eye lands here. */
+p.hb-why__is{
+  color:var(--ds-ink-heading);
+  background:var(--rs-card-bg);
+  border:1px solid var(--rs-card-line);
+  border-top:3px solid var(--rs-rule);
+  box-shadow:var(--rs-e1);
+}
+p.hb-why__cost{
+  grid-column:1 / -1;
+  margin-top:var(--ds-space-xs);
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink-soft);
+  max-width:62ch;
+}
+
+/* ---- 4 . WHAT IT COSTS TO FIND OUT. The middle anchor. ------------------- */
+.hb-cost{
+  display:grid;
+  grid-template-columns:minmax(0,1.18fr) minmax(0,.82fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+.hb-cost__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);min-width:0;}
+p.hb-cost__lead{
+  font-family:var(--ds-font-display);
+  font-size:clamp(24px,2.7vw,34px);
+  line-height:1.26;
+  letter-spacing:-.018em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:24ch;
+}
+/* the cost-model rules. One whole sentence per row, never a fragment. */
+.hb-rules{display:flex;flex-direction:column;gap:var(--ds-space-sm);margin-top:var(--ds-space-2xs);}
+.hb-rules li{
+  position:relative;
+  padding-left:var(--ds-space-md);
+  font-size:18px;
+  line-height:1.65;
+  color:var(--ds-ink);
+}
+.hb-rules li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:var(--ds-space-xs);
+  width:13px;
+  height:13px;
+  border-radius:var(--ds-r-control);
+  background:var(--ds-accent);
+  box-shadow:var(--ds-accent-keyline);
+}
+.hb-cost__media{
+  width:100%;
+  min-width:0;
+  aspect-ratio:3 / 4;
+  max-height:clamp(340px,50vh,520px);
+  align-self:center;
+}
+
+/* ---- 5 . WHERE. The last narrowing, from six areas to one address. ------- */
+/* the ledger is head-ABOVE rather than head-beside, and that is a correction
+   made against the render: an asymmetric split left a 480px by 400px void under
+   a two-line head, which is the sparse-section failure, so the head takes one
+   full-width line and the seven addresses take the whole measure beneath it in
+   two columns that never wrap an address more than once. */
+.hb-where{display:flex;flex-direction:column;gap:var(--ds-space-lg);}
+.hb-where__head{display:flex;flex-direction:column;gap:var(--ds-space-sm);}
+.hb-offices{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:0 var(--ds-space-2xl);
+}
+.hb-office{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-2xs);
+  padding-bottom:var(--ds-space-sm);
+  border-top:1px solid var(--ds-line);
+}
+a.hb-office__n{
+  display:inline-flex;
+  align-items:center;
+  min-height:48px;
+  font-family:var(--ds-font-display);
+  font-size:20px;
+  line-height:1.25;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  text-decoration:none;
+}
+a.hb-office__n:hover{text-decoration:underline;text-underline-offset:4px;}
+p.hb-office__a{
+  font-size:16px;
+  line-height:1.55;
+  color:var(--ds-ink-soft);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---- 6 . IF NONE OF THESE. Two grouped columns of destinations. ---------- */
+.hb-more{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+  gap:var(--ds-space-xl);
+}
+.hb-more__grp{display:flex;flex-direction:column;}
+p.hb-more__k{
+  font-family:var(--ds-font-display);
+  font-size:19px;
+  line-height:1.4;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  padding-bottom:var(--ds-space-xs);
+  border-bottom:2px solid var(--rs-rule);
+}
+a.hb-more__l{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:var(--ds-space-sm);
+  min-height:52px;
+  font-size:18px;
+  line-height:1.4;
+  color:var(--ds-ink);
+  text-decoration:none;
+  border-bottom:1px solid var(--ds-line);
+  transition:color var(--ds-dur) var(--ds-ease),
+             padding-left var(--ds-dur) var(--ds-ease);
+}
+a.hb-more__l::after{
+  content:"";
+  flex:none;
+  width:20px;
+  height:2px;
+  border-radius:var(--ds-r-pill);
+  background:var(--rs-rule);
+  transition:width var(--ds-dur) var(--ds-ease-out);
+}
+a.hb-more__l:hover,
+a.hb-more__l:focus-visible{color:var(--ds-primary);padding-left:var(--ds-space-xs);}
+a.hb-more__l:hover::after{width:34px;}
+
+/* ---- 7 . THE CLOSE. One sentence and two actions. ------------------------ */
+.hb-book{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:var(--ds-space-lg);
+  max-width:44rem;
+  margin-inline:auto;
+}
+p.hb-book__line{
+  font-family:var(--ds-font-display);
+  font-size:clamp(26px,3.2vw,42px);
+  line-height:1.22;
+  letter-spacing:-.02em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+
+/* ---- RESPONSIVE. Additive max-width step-downs only. --------------------- */
+@media (max-width:1023px){
+  .hb-fork{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .hb-fork__ask{padding-right:0;border-right:0;}
+  .hb-fork__frame{aspect-ratio:16 / 10;}
+  .hb-fork__panel{margin-inline:var(--ds-space-md);padding:var(--ds-space-md);}
+  .hb-route{grid-template-columns:minmax(0,124px) minmax(0,1fr) auto;gap:var(--ds-space-md);}
+  .hb-route__lead{display:none;}
+  .hb-why{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .hb-why__media{min-height:0;aspect-ratio:16 / 9;}
+  .hb-cost{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .hb-cost__media{aspect-ratio:16 / 10;max-height:clamp(220px,38vh,340px);}
+  .hb-offices{gap:0 var(--ds-space-xl);}
+}
+@media (max-width:767px){
+  .hb-route{grid-template-columns:minmax(0,104px) minmax(0,1fr);align-items:start;}
+  .hb-route__shot{grid-column:1;grid-row:1;aspect-ratio:1 / 1;}
+  .hb-route__body{grid-column:2;grid-row:1;}
+  .hb-route__go{grid-column:2;grid-row:2;width:44px;height:44px;margin-top:var(--ds-space-sm);}
+  .hb-why__args{grid-template-columns:minmax(0,1fr);}
+  .hb-offices{grid-template-columns:minmax(0,1fr);}
+  .hb-more{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+}
+@media (max-width:479px){
+  .hb-route{grid-template-columns:minmax(0,76px) minmax(0,1fr);gap:var(--ds-space-sm);}
+  .hb-fork__panel{margin-inline:var(--ds-space-xs);}
+  p.hb-field__note{padding-left:var(--ds-space-sm);}
+}
+@media (prefers-reduced-motion:reduce){
+  .hb-route:hover .hb-route__shot img{transform:none !important;}
+  .hb-route:hover .hb-route__go{transform:none !important;}
+}
+
+/* ==========================================================================
+   SECTION 9 - T-ARTICLE TEMPLATE LAYER (ar-)
+   Promoted body layer for the 10 clinician biography pages of type T-ARTICLE, from concept A
+   (owner pick 2026-08-17). Exemplar page: dr-adrian-ruiz.
+   ----------------------------------------------------------------------------
+   Type-led. The portrait is capped at 208 CSS px because the source files are 275x275 native, so every larger hero upscales them. The dark ground is spent on the CREDENTIAL at position 2 of 5 rather than on the close.
+   PROMOTED VERBATIM out of the concept fragment inline <style>, as sections 7
+   (T-FEATURE cc-) and 8 (T-HUB hb-) were. A shipped page carries zero inline
+   styling; verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police that from a different angle.
+   Appended after section 8, preserving the order the concept was authored and
+   rendered under. Desktop-base with additive max-width step-downs.
+   ========================================================================== */
+/* ============================================================================
+   T-ARTICLE  CONCEPT A  -  "THE CREDENTIAL MASTHEAD"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css. It adds only the
+   shapes this concept needs that the foundation kit does not already ship.
+
+   THE THESIS, in one line: a T-ARTICLE is a CREDENTIAL page, so the page is
+   TYPE LED, not card led, and the credential gets the only dark ground.
+
+   THE ASSET FACT THAT DROVE EVERY DECISION HERE, measured not assumed:
+   assets/...Dr.-Adrian-Ruiz.jpg is 275 by 275 pixels (sips, 2026-08-17). The ten
+   clinician portraits are small square studio crops. A full bleed hero, a 4:5
+   tall frame or a half width photo column would all UPSCALE that file. So the
+   portrait is rendered at 208 CSS pixels at most, which is a downscale, and the
+   headline carries the composition instead. See the hero ledger.
+
+   THE SECOND FACT: the ten bios VARY from a full credential set (Ruiz) to one
+   sentence with no credential at all (Schaudt). Nothing in this sheet is a box
+   that can be left empty. The credential block is a hairline separated type
+   stack, so a single sentence renders as one ruled row and reads as deliberate.
+
+   NAMESPACE: every invented class is ar-*. No selector in this sheet names a
+   foundation class, so nothing here can shadow or be shadowed by the three
+   linked sheets. cc-* and hb-* are taken by the promoted templates and unused.
+
+   TOKEN PURITY: zero hex literals, zero rgb(), zero named colours. Every colour,
+   radius, shadow, duration, easing and spacing value is a var(--ds-*) or a
+   calc() over one.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule below is an
+   ADDITIVE @media (max-width:N) override at 1023 / 767 / 479, never min-width.
+
+   UTF-8. ASCII only in the CSS. No em or en dashes.
+   ============================================================================ */
+
+/* ---- shared -------------------------------------------------------------- */
+
+/* the section wash. Absolutely positioned against .rs-sec (which is relative)
+   and pushed to the below layer, so it paints over the section ground and under
+   every in flow child. --ds-glow-wash flips direction and strength on
+   .surface-dark, so one class serves both grounds. */
+.ar-wash{
+  position:absolute;
+  inset:0;
+  z-index:var(--ds-z-below);
+  pointer-events:none;
+  background-image:var(--ds-glow-wash);
+}
+
+/* the accent mark that opens every section. THE KEYLINE RULE from the token
+   sheet: --ds-accent is 1.36:1 on the light canvas, so a bare yellow bar is a
+   ghost and carries the deep teal keyline. On .surface-dark the token sheet
+   resolves --ds-accent-keyline to none, because the yellow is already 8.47:1
+   there. One declaration, correct on both grounds. */
+.ar-mark{
+  display:block;
+  flex:none;
+  width:var(--ds-space-lg);
+  height:3px;
+  margin:0;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-accent);
+  box-shadow:var(--ds-accent-keyline);
+}
+
+/* the heading cluster: mark above heading, always this order, every section. */
+.ar-head{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--ds-space-sm);
+}
+
+/* ---- 1 . HERO. The letterbox masthead. ----------------------------------- */
+/* The picked hero pattern caps the band near half a viewport and asks for a
+   headline larger than a normal hero, which is why the padding of .rs-sec--lead
+   is overridden here rather than inherited: the lead padding plus a 52vh band
+   would put this hero past a full viewport and lose the letterbox read. */
+.ar-hero{padding-block:var(--ds-space-2xl) var(--ds-space-xl);}
+
+.ar-mast{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  grid-template-areas:
+    "mark face"
+    "name face"
+    "lede face"
+    "acts face";
+  column-gap:var(--ds-space-xl);
+  row-gap:var(--ds-space-md);
+  align-content:center;
+  /* the floor is the robustness guarantee, not a decoration. A page that supplies
+     a name and nothing else still renders a band, not a collapsed strip. */
+  min-height:clamp(300px,40vh,440px);
+}
+.ar-mast__mark{grid-area:mark;}
+.ar-mast__name{grid-area:name;}
+.ar-mast__face{grid-area:face;align-self:center;}
+.ar-mast__sub{grid-area:lede;}
+.ar-mast__acts{grid-area:acts;}
+
+/* the name is the composition. .rs-h1 tops out at 62px with a 15ch measure,
+   which is a section headline scale; the letterbox pattern wants the display
+   scale. Type qualified at (0,1,1) so it wins over the foundation rule cleanly
+   and only here. */
+h1.ar-name{
+  font-size:clamp(42px,7vw,84px);
+  line-height:1.02;
+  letter-spacing:-.032em;
+  max-width:14ch;
+}
+
+/* the portrait. A SQUARE plate at the file's own aspect, never a tall crop, and
+   never wider than 208px so a 275px source is always downscaled. The circular
+   medallion is deliberately NOT used: the foundation already spends that shape
+   on the team roster, and a 275px file inside a circle loses the shoulders that
+   make a white coat read as a white coat. */
+.ar-face{
+  margin:0;
+  width:clamp(148px,17vw,208px);
+  overflow:hidden;
+  border-radius:var(--ds-r-surface);
+  border:1px solid var(--ds-hairline);
+  background:var(--ds-primary-soft);
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.ar-face:hover{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi),var(--ds-glow);
+}
+.ar-face img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio:1 / 1;
+  object-fit:cover;
+  object-position:50% 30%;
+  filter:saturate(.94) contrast(1.04);
+}
+
+@media (max-width:1023px){
+  .ar-hero{padding-block:var(--ds-space-xl) var(--ds-space-lg);}
+  .ar-mast{
+    grid-template-columns:minmax(0,1fr);
+    /* the face moves BELOW the name, never above it. On a phone the heading the
+       photograph belongs to has to arrive first. */
+    grid-template-areas:"mark" "name" "face" "lede" "acts";
+    min-height:0;
+  }
+  .ar-face{width:clamp(132px,26vw,176px);}
+}
+@media (max-width:479px){
+  .ar-face{width:clamp(120px,38vw,152px);}
+}
+
+/* ---- 2 . CREDENTIALS. The dark anchor, hairline separated type. ----------- */
+/* the dark ground reads heavier than the two light ones either side of it, so
+   the anchor takes the TOP of the foundation's own rhythm range on desktop, and
+   steps to the FLOOR of that same range from 1023 down.
+   CADENCE FIX, verify-section-rhythm check (B) at 768. The step-down used to sit
+   in the max-width:767 block. The foundation's rhythm is
+   --rs-sec-pad:clamp(var(--ds-space-xl),8vw,var(--ds-space-2xl)), and 8vw reaches
+   the 64px floor at a 800px viewport, so every sibling section is ALREADY at 64px
+   by 768 while this one was still pinned at 96 by the flat 2xl below. Measured on
+   the assembled page: before, @768 section 1 was [96/96] against a page median of
+   64px with a +24px tolerance; after, [64/64]. The step now sits at 1023, which is
+   the breakpoint .ar-hero above already steps at, so both hand-authored section
+   paddings leave the desktop scale together. */
+.ar-cred{padding-block:var(--ds-space-2xl);}
+
+/* The picked company-page creed treatment: oversized typographic statements
+   separated by hairlines, sitting in open space, no surface and no shadow. The
+   container takes ONE addition the entry does not carry, an accent top rule,
+   because on the dark ground the yellow is a genuine foreground at 7.19:1 on the
+   worst stop rather than the 1.36:1 decoration it is on light. */
+.ar-record{
+  border-top:3px solid var(--ds-accent);
+  margin-top:var(--ds-space-lg);
+}
+.ar-record > p{
+  padding-block:var(--ds-space-md);
+  border-bottom:1px solid var(--ds-line);
+}
+.ar-record > p:last-child{border-bottom:0;}
+
+/* the credential itself, at display scale. This is the one sentence a reader
+   came for, so it is the largest run of type on the page after the name. */
+p.ar-record__lead{
+  font-family:var(--ds-font-display);
+  font-size:clamp(23px,2.7vw,34px);
+  line-height:1.26;
+  letter-spacing:-.018em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:30ch;
+}
+/* the provenance line, set in the mono family. The switch is doing real work:
+   it says "this is a record you can go and check", which is the sentence's own
+   claim. Size stays at the sanctioned 16px source role, never smaller. */
+p.ar-record__src{
+  font-family:var(--ds-font-mono);
+  max-width:60ch;
+}
+p.ar-record__note{
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink);
+  max-width:52ch;
+}
+
+@media (max-width:1023px){
+  /* the section rhythm leaves the desktop scale HERE, in lockstep with .ar-hero
+     and with the foundation clamp, not one breakpoint lower. */
+  .ar-cred{padding-block:var(--ds-space-xl);}
+}
+@media (max-width:767px){
+  .ar-record > p{padding-block:var(--ds-space-sm);}
+}
+
+/* ---- 3 . APPROACH. Belief statement, key left, body right. ---------------- */
+.ar-two{
+  display:grid;
+  grid-template-columns:minmax(0,.32fr) minmax(0,.68fr);
+  column-gap:var(--ds-space-xl);
+  align-items:start;
+}
+/* a real grid cell needs min-width:0, without which the track refuses to shrink
+   below its content's intrinsic width and the split stops collapsing cleanly. */
+.ar-two__k{min-width:0;}
+.ar-two__b{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:flex-start;
+}
+p.ar-belief{
+  font-family:var(--ds-font-display);
+  font-size:clamp(21px,2.2vw,29px);
+  line-height:1.30;
+  letter-spacing:-.015em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:32ch;
+}
+/* THE LIMITATION BLOCK. The copy refuses to rate the clinician and says so. That
+   refusal is PROMOTED here, not demoted: 19px, full ink colour, its own ground
+   and its own boundary. It is deliberately not the 16px .rs-note treatment,
+   which would read as small print and would soften a stated limit. */
+.ar-limit{
+  align-self:stretch;
+  padding:var(--ds-space-md) var(--ds-space-lg);
+  background:var(--ds-primary-soft);
+  border-left:4px solid var(--ds-signature);
+  border-radius:0 var(--ds-r-surface) var(--ds-r-surface) 0;
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+}
+p.ar-limit__t{
+  font-size:19px;
+  line-height:1.62;
+  color:var(--ds-ink);
+  max-width:54ch;
+}
+
+@media (max-width:1023px){
+  .ar-two{
+    grid-template-columns:minmax(0,1fr);
+    row-gap:var(--ds-space-lg);
+  }
+}
+@media (max-width:479px){
+  .ar-limit{padding:var(--ds-space-sm) var(--ds-space-md);}
+}
+
+/* ---- 4 . WHERE THEY PRACTISE. The one routing move. ----------------------- */
+/* The picked arrow-circle CTA: a label plus a circular arrow, no button chrome
+   on the label itself. The section asserts nothing about which office, so its
+   only affordance is the route to the hub. */
+.ar-where__box{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--ds-space-md);
+}
+p.ar-find{
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink);
+}
+.ar-arrow{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--ds-space-sm);
+  min-height:56px;
+  text-decoration:none;
+  color:var(--ds-ink-heading);
+  font-family:var(--ds-font-display);
+  font-size:clamp(21px,2.1vw,27px);
+  line-height:1.25;
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+.ar-arrow__l{
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:6px;
+  transition:text-decoration-thickness var(--ds-dur) var(--ds-ease);
+}
+.ar-arrow__i{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:none;
+  width:52px;
+  height:52px;
+  border-radius:var(--ds-r-pill);
+  border:1px solid var(--ds-line-control);
+  background:var(--ds-canvas);
+  color:var(--ds-primary);
+  box-shadow:var(--ds-shadow-rest),var(--ds-inset-hi);
+  transition:background-color var(--ds-dur) var(--ds-ease),
+             color var(--ds-dur) var(--ds-ease),
+             border-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease),
+             transform var(--ds-dur) var(--ds-ease-out);
+}
+.ar-arrow:hover .ar-arrow__l,
+.ar-arrow:focus-visible .ar-arrow__l{text-decoration-thickness:2px;}
+.ar-arrow:hover .ar-arrow__i,
+.ar-arrow:focus-visible .ar-arrow__i{
+  background:var(--ds-primary);
+  color:var(--ds-ink-on-dark);
+  border-color:var(--ds-primary-deep);
+  box-shadow:var(--ds-shadow-card);
+  transform:translateX(var(--ds-space-2xs));
+}
+
+@media (max-width:479px){
+  .ar-arrow{gap:var(--ds-space-xs);}
+  .ar-arrow__i{width:48px;height:48px;}
+}
+
+/* ---- 5 . CLOSE. The CTA card pulled up over the band above. --------------- */
+/* The picked pulled-up overlap: the overlap is a negative margin, not an SVG,
+   and the section drops its own top padding so the card can clear the boundary. */
+.ar-close{padding-top:0;}
+.ar-close__card{
+  position:relative;
+  margin-top:calc(-1 * (var(--ds-space-xl) + var(--ds-space-md)));
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--ds-space-md);
+  padding:var(--ds-space-xl);
+  background:var(--ds-canvas);
+  border:1px solid var(--ds-hairline);
+  border-radius:var(--ds-r-surface);
+  /* the accent double ring is the KEYLINE RULE spelled out: a 2px yellow ring
+     with a 1px deep teal edge showing past it, because bare yellow on this
+     canvas is 1.36:1. It is spent ONCE on this page, on the single conversion
+     object, which is the rule the foundation sets for the featured card. */
+  box-shadow:var(--ds-shadow-lift),
+             var(--ds-inset-hi),
+             0 0 0 2px var(--ds-accent),
+             0 0 0 3px var(--ds-primary-deep);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.ar-close__card:hover,
+.ar-close__card:focus-within{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+}
+.ar-rail{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--ds-space-2xs) var(--ds-space-xs);
+  margin-top:var(--ds-space-lg);
+}
+/* THE RAIL ON A DARK GROUND. .ar-rail__l takes var(--ds-primary), which is correct on the light
+   ground this rail was authored for and is WRONG the moment the section flips. The token sheet says
+   so itself: --ds-primary is "the SOLID FILL role" on dark, and --ds-signature is marked
+   "2.47:1 on dark. DECORATION ONLY here". Neither is an ink role there.
+   MEASURED FROM PAINTED PIXELS when the closing section was first moved to .surface-dark: the rail
+   links rendered rgb(14,89,82) on a rgb(11,65,61) ground = 1.40:1. Four links, effectively invisible.
+   NO GATE CAUGHT IT: the page scored 52/52 on the full promote battery in that state, with
+   section-density, section-rhythm, mobile-quality and no-text-overlap all green. Contrast is not in
+   that battery. A DOM-walk contrast probe misses it too, because .surface-dark paints its ground as
+   a background-IMAGE, so backgroundColor is transparent and the walk climbs to a light ancestor and
+   reports a comfortable ratio against a ground that was never painted. Only painted pixels found it.
+   --ds-ink is the token that actually flips, and is what every other text object in this section
+   already uses. */
+.surface-dark .ar-rail__l{color:var(--ds-ink);}
+.ar-rail__k{
+  font-family:var(--ds-font-display);
+  font-size:19px;
+  line-height:1.4;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  margin-right:var(--ds-space-2xs);
+}
+.ar-rail__l{
+  display:inline-flex;
+  align-items:center;
+  min-height:48px;
+  padding-inline:var(--ds-space-2xs);
+  font-size:18px;
+  font-weight:500;
+  line-height:1.4;
+  color:var(--ds-primary);
+  text-decoration:underline;
+  text-decoration-thickness:1px;
+  text-underline-offset:4px;
+  transition:color var(--ds-dur) var(--ds-ease),
+             text-decoration-thickness var(--ds-dur) var(--ds-ease);
+}
+.ar-rail__l:hover{
+  color:var(--ds-primary-deep);
+  text-decoration-thickness:2px;
+}
+.ar-rail__d{
+  color:var(--ds-ink-soft);
+  font-size:18px;
+  line-height:1;
+}
+
+@media (max-width:1023px){
+  .ar-close__card{
+    margin-top:calc(-1 * var(--ds-space-xl));
+    padding:var(--ds-space-lg);
+  }
+}
+@media (max-width:767px){
+  .ar-close__card{margin-top:calc(-1 * var(--ds-space-lg));}
+}
+@media (max-width:479px){
+  .ar-close__card{padding:var(--ds-space-md);}
+  /* the two acts go full width and stacked, so both stay well past the 48px
+     target on the narrowest phone. */
+  .ar-acts{
+    flex-direction:column;
+    align-items:stretch;
+    align-self:stretch;
+  }
+  .ar-rail__d{display:none;}
+  .ar-rail{gap:0 var(--ds-space-sm);}
+}
+
+/* ---- 6 . REDUCED MOTION. Every move in this sheet is opt out. ------------- */
+@media (prefers-reduced-motion:reduce){
+  .ar-face,
+  .ar-close__card,
+  .ar-arrow__i{
+    transition-duration:.001ms !important;
+    transition-delay:0s !important;
+  }
+  .ar-face:hover,
+  .ar-close__card:hover,
+  .ar-close__card:focus-within{transform:none !important;}
+  .ar-arrow:hover .ar-arrow__i,
+  .ar-arrow:focus-visible .ar-arrow__i{transform:none !important;}
+}
+
+/* ==========================================================================
+   SECTION 10 - T-LEGAL TEMPLATE LAYER (lg- + bw-)
+   Promoted body layer for the 3 legal documents of type T-LEGAL, from concept C
+   (owner pick 2026-08-17). Exemplar page: privacy-policy.
+   ----------------------------------------------------------------------------
+   Restraint is the design. NOTE THE TWO NAMESPACES AND DO NOT "TIDY" THEM: lg- is what this concept invents, but .bw-legal and the .bw-toc family are the LEGAL-SECTIONS reference-impl signature classes and verify-legal-is-document HARD-REQUIRES the literal string bw-legal (its P1 check is a regex on class="...bw-legal..."). Renaming them to lg- was tried on 2026-08-17 and measured: the gate went EXIT=0 to EXIT=2. Reverted.
+   PROMOTED VERBATIM out of the concept fragment inline <style>, as sections 7
+   (T-FEATURE cc-) and 8 (T-HUB hb-) were. A shipped page carries zero inline
+   styling; verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police that from a different angle.
+   Appended after section 9, preserving the order the concept was authored and
+   rendered under. Desktop-base with additive max-width step-downs.
+   ========================================================================== */
+/* ============================================================================
+   T-LEGAL CONCEPT C - "THE FILED DOCUMENT"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css. It adds only the
+   shapes this concept needs that the foundation kit does not already ship.
+
+   THE GOVERNING IDEA. A T-LEGAL page is a DOCUMENT, so this concept builds a
+   document: a front-matter masthead, a filed index, one reading measure of
+   flowing policy prose, and a closing contact entry. No hero photograph, no
+   offer, no proof figure, no cross-sell rail, no button. Restraint here is the
+   design rather than the absence of one.
+
+   NAMESPACE, stated because it is not uniform and the reason matters.
+   - lg-  is the prefix for every class this concept INVENTS.
+   - bw-legal and the bw-toc family are NOT invented here. They are the
+     LEGAL-SECTIONS reference-impl signature classes. verify-legal-is-document
+     (G-LEGAL-DOC, check P1) fails a T-LEGAL page closed unless the body
+     carries a .bw-legal prose measure, and the LEGAL-SECTIONS inline-index
+     entry names the .bw-toc jump index as the structure this page's Contents
+     section is. Both are defined below so neither resolves to nothing at
+     promote time. Neither appears in any linked sheet today, so defining them
+     collides with nothing.
+   - cc- and hb- belong to promoted templates and are not touched.
+   - Foundation classes (rs-sec, container, row, col, rs-h1, rs-h2, rs-strong,
+     surface-dark) are USED and never REDEFINED. No selector below matches a
+     foundation class on its own.
+
+   TOKEN PURITY: zero hex literals, zero rgb(), zero named colours. Every
+   colour, radius, shadow, duration, easing and spacing value is a var(--ds-*)
+   role token or a calc() over one. Every gradient colour stop resolves to a
+   token on both grounds, which is why no stop uses the transparent keyword.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule is an
+   ADDITIVE max-width override at 1023 / 767 / 479. There is no min-width rule.
+
+   CONTRAST NOTES that drove the colour picks.
+   - The accent is 1.36:1 on the light canvas, so on light it is decorative
+     only, and the one yellow mark carries the deep-teal keyline the token
+     sheet defines. On dark the same value is 7.19:1 and becomes a real
+     foreground, which is why the index numerals on the dark band are accent
+     while the numerals on the light sheet are primary at 8.84:1.
+   - The signature is 3.94:1 on light and 2.47:1 on dark. It carries no text in
+     either direction and appears here only as a rule or a marker.
+   - Body ink on the sheet is --ds-ink (13.59:1 on canvas), not --ds-ink-soft.
+     A legal document is read end to end by an audience aged 40 and over, so
+     the body takes the strongest ink available rather than the soft step.
+   ============================================================================ */
+
+/* ---- 1 . MASTHEAD. Front matter, not a hero. ----------------------------- */
+.lg-mast{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-lg);
+  background-image:var(--ds-glow-wash);
+  background-repeat:no-repeat;
+}
+/* the effective-date line sits directly under the title in the display face,
+   so the first thing a reader checks on a policy is the first thing they meet. */
+p.lg-mast__eff{
+  font-family:var(--ds-font-display);
+  font-size:clamp(19px,2vw,23px);
+  line-height:1.45;
+  color:var(--ds-ink);
+  max-width:40ch;
+}
+/* the front-matter rail. Three blocks, each a label over a value carried
+   verbatim out of the copy. This is the deviation from the cited hero pattern:
+   the pattern puts oversized statistics here, and a legal page has none. */
+.lg-meta{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  padding:var(--ds-space-md);
+  background:var(--ds-canvas);
+  border:1px solid var(--ds-hairline);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+}
+.lg-meta__item{
+  min-width:0;
+  padding-inline-start:var(--ds-space-sm);
+  border-inline-start:2px solid var(--ds-line-control);
+}
+.lg-meta__k{
+  display:block;
+  font-size:14px;
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--ds-ink-soft);
+  margin-block-end:var(--ds-space-2xs);
+}
+.lg-meta__v{
+  display:block;
+  font-size:17px;
+  line-height:1.55;
+  color:var(--ds-ink);
+  overflow-wrap:break-word;
+}
+
+/* ---- 2 . THE INDEX. The LEGAL-SECTIONS bw-toc, stood on the dark band. --- */
+.lg-index{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-lg);
+}
+/* the panel takes its edge from the 3:1 control line rather than from its own
+   fill: on the dark ground a raised surface separates by only 1.25:1, which
+   the token sheet documents as geometrically unavoidable. */
+.bw-toc{
+  background:var(--ds-bg-surface);
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+  padding-inline:var(--ds-space-md);
+  padding-block:var(--ds-space-xs);
+}
+.bw-toc__list{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  column-gap:var(--ds-space-xl);
+  row-gap:0;
+  list-style:none;
+}
+/* a real grid cell, so it gets the thing a grid cell needs: without min-width:0
+   a long section label refuses to shrink below its intrinsic width and the
+   three column index stops collapsing cleanly at the narrow end of its range. */
+.bw-toc__item{min-width:0;}
+.bw-toc__link{
+  display:flex;
+  align-items:center;
+  gap:var(--ds-space-sm);
+  min-height:48px;
+  padding-block:var(--ds-space-sm);
+  padding-inline:var(--ds-space-2xs);
+  border-block-end:1px solid var(--ds-line);
+  border-radius:var(--ds-r-control);
+  color:var(--ds-ink);
+  font-size:17px;
+  line-height:1.4;
+  text-decoration:none;
+  transition:
+    transform var(--ds-dur) var(--ds-ease-out),
+    color var(--ds-dur) var(--ds-ease-out),
+    border-color var(--ds-dur) var(--ds-ease-out);
+}
+.bw-toc__link:hover,
+.bw-toc__link:focus-visible{
+  transform:translateX(var(--ds-space-2xs));
+  color:var(--ds-accent);
+  border-block-end-color:var(--ds-accent);
+}
+.bw-toc__link:focus-visible{
+  outline:0;
+  box-shadow:var(--ds-glow);
+}
+.bw-toc__num{
+  flex:none;
+  min-width:var(--ds-space-md);
+  font-family:var(--ds-font-display);
+  font-weight:700;
+  font-size:18px;
+  color:var(--ds-accent);
+  font-variant-numeric:tabular-nums;
+}
+.bw-toc__t{min-width:0;}
+
+/* ---- 3 . THE DOCUMENT. One measure of flowing prose on one sheet. -------- */
+/* THE ONE DECLARED COLLISION. The LEGAL-SECTIONS prose-document entry says a
+   legal document has no surfaces and no shadows. CWB-064 auto-rejects a flat
+   all-white specimen. Resolved with exactly ONE surface for the whole page:
+   the policy sits on a single raised canvas sheet. No card grid, no second
+   surface anywhere on the page. */
+.lg-sheet{
+  position:relative;
+  overflow:hidden;
+  background:var(--ds-canvas);
+  border:1px solid var(--ds-hairline);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+  padding:var(--ds-space-xl) var(--ds-space-xl) var(--ds-space-2xl);
+}
+/* the one accent moment on the page. A rule across the head of the sheet, ink
+   to signature to accent, ringed by the deep-teal keyline the token sheet
+   requires of any yellow mark on the light canvas. That keyline resolves to
+   none on a dark ground, where the accent already measures 8.47:1. */
+.lg-sheet::before{
+  content:"";
+  position:absolute;
+  inset-block-start:0;
+  inset-inline:0;
+  height:var(--ds-space-2xs);
+  background-image:linear-gradient(
+    90deg,
+    var(--ds-primary-deep),
+    var(--ds-signature) 58%,
+    var(--ds-accent)
+  );
+  box-shadow:var(--ds-accent-keyline);
+}
+
+/* the prose-document measure. Per the LEGAL-SECTIONS prose entry this styles
+   RAW flowing children with no per-node class, so the copy pours in as plain
+   markup and inherits the legal rhythm. */
+.bw-legal{max-width:44.258rem /* was 70ch, measured 708.135px */;}
+.bw-legal p{
+  font-size:18px;
+  line-height:1.75;
+  color:var(--ds-ink);
+  margin-block-end:var(--ds-space-md);
+}
+.bw-legal ul{
+  list-style:disc outside;
+  padding-inline-start:calc(var(--ds-space-md) + var(--ds-space-2xs));
+  margin-block-end:var(--ds-space-md);
+}
+.bw-legal li{
+  font-size:18px;
+  line-height:1.75;
+  color:var(--ds-ink);
+  margin-block-end:var(--ds-space-xs);
+}
+.bw-legal li::marker{color:var(--ds-primary);}
+.bw-legal a{
+  color:var(--ds-primary);
+  text-decoration:underline;
+  text-decoration-color:var(--ds-line-control);
+  text-underline-offset:4px;
+  border-radius:var(--ds-r-control);
+  transition:
+    color var(--ds-dur-fast) var(--ds-ease-out),
+    text-decoration-color var(--ds-dur-fast) var(--ds-ease-out);
+}
+.bw-legal a:hover{
+  color:var(--ds-primary-deep);
+  text-decoration-color:var(--ds-primary-deep);
+}
+.bw-legal a:focus-visible{outline:0;box-shadow:var(--ds-glow);}
+/* the numbered document heading. The anchored-heading geometry the catalog
+   calls for, plus the MOTION-PATTERNS highlight sweep re-aimed off hover and
+   onto :target, so arriving from the index confirms where you landed instead
+   of dropping the reader into undifferentiated prose. The wash fades into the
+   sheet ground, so both gradient stops are role tokens. */
+.bw-legal h2{
+  display:flex;
+  align-items:baseline;
+  gap:var(--ds-space-sm);
+  font-size:clamp(23px,2.6vw,30px);
+  line-height:1.24;
+  letter-spacing:-.01em;
+  margin-block:var(--ds-space-xl) var(--ds-space-md);
+  padding-inline-start:var(--ds-space-sm);
+  scroll-margin-top:var(--ds-space-2xl);
+  background-image:linear-gradient(90deg,var(--ds-accent-soft),var(--ds-canvas) 74%);
+  background-repeat:no-repeat;
+  background-size:0% 100%;
+  transition:background-size var(--ds-dur-slow) var(--ds-ease);
+}
+.bw-legal h2:target{
+  background-size:100% 100%;
+  box-shadow:calc(var(--ds-space-2xs) * -0.75) 0 0 0 var(--ds-signature);
+}
+/* --- overrides on the raw-child rules above. Equal specificity, later wins. */
+h2.lg-doc-title{
+  display:block;
+  font-size:clamp(26px,3.2vw,36px);
+  line-height:1.18;
+  letter-spacing:-.015em;
+  max-width:24ch;
+  margin-block:0 var(--ds-space-sm);
+  padding-inline-start:0;
+  background-image:none;
+}
+p.lg-stamp{margin-block-end:var(--ds-space-lg);}
+.lg-num{
+  flex:none;
+  font-size:.8em;
+  color:var(--ds-primary);
+  font-variant-numeric:tabular-nums;
+}
+.lg-t{min-width:0;}
+p.lg-p--sub{margin-block:var(--ds-space-lg) var(--ds-space-sm);}
+/* the section 9 directory. Label and number stay on one line each, exactly as
+   the captured document sets them, but the pairs align on a grid so a reader
+   scanning for one office is not reading seven lines of running prose. */
+ul.lg-dir{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:var(--ds-space-lg);
+  row-gap:0;
+  list-style:none;
+  padding-inline-start:0;
+  margin-block-end:var(--ds-space-md);
+}
+.lg-dir > li{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--ds-space-xs);
+  padding-block:var(--ds-space-xs);
+  margin-block-end:0;
+  border-block-end:1px solid var(--ds-line);
+  line-height:1.6;
+}
+.lg-dir__k{color:var(--ds-ink-soft);}
+.lg-dir__v{font-variant-numeric:tabular-nums;}
+/* the two routes the captured document links, and nothing else. They sit on
+   their own line, so the tap target is padded to clear 44px without adding
+   height to a line of running prose. */
+a.lg-a{
+  display:inline-block;
+  padding-block:var(--ds-space-xs);
+}
+
+/* ---- 4 . THE CLOSING ENTRY. Underline-only chrome. ----------------------- */
+.lg-close{
+  max-width:41.729rem /* was 66ch, measured 667.670px */;
+  padding-block:var(--ds-space-lg);
+  border-block-end:1px solid var(--ds-line-control);
+}
+p.lg-close__line{
+  font-family:var(--ds-font-display);
+  font-size:clamp(20px,2.2vw,25px);
+  line-height:1.4;
+  color:var(--ds-ink);
+  margin-block-end:var(--ds-space-md);
+  overflow-wrap:break-word;
+}
+p.lg-close__note{
+  font-size:16px;
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+  max-width:64ch;
+}
+
+/* ---- RESPONSIVE. Additive max-width steps only. -------------------------- */
+@media (max-width:1023px){
+  .lg-meta{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .bw-toc__list{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:var(--ds-space-lg);}
+  .lg-sheet{padding:var(--ds-space-lg) var(--ds-space-lg) var(--ds-space-xl);}
+  .bw-legal{max-width:none;}
+}
+@media (max-width:767px){
+  .lg-meta{grid-template-columns:minmax(0,1fr);}
+  .bw-toc__list{grid-template-columns:minmax(0,1fr);}
+  ul.lg-dir{grid-template-columns:minmax(0,1fr);}
+  .lg-sheet{padding:var(--ds-space-md) var(--ds-space-md) var(--ds-space-lg);}
+  .bw-legal h2{margin-block:var(--ds-space-lg) var(--ds-space-sm);}
+}
+@media (max-width:479px){
+  .lg-mast{gap:var(--ds-space-md);}
+  .lg-meta{padding:var(--ds-space-sm);}
+  .bw-toc{padding-inline:var(--ds-space-sm);}
+  .lg-sheet{padding:var(--ds-space-sm) var(--ds-space-sm) var(--ds-space-md);}
+  .bw-legal h2{flex-direction:column;gap:var(--ds-space-2xs);align-items:flex-start;}
+}
+
+/* ---- MOTION SAFETY. ------------------------------------------------------ */
+@media (prefers-reduced-motion:reduce){
+  .bw-toc__link,
+  .bw-legal h2,
+  .bw-legal a{transition:none;}
+  .bw-toc__link:hover,
+  .bw-toc__link:focus-visible{transform:none;}
+  .bw-legal h2{background-size:100% 100%;}
+}
+
+/* ==========================================================================
+   SECTION 11 - T-INDEX TEMPLATE LAYER (ix-)
+   Promoted body layer for the 2 index pages of type T-INDEX, from concept B
+   (owner pick 2026-08-17). Exemplar page: smile-gallery.
+   ----------------------------------------------------------------------------
+   The empty-state router. There are ZERO before-and-after photographs on disk, so this type ships no imagery at all and the routing grid carries the page. It declares two :root custom properties, --ix-plate-pad and --ix-rule; both are ix- namespaced so they cannot collide, and neither is surface-dependent, so the :root-substitution trap that bit --rs-e1/--rs-e2 does not apply.
+   PROMOTED VERBATIM out of the concept fragment inline <style>, as sections 7
+   (T-FEATURE cc-) and 8 (T-HUB hb-) were. A shipped page carries zero inline
+   styling; verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police that from a different angle.
+   Appended after section 10, preserving the order the concept was authored and
+   rendered under. Desktop-base with additive max-width step-downs.
+   ========================================================================== */
+/* ============================================================================
+   T-INDEX  .  CONCEPT B  .  "THE HONEST INDEX"      (body fragment, no chrome)
+   ----------------------------------------------------------------------------
+   Inherited by two pages: smile-gallery (rendered here) and reviews. One of them
+   is EMPTY and one of them will be populated, so every list surface below is
+   authored in two states and neither state is a special case of the other.
+
+   TOKEN PURITY. Zero hex literals, zero colour functions, zero named colours.
+   Every colour, radius, shadow, duration, easing and spacing value is a
+   var(--ds-*) from radiantsmiles-tokens.css or a calc()/clamp() over one.
+
+   THE ALIAS RULE THIS SHEET OBEYS. The two --ix-* aliases below are SIZES ONLY.
+   No colour is ever aliased at :root, because a colour resolved at :root keeps
+   its LIGHT value when it inherits into a surface-dark subtree, and the dark
+   flip then never happens. Every colour is therefore read at its use site.
+
+   NAMESPACE. Every invented class is ix- prefixed. Modifiers use a SINGLE hyphen
+   (ix-grid-empty) so that any class name quoted in an HTML comment below cannot
+   close the comment early. The foundation vocabulary is USED and never
+   redeclared: no rule in this sheet takes a bare rs-sec, rs-h1, rs-h2, rs-lede,
+   rs-copy, rs-btn, rs-acts, rs-frame, rs-grade, rs-strong, container, row, col
+   or surface-dark class as its selector subject.
+
+   CITATION FORM. Catalog entries are written with a space after the hash
+   (MENU.md # 11) because the client banned-vocab list bans the bare hash-one
+   digraph as a ranking claim. verify-selection-rationale parses hash-space-N.
+
+   AUTHORED DESKTOP FIRST. The base rules are the wide composition. Every
+   narrowing is an ADDITIVE max-width step at 1023, 767 and 479. Never a
+   minimum-width query.
+   ============================================================================ */
+
+:root{
+  --ix-plate-pad:clamp(var(--ds-space-md),3vw,var(--ds-space-xl));
+  --ix-rule:2px;
+}
+
+/* ---- 1 . THE LEAD BLOCK -------------------------------------------------
+   HERO-COMPOSITIONS.md # 11 is a CENTRED text block, so the centring lives on
+   the container and inherits. The two children are given margin-inline:auto by
+   ELEMENT selector rather than by naming the foundation type classes, so the
+   foundation measures (15ch on the h1, 56ch on the lede) survive untouched and
+   only their horizontal placement changes. */
+.ix-lead{
+  max-width:44.258rem /* was 70ch, measured 708.135px */;
+  margin-inline:auto;
+  text-align:center;
+}
+.ix-lead > h1{margin:0 auto;}
+.ix-lead > p{margin:var(--ds-space-md) auto 0;}
+
+/* The patient facing empty state. It is a NOTICE, not body copy, so it gets its
+   own measure. Type qualified (p.ix-state) so it beats the foundation's
+   p.rs-copy at (0,1,1), and it never carries rs-copy as well. */
+p.ix-state{
+  max-width:56ch;
+  margin:var(--ds-space-lg) auto 0;
+  padding:var(--ds-space-sm) var(--ds-space-md);
+  font-size:17px;
+  line-height:1.62;
+  color:var(--ds-ink-soft);
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-control);
+  background-image:linear-gradient(180deg,var(--ds-bg-surface),var(--ds-bg-band));
+  box-shadow:var(--ds-shadow-rest),var(--ds-inset-hi);
+}
+
+/* ---- 2 . THE ROUTING GRID ----------------------------------------------
+   The second half of hero # 11: the tile grid that sits immediately under the
+   centred text. Five destinations, laid 3 over 2, with the last tile double
+   width because it is the conversion ask. */
+.ix-route{
+  margin-top:calc(var(--ds-space-xl) + var(--ds-space-md));
+  text-align:center;
+}
+.ix-route > h2{max-width:26ch;margin:0 auto;}
+p.ix-route-p{
+  max-width:64ch;
+  margin:var(--ds-space-md) auto 0;
+  font-size:18px;
+  line-height:1.68;
+  color:var(--ds-ink-soft);
+}
+.ix-tiles{
+  display:grid;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  list-style:none;
+  margin:var(--ds-space-lg) 0 0;
+  padding:0;
+  text-align:left;
+}
+.ix-tiles > li{grid-column:span 2;}
+.ix-tiles > li.ix-tiles-wide{grid-column:span 4;}
+
+/* CARD-VARIATIONS.md # 3 chrome at rest: no border, no shadow, no fill. The
+   tile identity is the rule above it plus the spacing. MOTION-PATTERNS.md # 10
+   Lift on hover, held to 3px, plus the rule growing to the full tile width. */
+.ix-tile{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-xs);
+  height:100%;
+  min-height:calc(var(--ds-space-2xl) + var(--ds-space-md));
+  padding:calc(var(--ds-space-md) + var(--ds-space-xs)) var(--ds-space-md) var(--ds-space-md);
+  border-radius:var(--ds-r-surface);
+  text-decoration:none;
+  color:var(--ds-ink);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease),
+             background-color var(--ds-dur) var(--ds-ease);
+}
+.ix-tile::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:var(--ds-space-md);
+  right:var(--ds-space-md);
+  height:var(--ix-rule);
+  border-radius:var(--ds-r-pill);
+  background-color:var(--ds-line-control);
+  transition:left var(--ds-dur) var(--ds-ease),
+             right var(--ds-dur) var(--ds-ease),
+             background-color var(--ds-dur) var(--ds-ease);
+}
+.ix-tile:hover,
+.ix-tile:focus-visible{
+  transform:translateY(-3px);
+  background-color:var(--ds-bg-band);
+  box-shadow:var(--ds-shadow-card);
+}
+.ix-tile:focus-visible{outline:none;box-shadow:var(--ds-shadow-card),var(--ds-glow);}
+.ix-tile:hover::before,
+.ix-tile:focus-visible::before{left:0;right:0;background-color:var(--ds-signature);}
+
+/* The one accent on this page other than the primary button. THE KEYLINE RULE:
+   a yellow mark on the light canvas is 1.36 to 1 and needs the 1px deep teal
+   keyline to read at all, so the bar carries it as a standalone box-shadow. */
+.ix-tile-ask::before{
+  left:0;
+  right:0;
+  background-color:var(--ds-accent);
+  box-shadow:var(--ds-accent-keyline);
+}
+.ix-tile-ask:hover::before,
+.ix-tile-ask:focus-visible::before{background-color:var(--ds-accent);}
+
+.ix-tile-t{
+  margin:0;
+  font-family:var(--ds-font-display);
+  font-size:clamp(19px,1.5vw,22px);
+  line-height:1.24;
+  letter-spacing:-.01em;
+  color:var(--ds-ink-heading);
+}
+p.ix-tile-p{
+  margin:0;
+  max-width:38ch;
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ds-ink-soft);
+}
+/* CTA-PATTERNS.md # 6 Ghost text link with arrow, set in the mono family so the
+   destination reads as a ROUTE label and not as a second copy of the heading. */
+.ix-tile-go{
+  display:inline-flex;
+  align-items:center;
+  gap:var(--ds-space-xs);
+  margin-top:auto;
+  padding-top:var(--ds-space-sm);
+  font-family:var(--ds-font-mono);
+  font-size:13px;
+  letter-spacing:.07em;
+  line-height:1.4;
+  color:var(--ds-primary);
+}
+.ix-tile-go svg{
+  width:16px;
+  height:16px;
+  flex:none;
+  transition:transform var(--ds-dur) var(--ds-ease);
+}
+.ix-tile-go svg path{fill:none;stroke:var(--ds-primary);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+.ix-tile:hover .ix-tile-go svg,
+.ix-tile:focus-visible .ix-tile-go svg{transform:translateX(4px);}
+
+/* ---- 3 . THE INDEX SURFACE ---------------------------------------------
+   The list itself, in BOTH states. ix-grid is the populated three column base.
+   ix-grid-empty collapses it to one column so the honest empty plate spans the
+   full measure instead of sitting in a third of it looking like a failed tile. */
+p.ix-fields{
+  max-width:62ch;
+  margin:var(--ds-space-md) 0 0;
+  font-size:clamp(18px,1.6vw,21px);
+  line-height:1.62;
+  color:var(--ds-ink-soft);
+}
+.ix-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  list-style:none;
+  margin:var(--ds-space-xl) 0 0;
+  padding:0;
+}
+.ix-grid-empty{grid-template-columns:minmax(0,1fr);}
+
+/* THE FLAGGED PLACEHOLDER. Token built, hairline dashed, textured with the ds
+   grid, and carrying real text about its own state. It is deliberately NOT a
+   photo shaped box and NOT a gradient standing in for a photograph, per the
+   imagery spec's placeholder rule 3. On a surface-dark ground every token it
+   reads has already flipped, so the same plate is correct on both grounds. */
+.ix-void{
+  position:relative;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  align-items:start;
+  gap:var(--ds-space-lg);
+  padding:var(--ix-plate-pad);
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  background-color:var(--ds-bg-surface);
+  background-image:var(--ds-grid);
+  background-size:var(--ds-grid-size);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+}
+.ix-void-mark,
+.ix-slot-mark{
+  display:grid;
+  place-items:center;
+  width:calc(var(--ds-space-xl) + var(--ds-space-2xs));
+  height:calc(var(--ds-space-xl) + var(--ds-space-2xs));
+  flex:none;
+  border:1px solid var(--ds-line);
+  border-radius:var(--ds-r-control);
+  background-color:var(--ds-bg-band);
+  box-shadow:var(--ds-inset-hi);
+}
+.ix-void-mark svg,
+.ix-slot-mark svg{width:30px;height:30px;}
+.ix-void-mark rect,
+.ix-void-mark path,
+.ix-slot-mark rect,
+.ix-slot-mark path{
+  fill:none;
+  stroke:var(--ds-line-control);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+p.ix-void-p{
+  max-width:58ch;
+  margin:0;
+  font-size:17px;
+  line-height:1.7;
+  color:var(--ds-ink-soft);
+}
+
+/* THE POPULATED STATE. These rules are authored now, unused today, and named in
+   the markup comment inside section 2 so a supplied case has a shape to land in.
+   SURFACE-PATTERNS.md section 2 entry 9, hairline outline chrome, matching the
+   dashed plate above so a half filled index does not read as two components. */
+.ix-item{display:block;}
+.ix-item-a{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  height:100%;
+  padding:var(--ds-space-md);
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  text-decoration:none;
+  color:var(--ds-ink);
+  background-color:var(--ds-bg-surface);
+  box-shadow:var(--ds-shadow-rest);
+  transition:box-shadow var(--ds-dur) var(--ds-ease),transform var(--ds-dur) var(--ds-ease);
+}
+.ix-item-a:hover{transform:translateY(-3px);box-shadow:var(--ds-shadow-card);}
+.ix-item-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-2xs);}
+.ix-item-shot{aspect-ratio:4 / 5;border-radius:var(--ds-r-control);overflow:hidden;}
+.ix-item-meta{
+  font-family:var(--ds-font-mono);
+  font-size:13px;
+  letter-spacing:.07em;
+  color:var(--ds-ink-soft);
+}
+.ix-item-go{
+  margin-top:auto;
+  font-size:16px;
+  font-weight:700;
+  color:var(--ds-primary);
+}
+
+/* ---- 4 . THE STRUCTURAL CASE ------------------------------------------- */
+.ix-case{
+  display:grid;
+  grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+.ix-case-copy > h2{margin:0;}
+p.ix-case-p{
+  max-width:54ch;
+  margin:var(--ds-space-md) 0 0;
+  font-size:18px;
+  line-height:1.72;
+  color:var(--ds-ink-soft);
+}
+.ix-slot{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:var(--ds-space-md);
+  min-height:calc(var(--ds-space-2xl) * 2 + var(--ds-space-lg));
+  padding:var(--ix-plate-pad);
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  background-color:var(--ds-canvas);
+  background-image:var(--ds-grid);
+  background-size:var(--ds-grid-size);
+  box-shadow:var(--ds-shadow-rest),var(--ds-inset-hi);
+}
+p.ix-slot-p{
+  max-width:46ch;
+  margin:0;
+  font-size:17px;
+  line-height:1.68;
+  color:var(--ds-ink-soft);
+}
+
+/* ---- 5 . THE CLOSING ASK ------------------------------------------------ */
+.ix-close{
+  position:relative;
+  overflow:hidden;
+  padding:clamp(var(--ds-space-lg),5vw,var(--ds-space-2xl)) var(--ix-plate-pad);
+  border:1px solid var(--ds-line);
+  border-radius:var(--ds-r-surface);
+  background-image:linear-gradient(160deg,var(--ds-bg-band),var(--ds-bg-surface) 64%),var(--ds-glow-wash);
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+  text-align:center;
+}
+.ix-close-t{
+  max-width:35.975rem /* was 24ch, measured 575.594px */;
+  margin:0 auto;
+  font-family:var(--ds-font-display);
+  font-size:clamp(28px,3.4vw,42px);
+  line-height:1.14;
+  letter-spacing:-.015em;
+  color:var(--ds-ink-heading);
+}
+p.ix-close-p{
+  max-width:48ch;
+  margin:var(--ds-space-md) auto 0;
+  font-size:clamp(18px,1.7vw,20px);
+  line-height:1.62;
+  color:var(--ds-ink-soft);
+}
+/* carried on the SAME element as the foundation act row, so the foundation class
+   is never named on the left of a selector in this sheet. */
+.ix-acts{justify-content:center;margin-top:var(--ds-space-lg);}
+
+/* ============================================================================
+   RESPONSIVE. Additive max-width steps only.
+   ============================================================================ */
+
+@media (max-width:1023px){
+  .ix-tiles{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-sm);}
+  .ix-tiles > li{grid-column:span 1;}
+  .ix-tiles > li.ix-tiles-wide{grid-column:span 2;}
+  .ix-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+  .ix-grid-empty{grid-template-columns:minmax(0,1fr);}
+  .ix-case{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .ix-void{gap:var(--ds-space-md);}
+  .ix-slot{min-height:calc(var(--ds-space-2xl) + var(--ds-space-xl));}
+}
+
+@media (max-width:767px){
+  .ix-lead{max-width:100%;}
+  .ix-route{margin-top:var(--ds-space-xl);}
+  .ix-tiles{grid-template-columns:minmax(0,1fr);}
+  .ix-tiles > li,
+  .ix-tiles > li.ix-tiles-wide{grid-column:span 1;}
+  .ix-tile{
+    min-height:calc(var(--ds-space-2xl) - var(--ds-space-md));
+    padding:var(--ds-space-md);
+  }
+  .ix-tile-go{padding-top:var(--ds-space-xs);min-height:44px;}
+  .ix-grid{grid-template-columns:minmax(0,1fr);}
+  .ix-void{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-md);}
+  .ix-void-mark,
+  .ix-slot-mark{
+    width:calc(var(--ds-space-lg) + var(--ds-space-sm));
+    height:calc(var(--ds-space-lg) + var(--ds-space-sm));
+  }
+  .ix-void-mark svg,
+  .ix-slot-mark svg{width:26px;height:26px;}
+  .ix-acts{flex-direction:column;align-items:stretch;}
+  .ix-acts > a{width:100%;min-height:48px;}
+}
+
+@media (max-width:479px){
+  p.ix-state{padding:var(--ds-space-sm);}
+  .ix-void{padding:var(--ds-space-md);}
+  .ix-slot{padding:var(--ds-space-md);}
+  .ix-close{padding:var(--ds-space-lg) var(--ds-space-md);}
+  .ix-tile-go{font-size:12px;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ix-tile,
+  .ix-tile::before,
+  .ix-tile-go svg,
+  .ix-item-a{transition:none;}
+  .ix-tile:hover,
+  .ix-tile:focus-visible,
+  .ix-item-a:hover{transform:none;}
+  .ix-tile:hover .ix-tile-go svg,
+  .ix-tile:focus-visible .ix-tile-go svg{transform:none;}
+}
+
+/* ==========================================================================
+   SECTION 12 - T-CONTACT TEMPLATE LAYER (ct-)
+   Promoted body layer for the 1 page of type T-CONTACT, from concept C
+   (owner pick 2026-08-17). Exemplar page: contact.
+   ----------------------------------------------------------------------------
+   The form is the hero. Seven offices follow as a compact list, each with its own direct number, because routeRules.phone_policy forbids publishing one general line.
+   PROMOTED VERBATIM out of the concept fragment inline <style>, as sections 7
+   (T-FEATURE cc-) and 8 (T-HUB hb-) were. A shipped page carries zero inline
+   styling; verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police that from a different angle.
+   Appended after section 11, preserving the order the concept was authored and
+   rendered under. Desktop-base with additive max-width step-downs.
+   ========================================================================== */
+/* ============================================================================
+   T-CONTACT CONCEPT C - "THE ROUTING DESK"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css. It adds only the
+   shapes this concept needs that the foundation kit does not already ship.
+
+   THE THESIS: this page has one job, which is to put a patient in front of the
+   right office. So the instrument goes first. The real form is embedded in the
+   lead section beside the headline, the seven direct numbers are the page's
+   dark anchor in the MIDDLE of the page rather than at a bookend, and the one
+   slot with no fact in it is left visibly empty at the close.
+
+   WHAT THE FOUNDATION ALREADY OWNS AND THIS SHEET REUSES RATHER THAN RESTATES:
+   rs-wrap, rs-sec, rs-h1, rs-h2, rs-lede, rs-acts, rs-btn, rs-frame, rs-grade,
+   rs-tex, rs-tel, rs-qlink, rs-office name/address, rs-card plus its pending
+   modifier, rs-strong, surface-dark. None of them is redefined here. Every rule
+   below is either a new ct- class or a ct- scoped descendant of one.
+
+   TOKEN PURITY: zero hex literals, zero rgb(), zero named colours. Every
+   colour, radius, shadow, duration, easing and spacing value is a var(--ds-*)
+   or a var(--rs-*) role alias, or a calc() over one. The keyword "transparent"
+   is deliberately not used anywhere: the promoted T-FEATURE block avoids it and
+   this sheet holds the same line, so every fade terminates on a real token.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule is an
+   ADDITIVE @media (max-width:N) override at 1023 / 767 / 479, never min-width.
+
+   SPECIFICITY: every rule that sets a measure or overrides a foundation type
+   rule is TYPE QUALIFIED (p.ct-x, h2.ct-x, address.ct-x) so it wins on its own
+   weight and not on source order. No element carries rs-copy and a ct- measure
+   at the same time.
+
+   UTF-8. No em or en dashes. No exclamation marks. No emoji in rendered copy.
+   ============================================================================ */
+
+/* ---- 1 . LEAD. Headline column beside the live form panel ----------------- */
+
+.ct-open{
+  display:grid;
+  grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+.ct-open__say{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:flex-start;
+  padding-top:var(--ds-space-sm);
+}
+
+/* the form panel. Card ground, E2 elevation, and the token radial wash as its
+   only gradient so the panel reads as lit rather than painted. */
+.ct-panel{
+  position:relative;
+  isolation:isolate;
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  padding:var(--ds-space-lg);
+  background-color:var(--rs-card-bg);
+  background-image:var(--ds-glow-wash);
+  border:1px solid var(--rs-card-line);
+  border-radius:var(--rs-r-frame);
+  box-shadow:var(--rs-e2);
+}
+/* the panel's opening rule. A real gradient, terminating on the decorative
+   hairline token rather than on the transparent keyword. */
+.ct-panel__rule{
+  display:block;
+  width:var(--ds-space-2xl);
+  height:3px;
+  border-radius:var(--ds-r-pill);
+  background:linear-gradient(90deg,var(--rs-rule),var(--ds-line));
+}
+p.ct-panel__intro{
+  font-size:19px;
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+  max-width:48ch;
+}
+
+/* ---- 2 . THE FORM. Two up field rows, labels above inputs ----------------- */
+
+.ct-form{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+.ct-form__grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--ds-space-md);
+}
+.ct-field{display:flex;flex-direction:column;gap:var(--ds-space-2xs);min-width:0;}
+.ct-field--wide{grid-column:1 / -1;}
+
+label.ct-label{
+  font-size:16px;
+  font-weight:700;
+  line-height:1.4;
+  color:var(--ds-ink);
+}
+
+.ct-input,
+.ct-select,
+.ct-area{
+  width:100%;
+  min-height:52px;
+  padding:13px 16px;
+  font-family:var(--ds-font-body);
+  font-size:18px;
+  line-height:1.5;
+  color:var(--ds-ink);
+  background-color:var(--ds-bg-surface);
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-control);
+  box-shadow:var(--ds-shadow-rest);
+  transition:border-color var(--ds-dur) var(--ds-ease),
+             background-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.ct-input:hover,
+.ct-select:hover,
+.ct-area:hover{border-color:var(--ds-signature);}
+.ct-input:focus,
+.ct-select:focus,
+.ct-area:focus{
+  background-color:var(--ds-canvas);
+  border-color:var(--ds-primary);
+  box-shadow:var(--ds-shadow-card);
+}
+.ct-area{min-height:136px;resize:vertical;}
+
+/* the select keeps a drawn caret rather than a data URI, because an inline SVG
+   marker would have to carry a literal colour and break token purity. */
+.ct-selwrap{display:block;position:relative;}
+.ct-select{appearance:none;-webkit-appearance:none;padding-right:var(--ds-space-xl);}
+.ct-selwrap::after{
+  content:"";
+  position:absolute;
+  right:22px;
+  top:calc(50% - 9px);
+  width:9px;
+  height:9px;
+  border-right:2px solid var(--ds-ink-soft);
+  border-bottom:2px solid var(--ds-ink-soft);
+  transform:rotate(45deg);
+  pointer-events:none;
+}
+
+/* the consent control. A real checkbox with the notice as its label, sunk into
+   its own well so a reader can see it is a control and not a footnote. */
+.ct-consent{
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr);
+  gap:var(--ds-space-sm);
+  align-items:start;
+  padding:var(--ds-space-md);
+  background-color:var(--ds-bg-surface);
+  border:1px solid var(--ds-line-control);
+  border-radius:var(--ds-r-control);
+  box-shadow:var(--ds-inset-hi);
+  transition:border-color var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.ct-consent:focus-within{
+  border-color:var(--ds-primary);
+  box-shadow:var(--ds-shadow-card);
+}
+.ct-check{
+  width:32px;
+  height:32px;
+  margin:0;
+  flex:none;
+  accent-color:var(--ds-primary);
+  cursor:pointer;
+}
+label.ct-consent__text{
+  display:block;
+  font-size:16px;
+  line-height:1.62;
+  color:var(--ds-ink);
+  cursor:pointer;
+  max-width:40.465rem /* was 72ch, measured 647.438px */;
+}
+.ct-inline{color:var(--rs-link);text-underline-offset:3px;}
+.ct-inline:hover{text-decoration-thickness:2px;}
+
+.ct-send{display:flex;flex-wrap:wrap;gap:var(--ds-space-sm);}
+
+/* ---- 3 . THE DIRECTORY. Seven offices as a hairline row index ------------- */
+
+.ct-dir__head{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  margin-bottom:var(--ds-space-lg);
+}
+p.ct-dir__lede{
+  font-size:19px;
+  line-height:1.65;
+  color:var(--ds-ink-soft);
+  max-width:52ch;
+}
+
+.ct-dir__list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  column-gap:var(--ds-space-xl);
+  border-bottom:1px solid var(--ds-line);
+}
+/* seven is an odd count, so the last row closes the index across both tracks.
+   This is a consequence of the count and not a rank: no office gets different
+   type, different weight or a different photograph size. */
+.ct-dir__list > .ct-office:last-child{grid-column:1 / -1;}
+
+.ct-office{
+  position:relative;
+  display:grid;
+  grid-template-columns:112px minmax(0,1fr);
+  column-gap:var(--ds-space-md);
+  row-gap:var(--ds-space-2xs);
+  align-items:start;
+  padding-block:var(--ds-space-md);
+  border-top:1px solid var(--ds-line);
+  transition:border-color var(--ds-dur) var(--ds-ease);
+}
+.ct-office:hover,
+.ct-office:focus-within{border-top-color:var(--ds-line-control);}
+
+/* the entrance rail. A transform driven mark, off at rest, so the hovered or
+   focused row is identifiable without moving the address under the pointer. */
+.ct-office::before{
+  content:"";
+  position:absolute;
+  left:calc(-1 * var(--ds-space-sm));
+  top:var(--ds-space-sm);
+  bottom:var(--ds-space-sm);
+  width:3px;
+  border-radius:var(--ds-r-pill);
+  background:var(--rs-rule);
+  transform:scaleY(0);
+  transform-origin:top center;
+  transition:transform var(--ds-dur) var(--ds-ease-out);
+}
+.ct-office:hover::before,
+.ct-office:focus-within::before{transform:scaleY(1);}
+
+h3.ct-office__name{
+  grid-column:2;
+  grid-row:1;
+  font-size:22px;
+  line-height:1.25;
+}
+.ct-office__fig{
+  grid-column:1;
+  grid-row:1 / span 3;
+  margin:0;
+  aspect-ratio:1 / 1;
+  box-shadow:var(--rs-e1);
+}
+address.ct-office__addr{
+  grid-column:2;
+  grid-row:2;
+  font-size:16px;
+  line-height:1.55;
+  font-style:normal;
+  max-width:24.729rem /* was 44ch, measured 395.656px */;
+}
+.ct-office__acts{
+  grid-column:2;
+  grid-row:3;
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--ds-space-2xs) var(--ds-space-lg);
+  margin-top:var(--ds-space-2xs);
+}
+/* the image lift. Scoped to this concept's own row class, so the shared
+   rs-frame image rule is modified exactly here and nowhere else. */
+.ct-office:hover .ct-office__fig img,
+.ct-office:focus-within .ct-office__fig img{transform:scale(1.06);}
+
+/* ---- 4 . THE EMPTY SLOT. Shown, never filled ----------------------------- */
+
+.ct-pend{max-width:46.788rem /* was 74ch, measured 748.600px */;}
+h2.ct-pend__slot{
+  font-family:var(--ds-font-mono);
+  font-size:16px;
+  font-weight:700;
+  line-height:1.4;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ds-ink-soft);
+}
+p.ct-pend__copy{
+  font-size:18px;
+  line-height:1.70;
+  color:var(--ds-ink-soft);
+  max-width:66ch;
+}
+
+/* ==========================================================================
+   BREAKPOINTS. Additive max-width steps only.
+   ========================================================================== */
+
+@media (max-width:1023px){
+  .ct-open{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .ct-open__say{padding-top:0;}
+  .ct-panel{padding:var(--ds-space-md);}
+  .ct-dir__list{grid-template-columns:minmax(0,1fr);}
+  .ct-dir__list > .ct-office:last-child{grid-column:auto;}
+}
+
+@media (max-width:767px){
+  .ct-form__grid{grid-template-columns:minmax(0,1fr);}
+  .ct-field--wide{grid-column:auto;}
+
+  /* the checkbox becomes a full sized tap target. The audience skews 40 plus,
+     so a large control is a readability gain as well as a gate requirement. */
+  .ct-check{width:44px;height:44px;}
+
+  /* the row unstacks in DOM order, which is name, then photograph, then
+     address, then actions. The media can therefore never sit above the heading
+     it belongs to. */
+  .ct-office{grid-template-columns:minmax(0,1fr);row-gap:var(--ds-space-sm);}
+  h3.ct-office__name,
+  address.ct-office__addr,
+  .ct-office__acts{grid-column:auto;grid-row:auto;}
+  .ct-office__fig{grid-column:auto;grid-row:auto;width:100%;max-width:260px;}
+  .ct-office::before{left:calc(-1 * var(--ds-space-xs));}
+}
+
+@media (max-width:479px){
+  .ct-panel{padding:var(--ds-space-sm);border-radius:var(--ds-r-surface);}
+  .ct-consent{padding:var(--ds-space-sm);gap:var(--ds-space-xs);}
+  .ct-send .ct-submit{width:100%;}
+  .ct-office__acts{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:var(--ds-space-2xs);
+  }
+  .ct-office__fig{max-width:none;}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .ct-office:hover .ct-office__fig img,
+  .ct-office:focus-within .ct-office__fig img{transform:none;}
+  .ct-office::before{transform:scaleY(1);}
+}
+
+/* ==========================================================================
+   SECTION 13 - T-COMPANY TEMPLATE LAYER (co-)
+   Promoted body layer for the 1 page of type T-COMPANY, from concept C
+   (owner pick 2026-08-17). Exemplar page: about.
+   ----------------------------------------------------------------------------
+   Mosaic hero over three office photographs, a compact dark argument band, and the two third-party figures side by side including the NOT BBB accredited line the copy insists on.
+   PROMOTED VERBATIM out of the concept fragment inline <style>, as sections 7
+   (T-FEATURE cc-) and 8 (T-HUB hb-) were. A shipped page carries zero inline
+   styling; verify-shell-purity, verify-globals-overlay and
+   verify-no-orphan-classes each police that from a different angle.
+   Appended after section 12, preserving the order the concept was authored and
+   rendered under. Desktop-base with additive max-width step-downs.
+   ========================================================================== */
+/* ============================================================================
+   T-COMPANY CONCEPT C - "THE SOURCED PAGE"
+   Body-fragment scoped layer. Sits ON TOP of radiantsmiles-tokens.css,
+   radiantsmiles-chrome.css and radiantsmiles-structural.css. It adds only the
+   shapes this concept needs that the foundation kit does not already ship.
+
+   NAMESPACE: co- . Every class invented here carries that prefix. The
+   foundation vocabulary (.rs-sec, .rs-h1, .rs-lede, .rs-copy, .rs-btn,
+   .rs-acts, .rs-frame, .rs-grade*, .rs-strong, .surface-dark, .container,
+   .row, .col) is USED and never redeclared: no selector below has one of those
+   names as its key. cc- and hb- are taken by the promoted T-FEATURE and T-HUB
+   templates and appear nowhere here.
+
+   TOKEN PURITY: zero hex literals, zero raw colour functions, zero CSS colour
+   keywords. Every
+   colour, radius, shadow, duration, easing and spacing value below is a
+   var(--ds-*) role token or a calc() over one. Bare px survives only as a
+   border WIDTH, which is how the locked structural sheet writes its own rules.
+
+   RESPONSIVE POLICY: authored DESKTOP FIRST. Every breakpoint rule is an
+   ADDITIVE @media (max-width:N) override at 1023 / 767 / 479. No min-width.
+
+   THE THESIS, in CSS terms. This page is TYPE LED, not card led. The argument
+   sentences ARE the headings, at display scale, so nothing has to be titled
+   with a label the locked copy does not contain. Cards appear exactly once, in
+   the proof section, because a sourced figure is the only thing on this page
+   that is genuinely a discrete object. The single dark anchor sits in the
+   MIDDLE of the page rather than at a bookend, and the closing ask is a lifted
+   light card, not a dark band.
+
+   THE SPECIFICITY TRAP, handled: the foundation declares p.rs-copy at (0,1,1).
+   Nothing here puts .rs-copy and a co- measure on the same element. Where a
+   paragraph needs its own measure it carries a co- class only, and the rule is
+   TYPE QUALIFIED with a leading element name so it reaches (0,1,1) and wins.
+
+   THE CONTRAST LAW as it lands here. --ds-accent is 1.36:1 on the canvas, so on
+   the light grounds it is spent ONLY as the .rs-btn--accent fill, whose label
+   the foundation pins to --ds-primary-deep and whose keyline is carried as a
+   border. No decorative accent mark ships on a light ground at all, which is
+   the strictest reading of the token sheet's KEYLINE RULE. On .surface-dark the
+   accent is a genuine foreground at 7.19:1 worst stop, and it is used there as
+   a 3px graphic bar. --ds-signature carries no text in either direction and
+   appears only as a 3px rule and a panel top edge.
+
+   UTF-8. Visible copy is ASCII. No em or en dashes, no exclamation marks, no
+   emoji anywhere in the rendered page.
+   ============================================================================ */
+
+/* ---- 1 . HERO. Mosaic collage right, type off to the left. ---------------- */
+.co-hero{
+  position:relative;
+  display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+/* the spotlight behind the collage. Inset vertically only: a NEGATIVE
+   horizontal inset escapes the container and grows the document, which is the
+   overflow the locked structural sheet documents at its .rs-spot rule. */
+.co-hero::before{
+  content:"";
+  position:absolute;
+  inset:calc(-1 * var(--ds-space-lg)) 0;
+  z-index:0;
+  pointer-events:none;
+  background-image:var(--ds-glow-wash);
+}
+.co-hero > *{position:relative;z-index:1;}
+.co-hero__copy{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  align-items:flex-start;
+}
+.co-hero__art{min-width:0;}
+
+/* the collage. Two columns of unequal weight, the right one dropped by a full
+   xl step so the tiles read as a composed group rather than a photo grid. */
+.co-mosaic{display:flex;gap:var(--ds-space-sm);align-items:flex-start;}
+.co-mosaic__l{flex:1.12 1 0;min-width:0;}
+.co-mosaic__r{
+  flex:.88 1 0;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  padding-top:var(--ds-space-xl);
+}
+/* .co-tile rides on the same element as .rs-frame and only ADDS properties the
+   foundation frame does not declare (aspect ratio, elevation, its own hover).
+   The frame's radius, clipping, object-fit and image grade come from the locked
+   sheet and are untouched. */
+.co-tile{
+  box-shadow:var(--ds-shadow-card);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.co-tile:hover{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+  box-shadow:var(--ds-shadow-lift);
+}
+/* the zoom inherits its 600ms transition from the locked .rs-frame img rule. */
+.co-tile:hover img{transform:scale(1.04);}
+.co-tile--lead{aspect-ratio:3 / 4;}
+.co-tile--a{aspect-ratio:4 / 3;}
+.co-tile--b{aspect-ratio:1 / 1;}
+
+/* ---- 2 . THE SENTENCE HEADING. The page's whole typographic argument. ----- */
+/* Every section heading on this page is a SENTENCE lifted from the locked copy,
+   never a label invented to sit above it. That is why the scale sits one step
+   under .rs-h2 and the measure runs wider than the foundation's 20ch: a
+   sentence needs room to be read, where a two word label does not. */
+h2.co-say{
+  font-size:clamp(26px,3.2vw,40px);
+  line-height:1.18;
+  letter-spacing:-.018em;
+  max-width:24ch;
+}
+p.co-lead-in{
+  font-family:var(--ds-font-display);
+  font-size:clamp(19px,1.9vw,22px);
+  line-height:1.4;
+  font-weight:600;
+  color:var(--ds-ink-soft);
+  max-width:34ch;
+}
+/* the decorative section rule. --ds-signature is 3.94:1 on light, which carries
+   no text but is legal as a boundary graphic. It never ships on a dark ground
+   here, where it falls to 2.47:1. */
+.co-rule{
+  display:block;
+  width:var(--ds-space-lg);
+  height:3px;
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-signature);
+}
+/* the promoted figure. A reader checking a claim scans for the number, so the
+   number is raised typographically WITHOUT the sentence around it being split,
+   reordered or reworded. */
+.co-fig{
+  font-family:var(--ds-font-display);
+  font-weight:700;
+  font-size:1.1em;
+  letter-spacing:-.012em;
+  color:var(--ds-ink);
+  font-variant-numeric:tabular-nums;
+}
+
+/* ---- 3 . STORY. Claim left, the sourced record beside it. ----------------- */
+.co-story{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,.84fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+.co-story__head{display:flex;flex-direction:column;gap:var(--ds-space-sm);}
+/* the record panel. A real gradient, not a flat fill: the panel lifts out of
+   the band ground at its top edge and settles into the card ground at its base,
+   which is what makes it read as an object on this section's deeper beat. */
+.co-story__panel{
+  background:linear-gradient(180deg,var(--ds-bg-surface),var(--ds-canvas) 46%);
+  border:1px solid var(--ds-hairline);
+  border-top:3px solid var(--ds-signature);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+  padding:var(--ds-space-lg);
+  transition:box-shadow var(--ds-dur) var(--ds-ease),
+             transform var(--ds-dur) var(--ds-ease);
+}
+.co-story__panel:hover{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+}
+
+/* ---- 4 . THE WHY. The dark anchor, mid page, and entirely typographic. ---- */
+/* No photograph sits in this section on purpose. The claim it makes is about
+   ownership structure, and there is no honest photograph of an ownership
+   structure. Filling the space with an office interior would be decoration
+   standing in for evidence, which is the exact move this rebuild removes. */
+.co-why{
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);
+  gap:var(--ds-space-xl);
+  align-items:start;
+}
+.co-why__args{display:flex;flex-direction:column;}
+.co-why__p{
+  padding-block:var(--ds-space-md);
+  border-top:1px solid var(--ds-line);
+}
+.co-why__p:first-child{border-top:0;padding-top:0;}
+/* the turn. The concession and the claim it earns, lifted onto panel chrome so
+   the eye lands there last. On this ground --ds-accent is a genuine foreground
+   at 7.19:1 worst stop, so the bar is the accent rather than the signature,
+   which falls to 2.47:1 here and would be a ghost. */
+.co-why__p--turn{
+  border-top:0;
+  border-left:3px solid var(--ds-accent);
+  background:var(--ds-bg-surface);
+  border-radius:var(--ds-r-control);
+  box-shadow:var(--ds-shadow-lift);
+  padding:var(--ds-space-md) var(--ds-space-md) var(--ds-space-md) var(--ds-space-lg);
+  margin-top:var(--ds-space-md);
+}
+
+/* ---- 5 . VALUES. One statement, one room, and a visible amount of air. ---- */
+.co-values{
+  display:grid;
+  grid-template-columns:minmax(0,1.06fr) minmax(0,.94fr);
+  gap:var(--ds-space-xl);
+  align-items:center;
+}
+.co-values__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+/* the statement is the section's focal object: display face, one step under the
+   sentence heading, held to a short measure so it reads as a held line. */
+p.co-values__say{
+  font-family:var(--ds-font-display);
+  font-size:clamp(23px,2.7vw,33px);
+  line-height:1.3;
+  letter-spacing:-.015em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:26ch;
+}
+.co-values__frame{
+  aspect-ratio:4 / 3;
+  box-shadow:var(--ds-shadow-card);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.co-values__frame:hover{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+  box-shadow:var(--ds-shadow-lift);
+}
+.co-values__frame:hover img{transform:scale(1.04);}
+
+/* ---- 6 . PROOF. The only card system on the page. ------------------------- */
+.co-proof{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  align-items:stretch;
+  margin-top:var(--ds-space-md);
+}
+.co-rec{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  background:var(--ds-canvas);
+  border:1px solid var(--ds-hairline);
+  border-top:3px solid var(--ds-signature);
+  border-radius:var(--ds-r-surface);
+  box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
+  padding:var(--ds-space-lg);
+  transition:transform var(--ds-dur) var(--ds-ease),
+             box-shadow var(--ds-dur) var(--ds-ease);
+}
+.co-rec:hover{
+  transform:translateY(calc(-1 * var(--ds-space-2xs)));
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);
+}
+/* the line the whole page exists to keep. It is raised to the scale of a
+   sub heading so it cannot be skimmed past, and it stays inside the same card
+   as the rating it qualifies. */
+.co-hard{
+  display:block;
+  font-family:var(--ds-font-display);
+  font-size:clamp(19px,1.9vw,22px);
+  line-height:1.35;
+  margin-top:var(--ds-space-2xs);
+}
+p.co-note{
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ds-ink-soft);
+  max-width:72ch;
+  margin-top:var(--ds-space-md);
+  padding-top:var(--ds-space-md);
+  border-top:1px solid var(--ds-line);
+}
+
+/* ---- 7 . CLOSE. A lifted light card, deliberately not a dark band. -------- */
+.co-close{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--ds-space-md);
+  background:linear-gradient(180deg,var(--ds-canvas),var(--ds-bg-surface));
+  border:1px solid var(--ds-hairline);
+  border-radius:calc(var(--ds-r-surface) * 1.6);
+  box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi),var(--ds-accent-keyline);
+  padding:clamp(var(--ds-space-lg),4vw,var(--ds-space-xl));
+}
+p.co-close__say{
+  font-family:var(--ds-font-display);
+  font-size:clamp(24px,3vw,36px);
+  line-height:1.24;
+  letter-spacing:-.018em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+  max-width:22ch;
+}
+
+/* ---- 8 . BREAKPOINTS. Additive max-width steps only. --------------------- */
+@media (max-width:1023px){
+  .co-hero{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .co-mosaic__r{padding-top:var(--ds-space-md);}
+  .co-story{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .co-why{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+  .co-values{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
+}
+@media (max-width:767px){
+  /* the collage folds to a lead plate over a pair. Source order is copy, then
+     lead, then pair, so no photograph can arrive above the heading it belongs
+     to once the grid collapses. */
+  .co-mosaic{flex-direction:column;}
+  .co-mosaic__r{flex-direction:row;padding-top:0;}
+  .co-mosaic__r > *{flex:1 1 0;min-width:0;}
+  .co-tile--lead{aspect-ratio:16 / 11;}
+  .co-tile--a,
+  .co-tile--b{aspect-ratio:1 / 1;}
+  .co-values__frame{aspect-ratio:16 / 11;}
+  .co-proof{grid-template-columns:minmax(0,1fr);}
+  .co-why__p--turn{padding:var(--ds-space-md);}
+}
+@media (max-width:479px){
+  .co-story__panel{padding:var(--ds-space-md);}
+  .co-rec{padding:var(--ds-space-md);}
+  .co-close{border-radius:var(--ds-r-surface);}
+}
+
+/* A3 ch->rem 2026-08-17. verify-design-foundation's (A3) check requires a ch max-width to sit on a
+   rule that itself declares the display font, because ch otherwise resolves against the body font.
+   These seven were promoted with ch and made the gate fail CLOSED on the WHOLE sheet, which blocked
+   every edit to it including unrelated ones. Each ch is restated as rem at its MEASURED computed
+   max-width at a verified 16px root, so nothing moves; the change is proven by a full-page pixel
+   diff on the three pages that render them. Same remedy the T-FEATURE section 7 promotion used. */
