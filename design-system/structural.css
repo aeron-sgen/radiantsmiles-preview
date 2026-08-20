@@ -913,30 +913,6 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   flex-direction:column;
   gap:var(--ds-space-xs);
 }
-/* .rs-float.hb-invert -- the float wearing the SOLID panel skin used by the T-HUB fork
-   (hb-fork__panel on new-patients), owner request 2026-08-20. .hb-invert already wins the
-   background, colour, radius and shadow on source order, but .rs-float's own glass leftovers do not
-   belong on an opaque panel: a 1px translucent border reads as a seam over a solid ground, and a
-   backdrop-filter over an opaque background costs a compositor layer for nothing. Both are cleared
-   here so the two panels match rather than merely resemble each other. */
-.rs-float.hb-invert{
-  border:0;
-  backdrop-filter:none;
-  -webkit-backdrop-filter:none;
-  padding:var(--ds-space-lg);
-}
-/* THE FIGURES MUST FOLLOW THE GROUND. .cc-fig carries a light colour chosen for the DARK glass this
-   float used to be; on the inverted panel it painted rgb(233,243,243) on rgb(208,232,228) --
-   measured 1.14:1 against a 3.0 floor for large text, i.e. the "$45" and "$29" were effectively
-   invisible. NOTHING IN THE 52-GATE BATTERY CATCHES THIS: the page promoted 52/52 in that state,
-   exactly as dr-adrian-ruiz once shipped 1.40:1 text. Only the painted-pixel probe found it.
-   Inheriting the panel's own ink keeps the figures readable on whatever ground the panel takes. */
-.rs-float.hb-invert{
-  --ds-ink:var(--ds-primary-deep);
-  --ds-ink-soft:var(--ds-primary-deep);
-  --ds-ink-heading:var(--ds-primary-deep);
-}
-.rs-float.hb-invert .cc-fig{color:inherit;}
 
 @media (min-width:1060px){
   .rs-hero__inner{grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:var(--ds-space-xl);}
