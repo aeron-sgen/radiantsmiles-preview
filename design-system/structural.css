@@ -799,15 +799,31 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   text-decoration:none;
   color:var(--ds-ink-heading);
 }
+/* 50% AT REST, FULL TEXT ON HOVER (owner request 2026-08-20).
+   THE BOX HAD TO BE FIXED FIRST. A positioned bar is anchored to the LINK BOX, and the box is not
+   always the text: .rs-qlink is inline-flex, but inside a .rs-stack (a flex column) it becomes a
+   flex ITEM and stretches to the full column -- measured on index, "All seven offices" rendered a
+   476px box around 134px of text, a 343px overhang. That is why every earlier bar looked like it ran
+   across the whole container: on that link it did. align-self:start makes the box hug its text in
+   ANY flex parent, so left:0/right:0 now means "the text" on every link, and the 50% is 50% of the
+   words rather than 50% of whatever the column happens to be.
+   scaleX is used rather than width so the two states are exact halves of the same measured length,
+   and it animates on the compositor. */
+.rs-qlink{
+  align-self:start;
+  width:fit-content;
+  max-width:100%;
+}
 .rs-qlink::after{
   content:"";
   position:absolute;
   left:0;
   right:0;
-  bottom:10px;
+  bottom:6px;
   height:2px;
+  border-radius:var(--ds-r-pill);
   background:var(--rs-rule);
-  transform:scaleX(.26);
+  transform:scaleX(.5);
   transform-origin:left center;
   transition:transform var(--ds-dur) var(--ds-ease-out);
 }
@@ -1301,13 +1317,14 @@ p.cc-proof__scope{
 }
 
 /* ---- 8 . THE ACCORDION. Real disclosure, no script. ----------------------- */
-.cc-faq{display:grid;gap:var(--ds-space-md);max-width:50.58rem;}
-/* --full: opt a cc-faq block OUT of the reading-measure cap. The 50.58rem above is correct for a
-   FAQ, whose answers are prose and need a measure. The HOME's specialty switcher uses the same
-   component as a ROUTER -- six one-line descriptions -- where the cap leaves ~370px of dead space
-   beside it at 1440 and reads lopsided. Additive: the base rule is unchanged, so all 39 FAQ pages
-   are unaffected. */
-.cc-faq--full{max-width:none;}
+.cc-faq{display:grid;gap:var(--ds-space-md);}
+/* THE CARD FILLS ITS COLUMN (owner request 2026-08-20, applied site-wide).
+   This carried max-width:50.58rem (809px), which was there to protect a reading measure. MEASURED,
+   it was not doing that job: the ANSWER prose carries its own cap via p.rs-copy at 647px, and it
+   renders at exactly 647px whether the card is 809px (faq, dental-implants, bruxism) or 1132px
+   (index). So the container cap only ever narrowed the CARD -- leaving ~320px of dead space beside
+   it at 1440 -- while readability was governed one level down the whole time. Removing it widens the
+   panel and changes the text measure by nothing. */
 .cc-faq__item{padding-inline:var(--ds-space-lg);}
 .cc-faq__item[open]{box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);}
 .cc-faq__q{
