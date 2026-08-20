@@ -258,21 +258,30 @@ h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-headi
   text-transform:uppercase;
   color:var(--ds-ink-soft);
 }
-/* the short accent rule that sits beside the kicker. Decorative only. */
-.rs-eyebrow::after{
-  content:"";
-  flex:none;
-  width:var(--ds-space-lg);
-  height:3px;
-  border-radius:var(--ds-r-pill);
-  background:var(--rs-rule);
-}
+/* .rs-eyebrow::after REMOVED 2026-08-20 at owner request. It was the short decorative
+   accent dash beside the kicker (40x3px, --rs-rule). Purely ornamental: it carried no content, no
+   label and no state, so removing it loses no information and no affordance. .rs-eyebrow keeps its
+   flex/gap declarations, which now simply have nothing to space against. Remaining users of the
+   class are the blue-diamond and summerlin cross-link rail labels; index no longer carries an
+   eyebrow at all. */
 
 .rs-h1{
   font-size:clamp(38px,6vw,62px);
   line-height:1.06;
   letter-spacing:-.02em;
   max-width:15ch;
+}
+
+/* P13 mobile: release the headline measure on phones. STRICTLY ADDITIVE and inside a max-width
+   query, so desktop is untouched by construction (the P13 desktop_safe rule). WHY: 15ch is a
+   sensible cap at the 62px desktop size, but at the 38px phone size it computes to 325px inside a
+   358px column -- the hero headline gives back 33px, about 9% of the usable width, and wraps
+   earlier than it needs to. Measured on every hero type: index, dental-implants, services,
+   north-las-vegas, about all cap at 325/358; dr-adrian-ruiz at 336/358. The container gutter is
+   already tight at 16px a side (92% of a 390px viewport), so the width was being lost HERE, not to
+   the page margins. */
+@media (max-width:767px){
+  .rs-h1{max-width:none;}
 }
 .rs-h2{
   font-size:clamp(30px,4vw,44px);
@@ -499,7 +508,7 @@ p.rs-copy{
   .rs-split{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;}
   .rs-split--flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);}
 }
-.rs-stack{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+.rs-stack{display:flex;flex-direction:column;gap:var(--ds-space-lg);}
 
 /* THE MEDIA + CARDS LAW (CARD-VARIATIONS.md / SECTION-COMPONENTS.md #11, the
    top-of-file composition law in both menus). When one feature photograph is
@@ -749,6 +758,19 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
 .rs-btn--block{width:100%;}
 .rs-acts{display:flex;flex-wrap:wrap;gap:var(--ds-space-sm);}
 
+/* P13 mobile: action buttons fill their container. STRICTLY ADDITIVE, inside a max-width query, so
+   desktop keeps its content-width buttons (the P13 desktop_safe rule). WHY: .rs-acts lets each
+   .rs-btn size to its label and wrap, which on a phone renders a ragged pair -- measured on the home
+   hero at 390px, 223px and 162px buttons inside a 358px column. Two actions of different widths,
+   left-aligned, read as an accident rather than a pair. Stacking them full-width also gives each the
+   full 358px tap target instead of 162px, which matters on a build whose BRAND-CARD lock is
+   age-tuned for a 40+ primary audience. Uses the same width:100% the sheet already ships as
+   .rs-btn--block. */
+@media (max-width:767px){
+  .rs-acts{flex-direction:column;align-items:stretch;width:100%;align-self:stretch;}
+  .rs-acts > .rs-btn{width:100%;}
+}
+
 /* the phone number. First-class UI for a seven-office practice: 20px, tabular,
    a real 48px target, and never smaller than the body text around it. */
 .rs-tel{
@@ -923,6 +945,15 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    cannot disturb this sheet's card elevation rhythm. */
 .container{width:100%;}
 .row{display:block;}
+
+/* row-to-row breathing space. A section that stacks two .row blocks had NO separation between them:
+   measured 6 of 8 multi-row pairs across the build at 0px, so the second row's first element butted
+   straight against the first row's last. The two pairs that did have 40px got it incidentally from a
+   child's own margin, not from any rule -- i.e. the spacing was accidental wherever it existed.
+   Adjacent-sibling so single-row sections are untouched. --ds-space-xl (64px) is chosen to sit
+   BETWEEN the 40px block gap (.rs-stack) and the 96px section padding (--rs-sec-pad), giving a real
+   hierarchy: 40 within a block, 64 between rows, 96 between sections. Token-pure, no new value. */
+.row + .row{margin-top:var(--ds-space-xl);}
 .col{display:block;min-width:0;}
 
 /* ==========================================================================
@@ -1265,6 +1296,12 @@ p.cc-proof__scope{
 
 /* ---- 8 . THE ACCORDION. Real disclosure, no script. ----------------------- */
 .cc-faq{display:grid;gap:var(--ds-space-md);max-width:50.58rem;}
+/* --full: opt a cc-faq block OUT of the reading-measure cap. The 50.58rem above is correct for a
+   FAQ, whose answers are prose and need a measure. The HOME's specialty switcher uses the same
+   component as a ROUTER -- six one-line descriptions -- where the cap leaves ~370px of dead space
+   beside it at 1440 and reads lopsided. Additive: the base rule is unchanged, so all 39 FAQ pages
+   are unaffected. */
+.cc-faq--full{max-width:none;}
 .cc-faq__item{padding-inline:var(--ds-space-lg);}
 .cc-faq__item[open]{box-shadow:var(--ds-shadow-lift),var(--ds-inset-hi);}
 .cc-faq__q{
