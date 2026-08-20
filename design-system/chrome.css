@@ -169,7 +169,11 @@ ul{margin:0;padding:0;list-style:none;}
   transition:opacity var(--ds-dur) var(--ds-ease);
 }
 .is-condensed .wordmark__name{font-size:25px;}
-.is-condensed .wordmark__lockup{opacity:0;}
+/* The condensed (scrolled) header keeps the full lockup. Was opacity:0, which faded "DENTAL CARE"
+   out on scroll and left the wordmark reading "Radiant Smiles" alone. Changed at owner request
+   2026-08-20. This is opacity only -- the element already reserved its layout space in the condensed
+   state, so showing it shifts nothing; only the name's font-size step (32px -> 25px) still applies. */
+.is-condensed .wordmark__lockup{opacity:1;}
 
 /* ---- lower row: the grouped mega-nav, separated by the ledger hairline -------------- */
 .hdr-row--nav{border-top:1px solid var(--ds-line);}
@@ -689,4 +693,21 @@ ul{margin:0;padding:0;list-style:none;}
   .mega,.drop-panel,.mega .cat,.mega .loc,.mega .feat{transform:none!important;}
   .qlink::after{transform:scaleX(1)!important;}
   .btn--accent:hover{transform:none!important;}
+}
+
+/* ==========================================================================
+   MOBILE: centre the wordmark in the bar (owner request 2026-08-20)
+   The <=1100px block collapses the identity row to `1fr auto` and pins the
+   wordmark with justify-self:start, so it sat hard left -- measured 98-101px
+   off centre at 390px (wordmark centre 94, viewport centre 195). Restoring a
+   THREE-track grid with a spacer equal to the hamburger's 52px makes the
+   centring optical rather than approximate, and both edge elements are placed
+   EXPLICITLY so the hamburger stays the rightmost element in the bar (the T4
+   condition recorded on the CHROME owner stamp). Appended last so it wins at
+   equal specificity without editing the block above.
+   ========================================================================== */
+@media (max-width:1100px){
+  .hdr-row--identity{grid-template-columns:52px 1fr 52px;}
+  .wordmark{grid-column:2;justify-self:center;align-items:center;text-align:center;}
+  .site-header__hamburger{grid-column:3;justify-self:end;}
 }
