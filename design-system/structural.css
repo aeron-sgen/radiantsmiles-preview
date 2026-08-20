@@ -285,9 +285,23 @@ h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-headi
 }
 .rs-h2{
   font-size:clamp(30px,4vw,44px);
-  line-height:1.10;
+  /* 1.10 -> 1.18 (owner: "they look smushed together"). 1.10 is a DISPLAY leading and it is right for
+     .rs-h1, which is 62px and usually one or two lines. .rs-h2 clamps to 30-44px and, measured on the
+     shipped pages, routinely runs THREE lines -- at 44px that left 4px between glyph boxes, so the
+     descenders of one line nearly met the caps of the next. 1.18 gives 52px at 44px and 35px at 30px,
+     and it sits between .rs-h1's 1.06 and .rs-h3's 1.20, so the type scale keeps its order: the
+     larger the face, the tighter the leading. */
+  line-height:1.18;
   letter-spacing:-.015em;
-  max-width:20ch;
+  /* NO MEASURE CAP -- the heading uses the full column (owner request 2026-08-20).
+     This was 20ch (502px), then 34ch (854px). Both were breaking headings harder than the layout
+     required: measured across six pages, TWELVE .rs-h2 headings wrapped while their natural one-line
+     width fitted the 1132px column comfortably. With the cap gone every heading that fits the column
+     sets on ONE line, and only genuinely longer text wraps -- "Six areas of care. All of them in
+     house, at all seven offices." needs 1168px against a 1132px column, so it still takes two lines
+     at the locked 44px; no cap can fix that, only a smaller face or different copy.
+     TRADE-OFF, stated: a 44px heading now measures up to 1132px, which is a long line for display
+     type. The type scale's own guard is gone, so line length is governed by the column alone. */
 }
 .rs-h3{
   font-size:clamp(22px,2.4vw,28px);
@@ -899,15 +913,56 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   flex-direction:column;
   gap:var(--ds-space-xs);
 }
+/* .rs-float.hb-invert -- the float wearing the SOLID panel skin used by the T-HUB fork
+   (hb-fork__panel on new-patients), owner request 2026-08-20. .hb-invert already wins the
+   background, colour, radius and shadow on source order, but .rs-float's own glass leftovers do not
+   belong on an opaque panel: a 1px translucent border reads as a seam over a solid ground, and a
+   backdrop-filter over an opaque background costs a compositor layer for nothing. Both are cleared
+   here so the two panels match rather than merely resemble each other. */
+.rs-float.hb-invert{
+  border:0;
+  backdrop-filter:none;
+  -webkit-backdrop-filter:none;
+  padding:var(--ds-space-lg);
+}
+/* THE FIGURES MUST FOLLOW THE GROUND. .cc-fig carries a light colour chosen for the DARK glass this
+   float used to be; on the inverted panel it painted rgb(233,243,243) on rgb(208,232,228) --
+   measured 1.14:1 against a 3.0 floor for large text, i.e. the "$45" and "$29" were effectively
+   invisible. NOTHING IN THE 52-GATE BATTERY CATCHES THIS: the page promoted 52/52 in that state,
+   exactly as dr-adrian-ruiz once shipped 1.40:1 text. Only the painted-pixel probe found it.
+   Inheriting the panel's own ink keeps the figures readable on whatever ground the panel takes. */
+.rs-float.hb-invert{
+  --ds-ink:var(--ds-primary-deep);
+  --ds-ink-soft:var(--ds-primary-deep);
+  --ds-ink-heading:var(--ds-primary-deep);
+}
+.rs-float.hb-invert .cc-fig{color:inherit;}
 
 @media (min-width:1060px){
   .rs-hero__inner{grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:var(--ds-space-xl);}
+  /* The card sits AT the bottom edge of the image (owner request 2026-08-20). It was
+     bottom:var(--ds-space-lg), i.e. floating 40px up from the frame's base -- measured on index at
+     1440 the card's bottom was 660 against an image bottom of 700, so it hung in the lower middle of
+     the photograph rather than anchoring to it. bottom:0 seats it on the image's bottom edge; the
+     left overhang is kept, so the card still reads as overlapping the frame rather than contained
+     by it. Desktop-only: this whole block is min-width:1060px, and below that the card returns to
+     the flow-with-negative-margin treatment. */
+  /* The card STRADDLES the image's bottom edge, half over and half below (owner request
+     2026-08-20), matching the T-HUB fork panel on new-patients. Measured there: the panel is inset
+     40px inside the frame on both sides and crosses the frame's base rather than sitting inside it.
+     Index previously did the opposite -- it hung 40px OUT to the left and sat wholly within the
+     image (100% of the panel over the frame, 0px below).
+     translateY(50%) is used rather than a negative `bottom` because percentage insets resolve
+     against the CONTAINING BLOCK, not the element: a transform percentage resolves against the
+     element's OWN height, so the split stays exactly half regardless of how the copy wraps. */
   .rs-float{
     position:absolute;
-    left:calc(-1 * var(--ds-space-lg));
-    bottom:var(--ds-space-lg);
+    left:var(--ds-space-lg);
+    right:var(--ds-space-lg);
+    bottom:0;
+    transform:translateY(50%);
     margin:0;
-    max-width:330px;
+    max-width:none;
   }
 }
 
@@ -1778,7 +1833,10 @@ p.hb-cost__lead{
   letter-spacing:-.018em;
   font-weight:600;
   color:var(--ds-ink-heading);
-  max-width:24ch;
+  /* NO MEASURE CAP -- uses the full container, matching .rs-h2 (owner request 2026-08-20).
+     This was 24ch, which computed to ~329px inside a 358px column on mobile and clipped the lead
+     into extra lines on desktop for the same reason .rs-h2's 20ch did. 11 instances across 10 pages.
+     Same trade-off as .rs-h2: line length is now governed by the column, not by the type scale. */
 }
 /* the cost-model rules. One whole sentence per row, never a fragment. */
 .hb-rules{display:flex;flex-direction:column;gap:var(--ds-space-sm);margin-top:var(--ds-space-2xs);}
@@ -3685,7 +3743,14 @@ p.ct-pend__copy{
 
 /* the collage. Two columns of unequal weight, the right one dropped by a full
    xl step so the tiles read as a composed group rather than a photo grid. */
-.co-mosaic{display:flex;gap:var(--ds-space-sm);align-items:flex-start;}
+/* The two columns now ALIGN top and bottom (owner: "the images look disorganized", 2026-08-20).
+   Measured before: the lead tile was 274px while the right stack ran 462px (a 64px padding-top drop
+   plus two 192px tiles), so the right column overhung the left by 188px and the group read as three
+   photographs that had landed at random rather than one composed block. align-items:stretch plus
+   dropping the padding makes the right column exactly as tall as the lead, and the two small tiles
+   divide that height between them. The lead keeps its 3/4; the small tiles take their height from
+   the column instead of a fixed ratio, which is what lets the block square off. */
+.co-mosaic{display:flex;gap:var(--ds-space-sm);align-items:stretch;}
 .co-mosaic__l{flex:1.12 1 0;min-width:0;}
 .co-mosaic__r{
   flex:.88 1 0;
@@ -3693,8 +3758,8 @@ p.ct-pend__copy{
   display:flex;
   flex-direction:column;
   gap:var(--ds-space-sm);
-  padding-top:var(--ds-space-xl);
 }
+.co-mosaic__r > .co-tile{flex:1 1 0;aspect-ratio:auto;min-height:0;}
 /* .co-tile rides on the same element as .rs-frame and only ADDS properties the
    foundation frame does not declare (aspect ratio, elevation, its own hover).
    The frame's radius, clipping, object-fit and image grade come from the locked
@@ -3710,9 +3775,15 @@ p.ct-pend__copy{
 }
 /* the zoom inherits its 600ms transition from the locked .rs-frame img rule. */
 .co-tile:hover img{transform:scale(1.04);}
+/* All three mosaic tiles share the LEAD's 3/4 portrait ratio (owner: "fix the images", 2026-08-20).
+   They were 3/4, 4/3 and 1/1 -- three different shapes in one cluster. Every source asset here is
+   768x1152, i.e. 2:3 PORTRAIT, so the 4/3 landscape and 1/1 square crops were cutting the most off
+   the original and the group read as three unrelated pictures rather than one set. 3/4 is the
+   closest of the three to the native 2:3, so it crops the least, and a single shared ratio lets the
+   sizes differ (the lead stays larger) without the SHAPES disagreeing. */
 .co-tile--lead{aspect-ratio:3 / 4;}
-.co-tile--a{aspect-ratio:4 / 3;}
-.co-tile--b{aspect-ratio:1 / 1;}
+.co-tile--a{aspect-ratio:3 / 4;}
+.co-tile--b{aspect-ratio:3 / 4;}
 
 /* ---- 2 . THE SENTENCE HEADING. The page's whole typographic argument. ----- */
 /* Every section heading on this page is a SENTENCE lifted from the locked copy,
@@ -3945,3 +4016,34 @@ p.co-close__say{
    max-width at a verified 16px root, so nothing moves; the change is proven by a full-page pixel
    diff on the three pages that render them. Same remedy the T-FEATURE section 7 promotion used. */
 
+
+/* ==========================================================================
+   COLUMN STACK SPACING (owner: "fix the spacing", 2026-08-20)
+   A .col is display:block, so children stacked directly inside it sit at 0px
+   unless something else supplies a margin. Measured across 30 built pages: 28
+   adjacent pairs rendered with NO separation at all -- on cosmetic-dentistry the
+   hero ran h1 -> lede -> copy -> buttons with gap-after=0 on every one, which is
+   why it read cramped. Pages that looked right were the ones whose author had
+   wrapped the children in .rs-stack; the rest had nothing.
+   The owl selector gives every .col the same 40px rhythm .rs-stack already uses,
+   so the two agree instead of depending on which wrapper a page happened to use.
+   Absolutely-positioned decoration (.rs-tex, .rs-grade) is unaffected -- margin
+   does not apply to it -- and a single-child .col is untouched.
+   ========================================================================== */
+main .col > * + *{margin-top:var(--ds-space-lg);}
+/* ...and NEVER on the first child. Removing the decorative .co-rule from about.html left .co-proof
+   as the first element in its column, and .co-proof carries its own 24px top margin -- which had
+   been sitting between siblings and now pushed the whole SECTION down, breaking section-rhythm's
+   "leading must equal trailing" rule (§4 measured 120px top against 96px bottom at 1440, 88/64 at
+   768 and 375). A first child must never add space above itself; the section's own padding owns
+   that edge. */
+main .col > :first-child{margin-top:0;}
+/* ...and not after DECORATION either. .rs-tex and .ar-wash are absolutely-positioned texture layers
+   that sit as real DOM children of .col, so `* + *` saw the element after them as "second" and gave
+   it a top margin -- even when it was the first thing actually in flow. That pushed whole sections
+   down and BLOCKED contact.html on G-CADENCE (§1 measured 136px leading against 96px trailing at
+   1440, 104/64 at 768 and 375: a clean 40px, exactly one --ds-space-lg). Enumerated rather than
+   guessed: a scan of 24 built pages found these are the ONLY absolutely-positioned direct children
+   of a .col anywhere in the build. */
+main .col > .rs-tex + *,
+main .col > .ar-wash + *{margin-top:0;}
