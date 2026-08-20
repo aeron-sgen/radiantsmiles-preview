@@ -799,44 +799,20 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   text-decoration:none;
   color:var(--ds-ink-heading);
 }
-/* THE ARROW (owner request 2026-08-20). This was a 2px rule scaled to 26% -- a short dash under the
-   label that grew to full width on hover. It now reads as a right arrow, matching the ledger arrow
-   the T-HUB index rows already use (.hb-route__go, the inline SVG path "M4 11h14M12.5 5.5 18 11l-5.5
-   5.5" seen on periodontics.html).
-   DRAWN IN PURE CSS, deliberately: ::before is the shaft, ::after the head. The alternative was a
-   data-URI mask of that same SVG, but the sheet contains ZERO data URIs and ZERO mask rules today,
-   and a mask that is unsupported degrades to a solid block over the text. Two borders and a rotate
-   have no such failure mode and need no @supports guard. currentColor means the arrow inherits the
-   link colour on light, band and dark grounds alike, which the old --rs-rule dash did not.
-   The hover keeps the original gesture -- the dash grew rightward, the arrow travels rightward. */
-.rs-qlink{gap:10px;}
-.rs-qlink::before{
-  content:"";
-  width:16px;
-  height:2px;
-  flex:none;
-  order:1;
-  border-radius:var(--ds-r-pill);
-  background:currentColor;
-  transition:width var(--ds-dur) var(--ds-ease-out);
-}
 .rs-qlink::after{
   content:"";
-  width:8px;
-  height:8px;
-  flex:none;
-  order:2;
-  margin-left:-9px;
-  border-top:2px solid currentColor;
-  border-right:2px solid currentColor;
-  border-radius:1px;
-  transform:rotate(45deg);
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:10px;
+  height:2px;
+  background:var(--rs-rule);
+  transform:scaleX(.26);
+  transform-origin:left center;
   transition:transform var(--ds-dur) var(--ds-ease-out);
 }
-.rs-qlink:hover::before,
-.rs-qlink:focus-visible::before{width:24px;}
 .rs-qlink:hover::after,
-.rs-qlink:focus-visible::after{transform:rotate(45deg) translate(2px,-2px);}
+.rs-qlink:focus-visible::after{transform:scaleX(1);}
 
 /* ==========================================================================
    9 . FOCUS. A solid control-weight ring plus the token halo, so it survives
