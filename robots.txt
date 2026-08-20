@@ -1,0 +1,19 @@
+# Radiant Smiles Dental Care
+#
+# Shipped production-correct: this file travels with the built bundle, so a
+# "Disallow: /" written for the staging preview would silently de-index the real
+# site the moment the bundle is copied to the production domain.
+#
+# NOTE ON THE PREVIEW HOST: crawlers read robots.txt only from a HOST ROOT
+# (https://<host>/robots.txt). On GitHub project pages the bundle is served from
+# a subpath, so THIS file is not consulted there and cannot gate crawling of the
+# preview. To keep the preview out of search, make the preview repo private or
+# publish a robots.txt in the host-root user-pages repo — not here.
+#
+# AT PRODUCTION LAUNCH: regenerate sitemap.xml against the production domain and
+# update the Sitemap line below to match.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://aeron-sgen.github.io/radiantsmiles-preview/sitemap.xml

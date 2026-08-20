@@ -2253,6 +2253,16 @@ p.ar-limit__t{
   color:var(--ds-ink);
   max-width:54ch;
 }
+/* .ar-limit pins its OWN ground: --ds-primary-soft is #D2E8E6 on BOTH surfaces -- the token
+   sheet re-points it under .surface-dark to the SAME inverse chip, so it does not flip.
+   --ds-ink DOES flip (#09302D light -> #E9F3F3 dark), so inside a .surface-dark section the
+   panel painted near-white ink on its near-white fill: measured 1.13:1 on dr-stephanie-andrade
+   (rverify, all 4 breakpoints) -- the exact trap dr-victoria-quizon's authoring note predicted
+   at "about 1.2:1" and sidestepped by not using the block on a dark ground.
+   A component that pins its own ground must pin its own ink. --ds-primary-deep does not flip
+   either, and the token sheet rates it 9.42:1 on this fill. Scoped to .surface-dark so the six
+   light-ground doctor pages that already pass render byte-identically. */
+.surface-dark p.ar-limit__t{color:var(--ds-primary-deep);}
 
 @media (max-width:1023px){
   .ar-two{
