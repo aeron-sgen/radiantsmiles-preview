@@ -309,6 +309,13 @@ ul{margin:0;padding:0;list-style:none;}
              box-shadow var(--ds-dur) var(--ds-ease);
 }
 .cat:nth-child(2n){border-left:1px solid var(--ds-line);}
+/* OWNER FIX 2026-08-21: kill the TRAILING rule under the last grid row. Every .cat draws a
+   border-bottom, so the final row (Periodontics / Orthodontics) closed the ledger with a line
+   that had nothing under it -- it sat 129px above the panel's own bottom edge and read as an
+   empty strip rather than a divider. The grid's border-top and the between-row dividers are
+   the ones doing real work and are untouched, as is the .cat:nth-child(2n) centre rule above.
+   :nth-last-child(-n+2) is exactly the final row of this 2-column grid (6 items, even). */
+.cat-grid > .cat:nth-last-child(-n+2){border-bottom:0;}
 /* the lift is a background wash + a --ds-signature left rule. No shadow pop. */
 .cat:hover,.cat:focus-visible{
   background:var(--ds-bg-surface);

@@ -2177,7 +2177,12 @@ h1.ar-name{
 .ar-record > p:last-child{border-bottom:0;}
 
 /* the credential itself, at display scale. This is the one sentence a reader
-   came for, so it is the largest run of type on the page after the name. */
+   came for, so it is the largest run of type on the page after the name.
+   OWNER CHANGE 2026-08-21: the 30ch measure cap was REMOVED so the lead uses the
+   full width of its container -- the owner asked for the space in .ar-record to be
+   used rather than left empty to the right of the credential line. The row rules
+   (.ar-record > p border-bottom) already run full width, so the capped lead was the
+   one row that stopped short of its own rule. */
 p.ar-record__lead{
   font-family:var(--ds-font-display);
   font-size:clamp(23px,2.7vw,34px);
@@ -2185,20 +2190,22 @@ p.ar-record__lead{
   letter-spacing:-.018em;
   font-weight:600;
   color:var(--ds-ink-heading);
-  max-width:30ch;
 }
 /* the provenance line, set in the mono family. The switch is doing real work:
    it says "this is a record you can go and check", which is the sentence's own
    claim. Size stays at the sanctioned 16px source role, never smaller. */
+/* OWNER CHANGE 2026-08-21: the 60ch / 52ch measure caps were REMOVED alongside the
+   lead's. Uncapping ONLY the lead left the block's hairlines ragged -- `.ar-record > p`
+   draws its rule at the paragraph's own width, so a full-width lead over capped notes
+   produced rules of three different lengths under one accent rule. Every row now runs
+   the container width, so all rules agree and the record reads as one ruled table. */
 p.ar-record__src{
   font-family:var(--ds-font-mono);
-  max-width:60ch;
 }
 p.ar-record__note{
   font-size:18px;
   line-height:1.70;
   color:var(--ds-ink);
-  max-width:52ch;
 }
 
 @media (max-width:1023px){
@@ -2344,8 +2351,19 @@ p.ar-find{
 
 /* ---- 5 . CLOSE. The CTA card pulled up over the band above. --------------- */
 /* The picked pulled-up overlap: the overlap is a negative margin, not an SVG,
-   and the section drops its own top padding so the card can clear the boundary. */
-.ar-close{padding-top:0;}
+   and the section drops its own top padding so the card can clear the boundary.
+
+   OWNER FIX 2026-08-21 -- THE OVERLAP WAS DEAD AND THE DROPPED PADDING WAS NOT.
+   `main .col > :first-child{margin-top:0}` (the G-CADENCE first-child fix, further
+   down this sheet) zeroes the card's NEGATIVE margin, because .ar-close__card is the
+   first child of its .col. Measured on all 9 doctor pages: margin-top 0px, so the
+   card never pulled up at all. But `.ar-close{padding-top:0}` -- which exists ONLY to
+   make room for that overlap -- was still in force, so the card's top edge landed
+   flush on the section's own top background edge (card-top minus section-top = 0px).
+   Dropping the padding override lets .rs-sec--close's own var(--rs-sec-pad) govern
+   again, so the card opens on the same 96px the rest of the page uses.
+   TO RESTORE THE ORIGINAL OVERLAP INSTEAD: re-add `padding-top:0` here AND exempt the
+   card from the first-child rule -- but check G-CADENCE, which is what zeroed it. */
 .ar-close__card{
   position:relative;
   margin-top:calc(-1 * (var(--ds-space-xl) + var(--ds-space-md)));
