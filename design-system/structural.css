@@ -887,6 +887,25 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   align-items:center;
 }
 .rs-hero__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);align-items:flex-start;}
+/* OWNER CHANGE 2026-08-21: on index the offer panel moved OUT of .rs-hero__art -- where it was
+   absolutely positioned to straddle the photograph's bottom edge -- and INTO this copy column, so
+   the photograph stands clean in the right column. Inside .rs-hero__copy the panel is an ordinary
+   flow child of a flex column, so EVERY part of the straddle treatment has to be undone: the
+   absolute inset block in the min-width:1060px media query, and the negative top margin plus
+   horizontal inset carried by the base .rs-float rule. Specificity (0,2,0) beats the (0,1,0)
+   .rs-float rules in BOTH places, so this holds at every breakpoint with no !important.
+   align-self:stretch overrides the column's align-items:flex-start so the panel spans the copy
+   measure instead of shrink-wrapping its text.
+   SCOPED to .rs-hero__copy on purpose: summerlin and sunrise-manor keep their .rs-float in the art
+   column and are untouched by this. */
+.rs-hero__copy .rs-float{
+  position:static;
+  inset:auto;
+  transform:none;
+  margin:0;
+  max-width:none;
+  align-self:stretch;
+}
 .rs-hero__art{position:relative;}
 .rs-hero__medal{
   position:absolute;
