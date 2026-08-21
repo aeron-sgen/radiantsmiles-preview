@@ -278,13 +278,19 @@ ul{margin:0;padding:0;list-style:none;}
    the last category row and that rule is then deliberate, not a ragged edge. */
 .mega__cols{position:relative;display:flex;flex-direction:column;background-image:var(--ds-glow-wash);}
 
-/* the ledger's closing row: the same hairline system, holding the utility links */
+/* the ledger's closing row: the same hairline system, holding the utility links.
+   OWNER FIX 2026-08-21: border-top REMOVED. The grid above already closes itself -- every
+   .cat / .loc draws a border-bottom, so the final row lands a full-width rule -- and this
+   rule drew a SECOND one 24px below it. Two parallel hairlines with an empty strip between
+   them. The grid's closing rule is the one that stays; this one went. padding-top is
+   deliberately untouched, so the links keep their spacing off the grid. Applied to BOTH
+   megas: #mega-locations has the identical .loc border-bottom + .mega__foot border-top
+   doubling, and the two dropdowns share one chrome. */
 .mega__foot{
   margin-top:auto;
   display:flex;flex-wrap:wrap;align-items:center;
   gap:0 var(--ds-space-lg);
   padding-top:var(--ds-space-sm);
-  border-top:1px solid var(--ds-line);
 }
 .mega__foot a{
   display:inline-flex;align-items:center;min-height:48px;
@@ -309,13 +315,6 @@ ul{margin:0;padding:0;list-style:none;}
              box-shadow var(--ds-dur) var(--ds-ease);
 }
 .cat:nth-child(2n){border-left:1px solid var(--ds-line);}
-/* OWNER FIX 2026-08-21: kill the TRAILING rule under the last grid row. Every .cat draws a
-   border-bottom, so the final row (Periodontics / Orthodontics) closed the ledger with a line
-   that had nothing under it -- it sat 129px above the panel's own bottom edge and read as an
-   empty strip rather than a divider. The grid's border-top and the between-row dividers are
-   the ones doing real work and are untouched, as is the .cat:nth-child(2n) centre rule above.
-   :nth-last-child(-n+2) is exactly the final row of this 2-column grid (6 items, even). */
-.cat-grid > .cat:nth-last-child(-n+2){border-bottom:0;}
 /* the lift is a background wash + a --ds-signature left rule. No shadow pop. */
 .cat:hover,.cat:focus-visible{
   background:var(--ds-bg-surface);
