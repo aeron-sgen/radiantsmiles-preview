@@ -887,6 +887,123 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   align-items:center;
 }
 .rs-hero__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);align-items:flex-start;}
+
+/* ==========================================================================
+   FULL-BLEED PHOTOGRAPHIC HERO (owner request 2026-08-21, index only).
+   The hero was a two-column band -- copy left, framed photograph right. It is now
+   ONE photographic field with the copy set over it, in the shape of the reference
+   the owner supplied. The photograph is a REAL first-party interior (imagery-system
+   §2 smile-gallery set, unattributed, so §4 rule 5 permits "one of our offices" and
+   forbids naming an office); nothing synthetic ships here.
+   THE CONTRAST PROBLEM this solves: white text over a photograph is unreadable
+   wherever the photograph is bright, and the paint-stack probe in rverify measures
+   the ACTUAL painted pixels, not the declared colour. So the scrim is not decorative
+   -- it is the thing that makes the type legible, and it is deliberately heavy on the
+   left where the copy sits, thinning to the right so the photograph still reads.
+   ========================================================================== */
+.rs-hero--bleed{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.rs-hero--bleed > .rs-hero__bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:60% 50%;   /* the doorway sits right-of-centre; bias the crop so the copy side stays quiet */
+  z-index:0;
+}
+.rs-hero--bleed > .rs-hero__scrim{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  /* two stacked washes: a left-weighted horizontal ramp for the copy column, and a
+     gentle vertical floor so the CTA row never lands on a bright patch. */
+  background:
+    linear-gradient(90deg,
+      rgba(3,18,17,.95) 0%,
+      rgba(3,18,17,.92) 34%,
+      rgba(3,18,17,.72) 56%,
+      rgba(3,18,17,.46) 78%,
+      rgba(3,18,17,.38) 100%),
+    linear-gradient(180deg,
+      rgba(3,18,17,.42) 0%,
+      rgba(3,18,17,.18) 42%,
+      rgba(3,18,17,.55) 100%);
+}
+.rs-hero--bleed > .container{position:relative;z-index:2;}
+/* OWNER CHANGE 2026-08-21: the copy was capped at 34rem (544px) inside a 1132px column, so it
+   used under half the hero. It now fills the column; the left/right space is the CONTAINER's
+   own gutter (154px each side at 1440), which is the same gutter every other section on the
+   site uses -- so the hero lines up with the page rather than inventing its own inset.
+   REVERTED 2026-08-21 at owner request: the full-width experiment forced a heavy scrim across the
+   whole frame, which suppressed the photograph almost entirely. Back to copy in the left third
+   with the ramp thinning to the right, so the image stays legible. */
+.rs-hero--bleed .rs-hero__copy{max-width:34rem;}
+
+/* THE META CAPSULE (owner request 2026-08-21, structure copied from the supplied reference).
+   NOTE THE DOUBLED CLASS: .rs-float.rs-float--meta, not .rs-float--meta. The base .rs-float rule
+   lives LATER in this sheet (line ~1032) and sets flex-direction:column; at equal specificity the
+   later rule wins, so the single-class modifier silently lost and the capsule rendered as a column.
+   Doubling the class makes it (0,2,0) and order-independent.
+   The offer used to be one running sentence inside the glass panel. It is now a horizontal
+   capsule of LABEL/VALUE pairs with a dot between them, which is the reference's structure:
+   a small letterspaced key, the value beside it, pairs separated rather than run together.
+   It reuses .rs-float for the glass, border and shadow -- only the layout and radius change.
+   TYPE FLOOR: the key is 14px, NOT the 12-13px the reference uses. The BRAND-CARD lock is
+   age-tuned for a 40+ primary audience and sets "no text under 14px"; the reference is not
+   bound by that and this build is. */
+.rs-float.rs-float--meta{
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:var(--ds-space-2xs) var(--ds-space-sm);
+  border-radius:var(--ds-r-pill);
+  padding:var(--ds-space-sm) var(--ds-space-md);
+}
+.rs-meta__pair{
+  display:flex;
+  align-items:baseline;
+  gap:var(--ds-space-xs);
+  margin:0;
+  min-width:0;
+}
+.rs-meta__k{
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.10em;
+  text-transform:uppercase;
+  color:var(--ds-ink-soft);
+  white-space:nowrap;
+}
+.rs-meta__v{
+  font-size:17px;
+  line-height:1.5;
+  color:var(--ds-ink);
+}
+.rs-meta__sep{
+  color:var(--ds-ink-soft);
+  opacity:.65;
+}
+@media (max-width:640px){
+  /* the two pairs stack rather than wrap raggedly, and the dot has nothing to separate */
+  .rs-float.rs-float--meta{flex-direction:column;align-items:flex-start;border-radius:var(--rs-r-frame);}
+  .rs-meta__sep{display:none;}
+}
+@media (max-width:1023px){
+  /* stacked: the copy no longer has a quiet left third to sit in, so the ramp goes
+     vertical and the whole field darkens. */
+  .rs-hero--bleed > .rs-hero__scrim{
+    background:linear-gradient(180deg,
+      rgba(3,18,17,.86) 0%,
+      rgba(3,18,17,.78) 45%,
+      rgba(3,18,17,.90) 100%);
+  }
+  .rs-hero--bleed .rs-hero__copy{max-width:none;}
+}
 /* OWNER CHANGE 2026-08-21: on index the offer panel moved OUT of .rs-hero__art -- where it was
    absolutely positioned to straddle the photograph's bottom edge -- and INTO this copy column, so
    the photograph stands clean in the right column. Inside .rs-hero__copy the panel is an ordinary
