@@ -4277,3 +4277,37 @@ main .col > .ar-wash + *{margin-top:0;}
 
 /* .co-values' text column is only 172px. Without a floor the photograph collapses to that. */
 .co-values{min-height:clamp(240px,30vh,320px);}
+
+/* ==========================================================================
+   .rs-split — the feature photo matches the text column. OWNER 2026-08-24.
+
+   Measured: teeth-whitening's split had text 375 against a 298 photo, bottoms 78 out.
+   62 of the 70 .rs-split instances hold a real .rs-frame photo; 8 hold something else.
+
+   NOT done with align-items:stretch on the container, deliberately. .rs-split is a
+   GENERIC utility and several of its children are BOXED -- ar-where__box (5), cc-faq (2),
+   cc-panel, cc-offer -- so stretching every child would visibly grow those boxes on
+   instances that have nothing wrong with them. align-self on the FRAME ALONE overrides
+   the container's align-items:start for that one element and leaves every sibling as it
+   was. This also avoids introducing :has(), which appears nowhere in these sheets.
+
+   Scoped to the 2-column breakpoint: below 1060px .rs-split is a single column and the
+   photo should keep its own 16/10 ratio.
+
+   min-height is the floor -- with the img out of flow the frame contributes nothing, so
+   without it a short text column would collapse the photo to a strip.
+   ========================================================================== */
+@media (min-width:1060px){
+  .rs-split > .rs-frame{
+    align-self:stretch;
+    height:100%;
+    aspect-ratio:auto;
+    /* The floor exists only to stop a genuinely tiny text column collapsing the photo to a
+       sliver. Set at 240px/28vh it resolved to 252 and was TALLER than real text columns --
+       bone-grafting's two splits measured 184 and 236 -- so the FRAME set the row and the
+       columns stayed 68px and 16px out, i.e. the floor was causing the misalignment it was
+       meant to guard against. 18vh resolves to ~162, below every measured text column. */
+    min-height:clamp(150px,18vh,220px);
+  }
+  .rs-split > .rs-frame > img{position:absolute;inset:0;}
+}
