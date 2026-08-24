@@ -4,10 +4,11 @@ A static, seven-office dental practice site for Las Vegas and Henderson, built t
 deterministic `client-site-build` pipeline. This repo is the **build tree**: locked inputs, the design
 system, the copy corpus, the composed pages, and the machine receipts that prove each page passed.
 
-> **Status: BULK all but done.** 65 of 66 pages composed, every one of them at a clean, unfiltered
-> 52/52 promote receipt, and `build.mjs --site` reports `Done: 65/65` with zero failures. Only
-> `index` remains, and it is built LAST on purpose. See [Current state](#current-state) — that
-> section is written from the audit output, not from memory. Re-run the audit rather than trusting it.
+> **Status: BUILT AND PUBLISHED.** All 66 pages composed and assembled — `build.mjs --site` reports
+> `Done: 66/66` with zero failures — and the site is live at
+> <https://aeron-sgen.github.io/radiantsmiles-preview/>. `index` was built LAST on purpose, as an
+> analytical router derived from the real pages. The [Current state](#current-state) table below still
+> reflects the pre-`index` count; re-run the audit rather than trusting either number from memory.
 
 ---
 
@@ -118,7 +119,10 @@ These are decisions and config, not build defects. They are recorded rather than
   page-specific CTA. It now also matches that label as text. Proven narrow before keeping: the old
   gate failed exactly one page (`offer`), the new gate fails none, and a negative control with the
   CTA labels neutralised still blocks (`EXIT=2`).
-- **`SQUAH_PREVIEWS_BASE_URL` is unset**, which blocks the P14 publish-preview step.
+- **`SQUAH_PREVIEWS_BASE_URL` is not persisted.** It was set to
+  `https://aeron-sgen.github.io/radiantsmiles-preview` for the 2026-08-21 publish and P14 completed, but
+  it lives only in that shell. `publish-preview.mjs` dies fail-closed when it is unset, so any future
+  publish must export it again or add it to the workspace env.
 - **Vector logo (`⚠OWNER §G-7`)** — the wordmark is set in type, not the navy-and-yellow JPG, and the
   favicon currently ships an off-palette default.
 
@@ -127,5 +131,25 @@ These are decisions and config, not build defects. They are recorded rather than
 The Ace workspace root's `.gitignore` excludes all of `Code/client-sites/` — *"real client/business
 data, NEVER ship, NEVER track"* — because the Ace distribution manifest is built from `git ls-files`.
 That rule keeps client work out of the *distribution payload*; it does not stop a client build from
-having its own history. So this tree carries its own repo, the same pattern as
+having its own history. So this tree carries its own git history, the same pattern as
 `Code/web-mockup/desert-paws`. A repo at the workspace root would not capture this build at all.
+
+**Merged 2026-08-24 — one repo, two branches.** The build tree and the published site used to live in
+two separate GitHub repos (`aeron-sgen/radiantsmiles` and `aeron-sgen/radiantsmiles-preview`). They are
+now one:
+
+| branch | holds | |
+|---|---|---|
+| `source` | this build tree — `_design/`, `pages/`, `_handoff/`, `_audit/`, `_receipts/`, `_copy/`, `assets/` | what you are reading |
+| `main` | the assembled flat site — 66 pages at the root, `design-system/`, `assets/` | what GitHub Pages serves |
+
+Both live in **`aeron-sgen/radiantsmiles-preview`**. The merge went that direction, not the other, so
+the live URL <https://aeron-sgen.github.io/radiantsmiles-preview/> did not move — GitHub does not
+redirect a Pages path once it changes, and links to that URL were already circulating. The repo name
+says "preview" while holding the source; renaming it would move the Pages URL, which is exactly what
+the merge was arranged to avoid.
+
+The two branches share their asset blobs. Git addresses objects by content, and the 374 files in
+`assets/` are byte-identical on both sides, so they are stored once rather than twice.
+
+`aeron-sgen/radiantsmiles` is archived. Nothing references it; `source` carries its full history.
