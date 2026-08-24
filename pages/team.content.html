@@ -9,28 +9,13 @@
           <h1 class="rs-h1">Meet Our Dentists</h1>
           <p class="rs-lede">Ten named dentists on one roster, across seven offices. See who is on that roster, and what our own site records for each of them, before you book.</p>
 
-          <!-- SECTION-COMPONENTS.md #45 category chips, carrying the copy's anchor strip
-               verbatim and in its source order. The strip is rendered here and NOT dropped,
-               which is the opposite of the call the services exemplar made on its own strip.
-               The reason is that the two strips are not the same object: six category names
-               above six rows that already carry those names is one list printed twice, but
-               ten personal names above ten rows is the page's CLAIM stated as a single
-               scannable set, and it is the only element on the page where the whole roster
-               is one shape. Each chip routes to that clinician's own page, the same
-               destination the row below carries, because there is no per-row anchor target
-               on this page to point an in-page link at. -->
-          <div class="rs-chips">
-            <a class="rs-chip" href="dr-adrian-ruiz.html">Adrian Ruiz</a>
-            <a class="rs-chip" href="dr-norma-miranda.html">Norma Miranda</a>
-            <a class="rs-chip" href="dr-vivi-dang-roberts.html">Vivi Dang-Roberts</a>
-            <a class="rs-chip" href="dr-max-torres.html">Max Torres</a>
-            <a class="rs-chip" href="dr-victoria-quizon.html">Victoria Quizon</a>
-            <a class="rs-chip" href="dr-stephanie-andrade.html">Stephanie Andrade</a>
-            <a class="rs-chip" href="dr-chris-schaudt.html">Chris Schaudt</a>
-            <a class="rs-chip" href="dr-karthikeyan-subramani.html">Karthikeyan Subramani</a>
-            <a class="rs-chip" href="dr-omar-lavado.html">Omar Lavado</a>
-            <a class="rs-chip" href="dr-andy-landaverde.html">Andy Landaverde</a>
-          </div>
+          <!-- OWNER 2026-08-24: the ten-name chip strip was REMOVED from this opener.
+               It was redundant: each chip routed to a clinician's own page, which is the
+               same destination that clinician's row carries in the roster directly below,
+               so the roster shipped twice -- once as a strip of ten links, again as ten
+               rows. The rows are the richer object (portrait, name, credential line), so
+               the strip is what went. The classes are NOT orphaned by this: .rs-chip is
+               still used on 37 pages and .rs-chips on two others. -->
 
           <!-- CTA-PATTERNS.md #7 multi-CTA cluster, carried verbatim from section 1 of the
                copy. The secondary action routes to the offices page because the phone policy
