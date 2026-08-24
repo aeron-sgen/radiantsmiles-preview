@@ -4217,3 +4217,63 @@ main .col > :first-child{margin-top:0;}
    of a .col anywhere in the build. */
 main .col > .rs-tex + *,
 main .col > .ar-wash + *{margin-top:0;}
+
+/* ==========================================================================
+   IMAGE-BESIDE-TEXT: photo matches the text column. OWNER 2026-08-24.
+
+   Same treatment already applied to .cc-proof, extended to the other components that
+   showed the SAME measured defect. Surveyed by rendering every 2-child grid whose one
+   child subtree holds an <img>, and measuring the top/bottom mismatch -- not by reading
+   the CSS and guessing:
+
+     .cc-hero    center  text 406  imgCol 468   tops off 31  bottoms off 31   24 pages
+     .hb-cost    center  text 406  imgCol 450   tops off 22  bottoms off 22   11 pages
+     .co-values  center  text 172  imgCol 316   tops off 72  bottoms off 72    1 page
+     .co-hero    center  text 340  imgCol 310   tops off 15  bottoms off 15    1 page
+
+   Already correct, and the reference for this pattern:
+     .hb-why     stretch 497/497/497      .cc-proof  stretch 231/231/231
+
+   DELIBERATELY NOT INCLUDED, and why:
+     .cc-problem  its "image column" is .cc-problem__side, which holds an evidence TEXT
+                  panel plus a 320px frame inside a 655px column. The 323px bottom gap is
+                  a content difference, not a photo mismatch; equalising would stretch the
+                  text side, not fix anything.
+     .co-story    .co-story__head is position:static with three children -- not a frame at
+                  all -- and its text is 148 against a 502 photo. Matching them would leave
+                  a 148px letterbox strip.
+
+   The equalisation is done on the IMG, never on a wrapper: these four do NOT share one
+   markup shape (.cc-hero wraps its frame in .cc-hero__art; .hb-cost, .co-hero and
+   .co-values ARE the frame). A wrapper-keyed selector is exactly what broke 8 pages
+   earlier in this build. Every frame here is position:relative, so an absolute img
+   anchors correctly and stops contributing intrinsic height; the row is then set by the
+   TEXT column and height:100% makes the frame fill it.
+   ========================================================================== */
+.cc-hero,
+.hb-cost,
+.co-hero,
+.co-values{align-items:stretch;}
+
+/* .cc-hero is the one WRAPPED case: let its wrapper hand the full height to the frame */
+.cc-hero__art{display:flex;}
+
+.cc-hero__frame,
+.hb-cost__media,
+.co-hero__art,
+.co-values__frame{
+  width:100%;height:100%;
+  aspect-ratio:auto;min-height:0;max-height:none;
+  align-self:stretch;            /* .hb-cost__media shipped align-self:center */
+  /* .co-values__frame inherits margin-block:18px from .co-tile, which pushed it 18px down
+     and left the columns 18px out at BOTH ends even after their heights matched. */
+  margin-block:0;
+}
+
+.cc-hero__frame img,
+.hb-cost__media img,
+.co-hero__art img,
+.co-values__frame img{position:absolute;inset:0;}
+
+/* .co-values' text column is only 172px. Without a floor the photograph collapses to that. */
+.co-values{min-height:clamp(240px,30vh,320px);}
