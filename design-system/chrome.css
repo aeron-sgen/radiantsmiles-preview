@@ -717,3 +717,76 @@ ul{margin:0;padding:0;list-style:none;}
   .wordmark{grid-column:2;justify-self:center;align-items:center;text-align:center;}
   .site-header__hamburger{grid-column:3;justify-self:end;}
 }
+
+/* ==========================================================================
+   FEATURED ZONE — the photo spans the FULL column height.
+   OWNER 2026-08-24.
+
+   MEASURED BEFORE CHANGING ANYTHING. The two columns were ALREADY equal height --
+   the grid is align-items:stretch and reported services 469/469, locations 689/689,
+   about 338/338. What did NOT match was the PHOTO inside the image column:
+   300 of 469, 520 of 689, 261 of 338. The eyebrow, caption and link sat above and
+   below the frame IN FLOW and ate the difference. The frame is now absolutely
+   positioned to fill its column, and those three overlay it.
+
+   INK: --ds-ink-on-dark (#E9F3F3), which is pinned at :root -- deliberately NOT the
+   .surface-dark class. That class paints its own linear-gradient(180deg,#0B3D3A,#0B423E)
+   ground, which would cover the photograph it is supposed to sit on.
+
+   SCRIM: .grade--scrim darkened only the bottom 46%, which was correct while nothing
+   sat at the top. The eyebrow does now, so it darkens BOTH ends. These selectors are
+   (0,2,0) so they outrank the bare .grade--scrim in the structural sheet whatever the
+   load order.
+
+   The BOTTOM stop is rgba(9,48,45,.84), deeper than --ds-scrim's .62, and that is
+   measured not guessed. The operatory photograph has a near-white floor highlight
+   (reconstructed underlying pixel ~rgb(238,240,242)) exactly where the qlink sits at 93%
+   down the frame. At .62 the painted ground there was rgb(96,121,120) = 4.13:1 against
+   --ds-ink-on-dark. The link is 18px/700 = 13.5pt bold, UNDER the 14pt-bold large-text
+   threshold, so it owes 4.5:1 and 4.13 fails. .84 lands it near 7:1.
+   ========================================================================== */
+.feat,
+.drop-panel--wide > div:last-child{
+  position:relative;isolation:isolate;
+  display:flex;flex-direction:column;
+}
+
+.feat__frame,
+.drop-feat__frame{
+  position:absolute;inset:0;z-index:0;
+  margin:0;min-height:0;aspect-ratio:auto;
+}
+
+.feat > .eyebrow,
+.feat > .feat__line,
+.feat > .qlink,
+.drop-panel--wide > div:last-child > .eyebrow,
+.drop-panel--wide > div:last-child > .qlink{
+  position:relative;z-index:2;
+  color:var(--ds-ink-on-dark);
+}
+
+.feat > .eyebrow,
+.drop-panel--wide > div:last-child > .eyebrow{
+  padding:var(--ds-space-sm) var(--ds-space-sm) 0;
+}
+.feat > .feat__line{
+  margin:auto var(--ds-space-sm) var(--ds-space-2xs);
+}
+.feat > .qlink,
+.drop-panel--wide > div:last-child > .qlink{
+  margin:0 var(--ds-space-sm) var(--ds-space-sm);
+}
+.drop-panel--wide > div:last-child > .qlink{margin-top:auto;}
+
+/* the underline takes the dark-ground link role (--ds-accent, a genuine foreground at
+   7.19:1 there) instead of --ds-signature, which is 2.47:1 on dark and decoration only. */
+.feat > .qlink::after,
+.drop-panel--wide > div:last-child > .qlink::after{background:var(--ds-accent);}
+
+.feat .grade--scrim,
+.drop-feat__frame .grade--scrim{
+  background:linear-gradient(to bottom,
+    var(--ds-scrim) 0%, var(--ds-scrim) 13%, transparent 31%,
+    transparent 43%, var(--ds-scrim) 66%, rgba(9,48,45,.84) 100%);
+}
