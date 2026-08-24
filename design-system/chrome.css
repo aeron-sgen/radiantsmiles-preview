@@ -344,8 +344,13 @@ ul{margin:0;padding:0;list-style:none;}
 .mega .feat{transition-delay:120ms;}
 
 /* ---- the seven-office ledger inside the Locations mega ------------------------------ */
+/* OWNER 2026-08-24: was repeat(2,...). Seven offices in TWO columns is FOUR rows at 145px
+   = 583px, which put the panel's inner content at 769px against a max-height of 76vh (684px
+   at a 900px viewport) -- so the panel scrolled and "Compare all seven" sat below the cut.
+   THREE columns is three rows (435px), inner ~622px, inside the cap with room to spare.
+   It also shortens the photograph, which fills the column and was a 689px strip. */
 .loc-grid{
-  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
   border-top:1px solid var(--ds-line);
 }
 .loc{
@@ -354,7 +359,8 @@ ul{margin:0;padding:0;list-style:none;}
   box-shadow:inset 0 0 0 0 var(--ds-signature);
   transition:background-color var(--ds-dur) var(--ds-ease),box-shadow var(--ds-dur) var(--ds-ease);
 }
-.loc:nth-child(2n){border-left:1px solid var(--ds-line);}
+/* the vertical dividers follow the column count: every cell except the first in its row */
+.loc:not(:nth-child(3n+1)){border-left:1px solid var(--ds-line);}
 .loc:hover{background:var(--ds-bg-surface);box-shadow:inset 3px 0 0 0 var(--ds-signature);}
 .loc__name{
   display:flex;align-items:center;min-height:48px;
