@@ -22,27 +22,18 @@
           </div>
 
           <div class="co-hero__art">
-            <div class="co-mosaic">
-              <div class="co-mosaic__l">
-                <figure class="rs-frame co-tile co-tile--lead">
-                  <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-13-768x1152.jpg" width="768" height="1152" decoding="async" fetchpriority="high" alt="The reception desk at one of our offices, with the Radiant Smiles sun mark on a slatted wood wall and planters either side.">
-                  <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
-                  <span class="rs-grade rs-grade--lift" aria-hidden="true"></span>
-                </figure>
-              </div>
-              <div class="co-mosaic__r">
-                <figure class="rs-frame co-tile co-tile--a">
-                  <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-92-768x1152.jpg" width="768" height="1152" loading="lazy" decoding="async" alt="A team member standing at the front desk of one of our offices, with monitors on the counter behind her.">
-                  <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
-                  <span class="rs-grade rs-grade--lift" aria-hidden="true"></span>
-                </figure>
-                <figure class="rs-frame co-tile co-tile--b">
-                  <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-53-768x1152.jpg" width="768" height="1152" loading="lazy" decoding="async" alt="A gloved hand loading a milling machine in one of our offices, with its lit chamber standing open.">
-                  <span class="rs-grade rs-grade--tint" aria-hidden="true"></span>
-                  <span class="rs-grade rs-grade--lift" aria-hidden="true"></span>
-                </figure>
-              </div>
-            </div>
+            <!-- SINGLE HERO IMAGE 2026-08-25 (owner request). This was a .co-mosaic of THREE
+                 tiles: a 3/4 lead plus two stacked 3/4 thumbnails. The one kept is the lead --
+                 the reception desk carrying the Radiant Smiles sun mark, and the only one already
+                 flagged fetchpriority="high" as this page's LCP candidate.
+                 RATIO CHOSEN BY MEASUREMENT, not taste: the copy column measures 340px and the art
+                 column is 523px wide, so 16/10 renders 327px -- a 13px delta, the closest balance
+                 available (4/3 would be 392, 4/5 would be 654 and would double the hero).
+                 The two dropped photographs are NOT deleted; both remain in assets/ and 1-92 is
+                 still live on index. -->
+            <figure class="rs-frame co-tile co-tile--solo">
+              <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-13-768x1152.jpg" width="768" height="1152" decoding="async" fetchpriority="high" alt="The reception desk at one of our offices, with the Radiant Smiles sun mark on a slatted wood wall and planters either side.">
+            </figure>
           </div>
         </div>
 
@@ -78,25 +69,14 @@
           </div>
           <div class="co-story__panel">
             <p class="rs-copy">The Better Business Bureau records the practice at <span class="co-fig">23 years in business</span>, fetched 30 July 2026.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- pick: SECTION-COMPONENTS.md #7 Problem framing | considered: #6,#27,#24 | why: the copy here does the problem framing job in the entry's own terms, naming the thing the reader had not thought to worry about and then naming why the status quo cannot promise it. The entry lists a big type statement as its first variant, and that is what ships: the opening line becomes the section heading and the three following paragraphs run down a hairline ladder beneath it, in the order the copy wrote them. #6 Is this for me qualifier is rejected because the copy sorts business MODELS, not readers, and rewriting it into buyer profiles would put words in the practice's mouth. #27 Numbered process steps is rejected because nothing here is sequential, and numbering a three part argument would imply a procedure the copy does not describe. #24 Testimonials grid is rejected because this copy contains no patient quote anywhere, and a structural claim about ownership is not a thing a patient could witness. The comparison table entry in the same catalog, entry fifteen, was the sharpest temptation and is refused for cause: a checkmark matrix would turn a structural observation into a scorecard against unnamed practices, which contradicts the copy's own sentence that it is not framing that as a fault, and breaks `competitorFraming`. GROUND, and the deliberate structural divergence: the page carries TWO .surface-dark anchors, the hero and this band, and this is the one that is not a masthead. It sits in the MIDDLE of the page, so the deep tone lands a second time on the one claim a visitor cannot check for themselves, and the page still never ENDS on a dark band. *Corrected 2026-08-17. This sentence read "the page's single .surface-dark anchor" until the hero took the second one. The correction is recorded rather than quietly rewritten because the reasoning it supports is unchanged: what was load bearing was that the deep tone lands on THIS claim and that the close stays light, never that no other section was allowed one.* It carries NO photograph on purpose. There is no honest photograph of an ownership structure, and an office interior dropped in here would be decoration standing in for evidence. -->
-<section class="rs-sec surface-dark">
-  <div class="container">
-    <div class="row">
-      <div class="col">
-
-        <div class="co-why">
-          <div>
-            <h2 class="co-say">Seven offices under one brand, one roster and one domain.</h2>
-          </div>
-          <div class="co-why__args">
+            <!-- FOLDED IN 2026-08-25 (owner request): these three rows were their own section
+                 directly below, headed "Seven offices under one brand, one roster and one domain."
+                 -- which asserts exactly what THIS section already asserts, "One practice, seven
+                 offices, one clinical roster." The same claim was made twice in consecutive
+                 sections and only then explained. One heading now carries the claim and its
+                 explanation follows it directly.
+                 NO COPY REWRITTEN: all three paragraphs move verbatim. The only text dropped is
+                 the DUPLICATE heading. -->
             <div class="co-why__p">
               <p class="rs-copy">That sounds like a detail until you need it. You are not handed to a different business when you see someone at a different address. The clinician who checks your work next belongs to the same practice.</p>
             </div>
@@ -113,6 +93,8 @@
     </div>
   </div>
 </section>
+
+<!-- pick: SECTION-COMPONENTS.md #7 Problem framing | considered: #6,#27,#24 | why: the copy here does the problem framing job in the entry's own terms, naming the thing the reader had not thought to worry about and then naming why the status quo cannot promise it. The entry lists a big type statement as its first variant, and that is what ships: the opening line becomes the section heading and the three following paragraphs run down a hairline ladder beneath it, in the order the copy wrote them. #6 Is this for me qualifier is rejected because the copy sorts business MODELS, not readers, and rewriting it into buyer profiles would put words in the practice's mouth. #27 Numbered process steps is rejected because nothing here is sequential, and numbering a three part argument would imply a procedure the copy does not describe. #24 Testimonials grid is rejected because this copy contains no patient quote anywhere, and a structural claim about ownership is not a thing a patient could witness. The comparison table entry in the same catalog, entry fifteen, was the sharpest temptation and is refused for cause: a checkmark matrix would turn a structural observation into a scorecard against unnamed practices, which contradicts the copy's own sentence that it is not framing that as a fault, and breaks `competitorFraming`. GROUND, and the deliberate structural divergence: the page carries TWO .surface-dark anchors, the hero and this band, and this is the one that is not a masthead. It sits in the MIDDLE of the page, so the deep tone lands a second time on the one claim a visitor cannot check for themselves, and the page still never ENDS on a dark band. *Corrected 2026-08-17. This sentence read "the page's single .surface-dark anchor" until the hero took the second one. The correction is recorded rather than quietly rewritten because the reasoning it supports is unchanged: what was load bearing was that the deep tone lands on THIS claim and that the close stays light, never that no other section was allowed one.* It carries NO photograph on purpose. There is no honest photograph of an ownership structure, and an office interior dropped in here would be decoration standing in for evidence. -->
 
 <!-- pick: SECTION-COMPONENTS.md #26 Pull-quote section | considered: #8,#57,#20 | why: the locked copy gives this section exactly one publishable sentence, and it is explicitly the practice's own words about its offices rather than a values statement. A pull quote section is the only shape in the catalog designed around a single held line with nothing propping it up, which is what honesty requires here. Any component with slots would create empty slots, and empty slots are what get filled with invented values. #8 Manifesto is rejected because a manifesto shape ASSERTS a stated belief, and the flag on this section says in terms that no values statement exists in any captured source; dressing one line as a creed would imply the practice had authored one. #57 Quote standalone is the near duplicate of the pick and is rejected only because the deviation below makes the pull quote entry the more honest citation. #20 Team mosaic is rejected because this section is not about people, and because the only group portrait on disk, `1-16`, is Henderson's own file and is bound by imagery-system.md section 4 rule 4 to Henderson pages. DELIBERATE DEVIATION: entry twenty six says no other content in the section, and one photograph ships beside the line. The line describes calm and comfortable offices, a real photograph of a waiting area is first party evidence for exactly that clause, and imagery-system.md licenses describing it only as one of our offices. Source order is statement then media, so on a phone the photograph can never arrive above the line it supports. -->
 <section class="rs-sec">
@@ -134,7 +116,12 @@
 
         <div class="co-values">
           <div class="co-values__copy">
-            <p class="co-values__say">The practice's own site describes calm and comfortable offices and warm interactions with patients.</p>
+            <!-- PROMOTED to h2 2026-08-25 (owner asked for headings on about's unnamed sections).
+                 NO WORDS AUTHORED: this is the copy author's own §4 line, and p.co-values__say was
+                 ALREADY styled as a heading (display face, clamp(23px,2.7vw,33px), weight 600,
+                 --ds-ink-heading). Only the TAG changed, so the section gains an accessible name
+                 and an outline entry while rendering identically. -->
+            <h2 class="co-values__say">The practice's own site describes calm and comfortable offices and warm interactions with patients.</h2>
           </div>
           <figure class="rs-frame co-tile co-values__frame">
             <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-9-3-768x1152.jpg" width="768" height="1152" loading="lazy" decoding="async" alt="A waiting area in one of our offices, with ring pendant lights, dark bench seating and a planted centre island.">
