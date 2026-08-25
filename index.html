@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="design-system/tokens.css?v=b6a47ef0">
-  <link rel="stylesheet" href="design-system/chrome.css?v=1766c351">
-  <link rel="stylesheet" href="design-system/structural.css?v=04c64495">
+  <link rel="stylesheet" href="design-system/chrome.css?v=d025239b">
+  <link rel="stylesheet" href="design-system/structural.css?v=1ef641cd">
 
 </head>
 <body>
@@ -395,7 +395,8 @@
 
           <div>
             
-            <div class="rs-frame cc-proof__frame">
+            
+            <div class="rs-frame cc-proof__frame rs-frame--face">
               <img src="assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-92-768x1152.jpg"
                    width="768" height="1152" loading="lazy" decoding="async"
                    alt="A team member standing at the front desk of one of our offices, with monitors on the counter behind her.">
@@ -425,62 +426,91 @@
           <h2 class="rs-h2">Six areas of care. All of them in house, at all seven offices.</h2>
         </div>
 
-        <div class="cc-faq">
+        
+        <div class="cc-carousel">
+          <div class="cc-carousel__track" role="region" tabindex="0"
+               aria-label="Six areas of care, scroll sideways for all six">
 
-          <details class="cc-panel cc-faq__item" open>
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Periodontics.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">The gum and bone that hold your teeth in place, from bleeding gums to deep cleaning.</p>
-            <a class="rs-qlink" href="periodontics.html">Periodontics</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-periodontics.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A dental model showing healthy gum tissue, with a slim periodontal probe laid beside it.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Periodontics.</h3>
+                <p class="rs-copy cc-card__d">The gum and bone that hold your teeth in place, from bleeding gums to deep cleaning.</p>
+                <a class="rs-qlink" href="periodontics.html">Periodontics</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Restorations.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Fillings, crowns, bridges, inlays, onlays, dentures, implants and root canals.</p>
-            <a class="rs-qlink" href="restorations.html">Restorations</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-restorations.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="Two white ceramic dental crowns on a wooden tray, with a plaster dental model behind them.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Restorations.</h3>
+                <p class="rs-copy cc-card__d">Fillings, crowns, bridges, inlays, onlays, dentures, implants and root canals.</p>
+                <a class="rs-qlink" href="restorations.html">Restorations</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">General dentistry.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Exams, cleanings, preventative care, digital X-rays, fluoride and sealants.</p>
-            <a class="rs-qlink" href="general-dentistry.html">General dentistry</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-general-dentistry.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A dental mirror, explorer and scaler laid out in a row on a bare oak surface.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">General dentistry.</h3>
+                <p class="rs-copy cc-card__d">Exams, cleanings, preventative care, digital X-rays, fluoride and sealants.</p>
+                <a class="rs-qlink" href="general-dentistry.html">General dentistry</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Orthodontics.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Invisalign, and braces for children and adults.</p>
-            <a class="rs-qlink" href="orthodontics.html">Orthodontics</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-orthodontics.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A clear orthodontic aligner tray resting on a round oak block.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Orthodontics.</h3>
+                <p class="rs-copy cc-card__d">Invisalign, and braces for children and adults.</p>
+                <a class="rs-qlink" href="orthodontics.html">Orthodontics</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Cosmetic dentistry.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Porcelain veneers and teeth whitening, for a tooth that is sound but does not look how you want.</p>
-            <a class="rs-qlink" href="cosmetic-dentistry.html">Cosmetic dentistry</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-cosmetic-dentistry.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A row of five glossy white porcelain tooth forms standing on a wooden surface.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Cosmetic dentistry.</h3>
+                <p class="rs-copy cc-card__d">Porcelain veneers and teeth whitening, for a tooth that is sound but does not look how you want.</p>
+                <a class="rs-qlink" href="cosmetic-dentistry.html">Cosmetic dentistry</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Oral surgery.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Wisdom teeth and bone grafting, handled by our own clinicians.</p>
-            <a class="rs-qlink" href="oral-surgery.html">Oral surgery</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="assets/GENERATED-PLACEHOLDER-care-oral-surgery.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A sterile instrument tray with folded cloth, on a cabinet in a quiet clinical room.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Oral surgery.</h3>
+                <p class="rs-copy cc-card__d">Wisdom teeth and bone grafting, handled by our own clinicians.</p>
+                <a class="rs-qlink" href="oral-surgery.html">Oral surgery</a>
+              </div>
+            </div>
 
+          </div>
+          <p class="cc-carousel__hint">Drag to see all six.</p>
         </div>
       </div>
     </div>
@@ -616,9 +646,9 @@
 
           
           <div class="rs-frame rs-frame--tall">
-            <img src="assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg"
-                 width="768" height="1152" loading="lazy" decoding="async"
-                 alt="The treatment room corridor at one of our offices, with the bays open along both sides.">
+            <img src="assets/GENERATED-PLACEHOLDER-treatment-corridor.jpg"
+                 width="832" height="1248" loading="lazy" decoding="async"
+                 alt="Illustration of a treatment room corridor with care bays along both sides. This is a placeholder image, not a photograph of a Radiant Smiles office.">
             <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
           </div>
 
@@ -1382,6 +1412,95 @@
   var mq = window.matchMedia('(min-width:1101px)');
   var onMQ = function () { if (mq.matches && drawer.classList.contains('is-open')) closeDrawer(); };
   if (mq.addEventListener) mq.addEventListener('change', onMQ); else if (mq.addListener) mq.addListener(onMQ);
+
+  /* ------------------------------------------------------------------
+     CARE CAROUSEL · DRAG-TO-PAN. Owner request 2026-08-25: on desktop the
+     rail should be DRAGGED, not pushed with a scrollbar.
+
+     POINTER-GATED, NOT WIDTH-GATED. It arms only where a fine pointer with
+     hover exists -- a mouse or a trackpad. Touch and pen are left completely
+     alone: the native flick they already have is better than anything this
+     could synthesise, and capturing their pointer events would break it.
+
+     PROGRESSIVE ENHANCEMENT, FAIL-VISIBLE. The scrollbar is hidden by CSS
+     keyed on `.is-draggable`, and ONLY this code adds that class. If the
+     script never runs, the class never lands, the scrollbar stays and the
+     rail is still fully usable -- it can never fail into a dead rail with no
+     scrollbar AND no drag.
+
+     THE CLICK-AFTER-DRAG PROBLEM: every card is a link, so releasing a drag
+     on top of a card would navigate. `justDragged` + a capture-phase click
+     handler swallow exactly that one click. The 5px threshold is what keeps
+     a plain click on a card working normally.
+     ------------------------------------------------------------------ */
+  var rails = [].slice.call(document.querySelectorAll('.cc-carousel__track'));
+  var finePointer = window.matchMedia('(hover:hover) and (pointer:fine)');
+  var noMotion    = window.matchMedia('(prefers-reduced-motion:reduce)');
+  var DRAG_MIN = 5;
+
+  if (rails.length && finePointer.matches) {
+    rails.forEach(function (rail) {
+      var down = false, dragging = false, justDragged = false;
+      var startX = 0, startLeft = 0, pid = null;
+
+      rail.classList.add('is-draggable');
+
+      /* capture phase, so it beats the card link's own handler */
+      rail.addEventListener('click', function (ev) {
+        if (!justDragged) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        justDragged = false;
+      }, true);
+
+      rail.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        down = true; dragging = false; justDragged = false;
+        startX = e.clientX;
+        startLeft = rail.scrollLeft;
+        pid = e.pointerId;
+      });
+
+      rail.addEventListener('pointermove', function (e) {
+        if (!down || e.pointerId !== pid) return;
+        var dx = e.clientX - startX;
+        if (!dragging && Math.abs(dx) > DRAG_MIN) {
+          dragging = true;
+          rail.classList.add('is-dragging');
+          /* mandatory snap fights a live drag -- it would yank the rail back to
+             a card edge on every move. Off for the duration, restored on
+             release so the rail still settles on a card. */
+          rail.style.scrollSnapType = 'none';
+          if (rail.setPointerCapture) { try { rail.setPointerCapture(pid); } catch (err) {} }
+        }
+        if (dragging) { e.preventDefault(); rail.scrollLeft = startLeft - dx; }
+      });
+
+      function release() {
+        if (!down) return;
+        down = false;
+        if (pid !== null && rail.hasPointerCapture && rail.hasPointerCapture(pid)) {
+          try { rail.releasePointerCapture(pid); } catch (err) {}
+        }
+        pid = null;
+        if (!dragging) return;
+        dragging = false;
+        justDragged = true;
+        rail.classList.remove('is-dragging');
+        /* settle onto the nearest card -- smoothly, unless the reader asked
+           for no motion, in which case it lands immediately. */
+        if (!noMotion.matches) { rail.style.scrollBehavior = 'smooth'; }
+        rail.style.scrollSnapType = '';
+        window.setTimeout(function () { rail.style.scrollBehavior = ''; }, 420);
+      }
+
+      rail.addEventListener('pointerup', release);
+      rail.addEventListener('pointercancel', release);
+      rail.addEventListener('pointerleave', release);
+      /* the browser's own image/link drag would hijack the pan */
+      rail.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    });
+  }
 })();
 </script>
 

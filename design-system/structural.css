@@ -124,7 +124,16 @@
   --rs-r-frame:calc(var(--ds-r-surface) * 2);
   --rs-r-hero:calc(var(--ds-r-surface) * 3);
   /* the vertical rhythm. Bounded top and bottom by real spacing tokens. */
-  --rs-sec-pad:clamp(var(--ds-space-xl),8vw,var(--ds-space-2xl));
+  /* TIGHTENED 2026-08-25 (owner: "more compact and sleeker"). Was
+     clamp(xl,8vw,2xl) = 64..96px. Now clamp(lg,6vw,xl) = 40..64px, so a section
+     sheds 32px top AND bottom at desktop -- 64px per section boundary. Every other
+     section rule DERIVES from this one token, so the leading==trailing cadence that
+     G-CADENCE enforces stays uniform for free. */
+  --rs-sec-pad:clamp(var(--ds-space-lg),6vw,var(--ds-space-xl));
+  /* the BLOCK rhythm, single-sourced. .rs-stack and the .col owl selector both read
+     this, and so do the four margin compensations further down, so the gap can be
+     retuned in ONE place without silently breaking the nets they compute. */
+  --rs-block-gap:var(--ds-space-md);
 }
 
 .surface-dark{
@@ -522,7 +531,7 @@ p.rs-copy{
   .rs-split{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;}
   .rs-split--flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);}
 }
-.rs-stack{display:flex;flex-direction:column;gap:var(--ds-space-lg);}
+.rs-stack{display:flex;flex-direction:column;gap:var(--rs-block-gap);}
 
 /* THE MEDIA + CARDS LAW (CARD-VARIATIONS.md / SECTION-COMPONENTS.md #11, the
    top-of-file composition law in both menus). When one feature photograph is
@@ -768,7 +777,15 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   color:var(--ds-ink-heading);
   border:1px solid var(--ds-line-control);
 }
-.rs-btn--ghost:hover{background:var(--rs-card-bg);}
+/* GHOST MATCHES PRIMARY ON HOVER (owner request 2026-08-25). It previously changed
+   background ONLY -- no lift, no shadow -- while --accent and --solid both lifted. The
+   two sit side by side in .rs-acts 102 times each across the build, so the secondary
+   read as dead next to its own partner. Same lift, same shadow token; the background
+   fill stays because that is ghost's own identity cue.
+   REST STATE IS DELIBERATELY UNCHANGED: --accent/--solid carry --ds-shadow-rest at rest,
+   ghost carries none. Giving ghost a resting shadow would make it read as a solid button
+   and erase the distinction. Only the HOVER behaviour is unified, which is what was asked. */
+.rs-btn--ghost:hover{background:var(--rs-card-bg);box-shadow:var(--ds-shadow-card);transform:translateY(-1px);}
 .rs-btn--block{width:100%;}
 .rs-acts{display:flex;flex-wrap:wrap;gap:var(--ds-space-sm);}
 
@@ -1109,7 +1126,8 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   .rs-card:focus-within,
   .rs-card--feature:hover,
   .rs-btn--accent:hover,
-  .rs-btn--solid:hover{transform:none !important;}
+  .rs-btn--solid:hover,
+  .rs-btn--ghost:hover{transform:none !important;}
   .rs-card:hover .rs-frame img{transform:none !important;}
   .rs-card:hover .rs-card__link svg{transform:none !important;}
   .rs-card::before{display:none !important;}
@@ -1444,12 +1462,29 @@ p.cc-proof__scope{
 /* fills the shared row height instead of setting its own from a 4/5 ratio, so the photo's
    top and bottom land on the text's. min-height keeps it from going letterbox-thin on the
    pages whose text column is short; .rs-frame img is object-fit:cover so nothing distorts. */
-.cc-proof__frame{width:100%;height:100%;aspect-ratio:auto;min-height:0;max-height:none;}
+/* REGRESSION FIX 2026-08-24: these two rules were UNSCOPED, and .cc-proof__frame also
+   appears OUTSIDE any .cc-proof container -- inside an rs-stack on braces-for-children (x2),
+   digital-x-rays, inlay-restorations, invisalign, offer, sealants and wisdom-teeth-extractions.
+   In a grid cell height:100% resolves against the row; inside an auto-height rs-stack it
+   resolves to ZERO, and with min-height:0 and the img taken out of flow the frame collapsed to
+   0px -- the photograph rendered invisible on all seven pages. It passed 66/66 with every render
+   gate green, because no gate asserts that an image has non-zero height. Now scoped to
+   descendants of .cc-proof, so an orphaned frame keeps its rs-frame--wide 16/10 behaviour. */
+/* BASE, for EVERY .cc-proof__frame including the seven pages where one lives OUTSIDE any
+   .cc-proof container (braces-for-children x2, digital-x-rays, inlay-restorations,
+   invisalign, offer, sealants, wisdom-teeth-extractions). These are the ORIGINAL values.
+   Scoping the fill behaviour without restoring this base left the orphans with no
+   aspect-ratio and no max-height at desktop, so they took the photograph's intrinsic ratio
+   -- 491 wide x 1152/768 = 737px -- which blew their column out to 1088 against a 317 text
+   column and BLOCKED digital-x-rays, offer and sealants on G-DENSITY colD 0.71-0.84. */
+.cc-proof__frame{width:100%;aspect-ratio:4 / 5;max-height:clamp(280px,46vh,460px);}
+/* INSIDE the container it fills the column instead -- this is the owner's alignment fix. */
+.cc-proof .cc-proof__frame{width:100%;height:100%;aspect-ratio:auto;min-height:0;max-height:none;}
 /* .rs-frame is already position:relative, so taking the IMG out of flow works in BOTH markup
    shapes: the frame then contributes no intrinsic height, the grid row is set by the TEXT
    column, and height:100% makes the frame fill exactly that. object-fit:cover on .rs-frame img
    keeps the photograph undistorted at whatever height the text comes to. */
-.cc-proof__frame img{position:absolute;inset:0;}
+.cc-proof .cc-proof__frame img{position:absolute;inset:0;}
 @media (max-width:1023px){
   .cc-proof{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
   .cc-proof__frame{aspect-ratio:16 / 10;max-height:clamp(220px,38vh,340px);}
@@ -2233,7 +2268,10 @@ p.hb-book__line{
    headline larger than a normal hero, which is why the padding of .rs-sec--lead
    is overridden here rather than inherited: the lead padding plus a 52vh band
    would put this hero past a full viewport and lose the letterbox read. */
-.ar-hero{padding-block:var(--ds-space-2xl) var(--ds-space-xl);}
+/* same hand-set pattern as .ar-cred below, and the same fix. It did NOT fail (the gate
+   tolerates the leading section), but left at a literal 96/64 it would no longer track
+   the global scale. Keeps its "hero gets more above" character by deriving it. */
+.ar-hero{padding-block:calc(var(--rs-sec-pad) + var(--ds-space-md)) var(--rs-sec-pad);}
 
 .ar-mast{
   display:grid;
@@ -2325,7 +2363,13 @@ h1.ar-name{
    64px with a +24px tolerance; after, [64/64]. The step now sits at 1023, which is
    the breakpoint .ar-hero above already steps at, so both hand-authored section
    paddings leave the desktop scale together. */
-.ar-cred{padding-block:var(--ds-space-2xl);}
+/* DERIVED, NOT HAND-SET (2026-08-25). This was padding-block:2xl (96px), authored to
+   match --rs-sec-pad back when that clamp topped out at 96. Tightening the global scale
+   to 64 left this at 96 and G-CADENCE blocked all TEN clinician pages: §1[96/96] against
+   a page median of 64 (+24 tolerance). Reading the token means it tracks the scale at
+   every breakpoint instead of having to be re-tuned by hand: 64 at 1440, 46 at 768,
+   40 at 375 -- each an exact match for the median at that width. */
+.ar-cred{padding-block:var(--rs-sec-pad);}
 
 /* The picked company-page creed treatment: oversized typographic statements
    separated by hairlines, sitting in open space, no surface and no shadow. The
@@ -2374,11 +2418,9 @@ p.ar-record__note{
   color:var(--ds-ink);
 }
 
-@media (max-width:1023px){
-  /* the section rhythm leaves the desktop scale HERE, in lockstep with .ar-hero
-     and with the foundation clamp, not one breakpoint lower. */
-  .ar-cred{padding-block:var(--ds-space-xl);}
-}
+/* the old @media (max-width:1023px) override for .ar-cred is GONE: it existed to step the
+   hand-set 96 down to 64 on tablet, and --rs-sec-pad's own clamp now does that continuously
+   and lands exactly on the median at every width instead of near it. */
 @media (max-width:767px){
   .ar-record > p{padding-block:var(--ds-space-sm);}
 }
@@ -4200,7 +4242,7 @@ p.co-close__say{
    Absolutely-positioned decoration (.rs-tex, .rs-grade) is unaffected -- margin
    does not apply to it -- and a single-child .col is untouched.
    ========================================================================== */
-main .col > * + *{margin-top:var(--ds-space-lg);}
+main .col > * + *{margin-top:var(--rs-block-gap);}
 /* ...and NEVER on the first child. Removing the decorative .co-rule from about.html left .co-proof
    as the first element in its column, and .co-proof carries its own 24px top margin -- which had
    been sitting between siblings and now pushed the whole SECTION down, breaking section-rhythm's
@@ -4310,4 +4352,340 @@ main .col > .ar-wash + *{margin-top:0;}
     min-height:clamp(150px,18vh,220px);
   }
   .rs-split > .rs-frame > img{position:absolute;inset:0;}
+}
+
+/* ==========================================================================
+   LEAD-HERO STACK RHYTHM. OWNER 2026-08-24.
+
+   .rs-stack runs a FLAT 40px (--ds-space-lg) between every child. That is the right beat
+   after a headline and far too much between a 25px address line and its own phone number.
+   Measured on blue-diamond at 534px wide: h1->lede 40, lede->addr 40, addr->tel 40,
+   tel->acts 40 -- 160px of gap inside a 494px hero, and the address/phone read as two
+   unrelated beats rather than one contact block.
+
+   .rs-stack ITSELF IS NOT TOUCHED. It has 114 instances across 39 pages and the 40px
+   rhythm is load-bearing elsewhere. These are adjacency overrides on the specific pairs
+   only, using a negative margin against the flex gap so the NET spacing is the token named
+   on each line.
+   ========================================================================== */
+.rs-sec--lead .rs-stack > .rs-h1 + .rs-lede{
+  margin-top:calc(var(--ds-space-md) - var(--rs-block-gap));   /* net 24px */
+}
+.rs-stack > .rs-lede + .rs-office__addr{
+  margin-top:calc(var(--ds-space-md) - var(--rs-block-gap));   /* net 24px */
+}
+/* the address and its phone number are ONE contact block */
+.rs-stack > .rs-office__addr + .rs-tel{
+  margin-top:calc(var(--ds-space-xs) - var(--rs-block-gap));   /* net 8px */
+}
+.rs-stack > .rs-tel + .rs-acts{
+  margin-top:calc(var(--ds-space-md) - var(--rs-block-gap));   /* net 24px */
+}
+
+/* The same contact-block rule for the HERO COPY containers. .cc-hero__copy (lone-mountain)
+   and .rs-hero__copy (sunrise-manor, summerlin) run a 24px gap rather than .rs-stack's 40,
+   so the offset differs -- hence a separate rule rather than one shared selector. Without
+   it the address and its own phone number sit as far apart as the headline and the lede. */
+.cc-hero__copy > .rs-office__addr + .rs-tel,
+.rs-hero__copy > .rs-office__addr + .rs-tel{
+  margin-top:calc(var(--ds-space-xs) - var(--ds-space-md));   /* net 8px */
+}
+
+/* ==========================================================================
+   THE CARE CAROUSEL  ·  .cc-carousel
+   ----------------------------------------------------------------------------
+   Owner request 2026-08-25: the six areas of care shipped as a six-panel
+   <details> accordion (.cc-faq, index only). Converted to a horizontally
+   scrolling CARD carousel, so every area shows its picture AND its sentence at
+   once instead of five of six staying collapsed behind a click.
+
+   NO SCRIPT IS ADDED. The carousel is the browser's own overflow scroller plus
+   CSS scroll-snap: drag, trackpad swipe, touch flick, shift+wheel, the arrow
+   keys and the scrollbar all work with zero JS. The single script this build
+   ships (_build/_template.html) is chrome-only and is NOT touched here, so the
+   other 65 pages carry none of this.
+
+   THE BLEED IS TOKEN-MATCHED, NOT GUESSED. .container pads 24px, and BELOW
+   400px it pads 16px (chrome.css @media max-width:400px). A flat -24px bleed
+   would therefore stick 8px past the viewport on EACH side at 375 and hand
+   G-MQUAL a horizontal-overflow failure. --cc-gutter tracks the container's
+   own padding at both widths, so the bleed is always exactly the gutter.
+   ========================================================================== */
+.cc-carousel{
+  --cc-gutter:var(--ds-space-md);
+  position:relative;
+  margin-inline:calc(var(--cc-gutter) * -1);
+}
+@media (max-width:400px){
+  .cc-carousel{--cc-gutter:16px;}
+}
+
+.cc-carousel__track{
+  display:flex;
+  align-items:stretch;
+  gap:var(--ds-space-md);
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+  scroll-snap-type:x mandatory;
+  scroll-padding-inline:var(--cc-gutter);
+  padding-inline:var(--cc-gutter);
+  /* top pad clears the card's own lift shadow; bottom pad parts card from scrollbar */
+  padding-block:var(--ds-space-2xs) var(--ds-space-sm);
+  scrollbar-width:thin;
+  scrollbar-color:var(--ds-primary-deep) var(--ds-line);
+}
+.cc-carousel__track::-webkit-scrollbar{height:6px;}
+.cc-carousel__track::-webkit-scrollbar-track{background:var(--ds-line);border-radius:var(--ds-r-pill);}
+.cc-carousel__track::-webkit-scrollbar-thumb{background:var(--ds-primary-deep);border-radius:var(--ds-r-pill);}
+.cc-carousel__track:focus-visible{outline:3px solid var(--ds-accent);outline-offset:4px;}
+
+.cc-card{
+  flex:0 0 auto;
+  width:clamp(255px,74vw,320px);
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;                      /* clip the photo to the panel's own radius */
+}
+.cc-card__frame{
+  position:relative;
+  margin:0;
+  aspect-ratio:4 / 3;
+  overflow:hidden;
+  background:var(--ds-primary-deep);    /* never a blank white box while decoding */
+}
+.cc-card__frame img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  filter:saturate(.94) contrast(1.04);  /* the same grade the .cc-inhouse portraits carry */
+}
+.cc-card__body{
+  flex:1 1 auto;
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-xs);
+  padding:var(--ds-space-md);
+}
+.cc-card__t{
+  font-family:var(--ds-font-display);
+  font-size:clamp(20px,2.1vw,23px);
+  line-height:1.28;
+  letter-spacing:-.01em;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+/* the sentence takes the slack, so the link lands on the SAME line across cards
+   of differing copy length instead of floating up under the short ones */
+.cc-card__d{flex:1 1 auto;}
+/* .rs-qlink is inline-flex, but as a flex ITEM in this column it would stretch to
+   the full card and drag its underline bar with it -- the exact overhang already
+   documented on .rs-qlink above. align-self pins the box back onto the text. */
+.cc-card > .cc-card__body > .rs-qlink{align-self:flex-start;}
+
+/* the scroll affordance. Says "there is more to the right" without a
+   script-driven arrow button. */
+.cc-carousel__hint{
+  display:flex;
+  align-items:center;
+  gap:var(--ds-space-sm);
+  margin-top:var(--ds-space-xs);
+  padding-inline:var(--cc-gutter);
+  font-size:15px;
+  line-height:1.4;
+  color:var(--ds-ink-soft);
+}
+.cc-carousel__hint::after{
+  content:"";
+  flex:1 1 auto;
+  height:1px;
+  background:var(--ds-line);
+}
+
+/* DESKTOP DRAGS, IT DOES NOT SCROLLBAR (owner request 2026-08-25).
+   ----------------------------------------------------------------------------
+   Keyed on .is-draggable, a class ONLY the shell script adds, and only where a
+   fine pointer exists. So the failure mode is safe in both directions: no
+   script -> no class -> the scrollbar stays and the rail still works; touch ->
+   no class -> native flick and overlay scrollbar, both untouched. The scrollbar
+   is never hidden unless drag is actually running. */
+@media (hover:hover) and (pointer:fine){
+  .cc-carousel__track.is-draggable{
+    cursor:grab;
+    scrollbar-width:none;                 /* Firefox */
+  }
+  .cc-carousel__track.is-draggable::-webkit-scrollbar{display:none;}
+  .cc-carousel__track.is-dragging{
+    cursor:grabbing;
+    user-select:none;                     /* a pan must not paint a text selection */
+  }
+  /* the browser's native image drag would hijack the pan */
+  .cc-carousel__track.is-draggable img{-webkit-user-drag:none;}
+}
+
+/* ==========================================================================
+   THE MEDIA COLUMN MATCHES ITS TEXT COLUMN  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   MEASURED, NOT REMEMBERED. _audit/audit-media-text-heights.mjs renders all 66
+   pages at 1440 and compares, for every 2-column row containing an image, the
+   media child's rendered height against the text child's. It found 10 components
+   across 42 pages out of alignment, worst 448px (cc-inhouse on digital-x-rays:
+   media 765 vs text 317). Every one of them was align-items:start -- exactly the
+   property that lets the media keep its own natural height.
+
+   THE MECHANISM, AND WHY align-items:stretch ALONE IS THE WRONG FIX. Stretch on
+   the container makes the row as tall as its TALLEST child, so the short TEXT
+   column would grow to meet the tall image -- the opposite of what was asked.
+   So the image is taken OUT OF FLOW (position:absolute) and the frame's
+   aspect-ratio modifier is dropped. The frame then contributes no intrinsic
+   height, the row height is decided by the TEXT column, and the frame fills it.
+   Same mechanism already proven on .cc-proof earlier in this sheet.
+
+   align-self ON THE MEDIA CHILD, never align-items on the container. The
+   structure probe found TEN different DOM shapes under .cc-inhouse alone, three
+   of them square/round PORTRAIT grids (cc-face / cc-roster / rs-medallion).
+   Stretching the container would reach those too; align-self reaches only the
+   one child that is actually a media column.
+
+   THE FLOOR IS LOAD-BEARING. Some text columns are very short -- ar-two on
+   dr-andy-landaverde measures 151px. With no min-height the picture would become
+   a 151px letterbox strip, which is how an earlier pass of this same fix went
+   wrong. The floor trades an exact match for a sane picture on those rows: the
+   gap closes from 368px to roughly 50px rather than to 0.
+
+   DELIBERATELY OUT OF SCOPE: .ar-mast (99px worst -- a portrait beside a name
+   block, a different pattern) and .hb-route (60px worst, and the TEXT is the
+   taller side there, so this fix would do nothing).
+   ========================================================================== */
+@media (min-width:1024px){
+  .cc-problem > .cc-problem__side,
+  .ar-two > .ar-two__k,
+  .co-story > .co-story__head,
+  .hb-fork > .hb-fork__else{
+    align-self:stretch;
+    display:flex;
+    flex-direction:column;
+    min-height:0;
+  }
+  .cc-problem > .cc-problem__side > .rs-frame,
+  .ar-two > .ar-two__k > .rs-frame,
+  .co-story > .co-story__head > .rs-frame,
+  .hb-fork > .hb-fork__else > .rs-frame,
+  .cc-inhouse > .rs-frame,
+  .cc-inhouse > .rs-stack > .rs-frame{
+    flex:1 1 auto;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(180px,22vh,280px);
+    max-height:none;
+    margin-block:0;
+  }
+  .cc-inhouse > .rs-stack{align-self:stretch;min-height:0;}
+  .cc-problem > .cc-problem__side > .rs-frame > img,
+  .ar-two > .ar-two__k > .rs-frame > img,
+  .co-story > .co-story__head > .rs-frame > img,
+  .hb-fork > .hb-fork__else > .rs-frame > img,
+  .cc-inhouse > .rs-frame > img,
+  .cc-inhouse > .rs-stack > .rs-frame > img{position:absolute;inset:0;}
+}
+
+@media (min-width:1060px){
+  /* .rs-split's DIRECT frame was handled in an earlier pass; the ones nested one
+     level down inside an .rs-stack were NOT, which is precisely why the audit
+     still reported 5 rs-split pages after that pass was called done. */
+  .rs-split > .rs-stack{align-self:stretch;min-height:0;}
+  .rs-split > .rs-stack > .rs-frame{
+    flex:1 1 auto;align-self:stretch;aspect-ratio:auto;height:auto;
+    min-height:clamp(180px,22vh,280px);max-height:none;margin-block:0;
+  }
+  .rs-split > .rs-stack > .rs-frame > img{position:absolute;inset:0;}
+
+  /* the page hero. A taller floor here -- a hero picture reduced to 180px would
+     read as a banner, not a hero. */
+  .rs-hero__inner > .rs-hero__art{align-self:stretch;display:flex;flex-direction:column;min-height:0;}
+  .rs-hero__inner > .rs-hero__art > .rs-frame{
+    flex:1 1 auto;align-self:stretch;aspect-ratio:auto;height:auto;
+    min-height:clamp(220px,30vh,360px);max-height:none;margin-block:0;
+  }
+  .rs-hero__inner > .rs-hero__art > .rs-frame > img{position:absolute;inset:0;}
+}
+
+/* ==========================================================================
+   BAND SECTIONS GET A TEXTURE, NOT A FLAT FILL  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   .rs-sec--band is the workhorse tint -- 132 uses across the build -- and it was
+   a single flat colour. Two very soft washes give it depth without asking the
+   reader to notice them.
+
+   AS A LAYERED background-image, DELIBERATELY NOT A ::before. A pseudo-element
+   would need position:relative on all 132 sections, and that would create a new
+   containing block for every absolutely-positioned descendant inside them. That
+   is precisely the failure that let a photo escape its section earlier in this
+   build. A background layer changes no geometry and no stacking at all.
+
+   CONTRAST IS RAISED, NEVER LOWERED. Wash 1 is white, lifting the tint toward
+   #FFF, which INCREASES contrast against the dark ink. Wash 2 is the kit's own
+   glow hue at 6%, and its worst case was computed, not eyeballed: #E0EFEE under
+   rgba(18,140,126,.06) resolves to #D4E9E7, which against --ds-ink #09302D is
+   11.28:1 -- far above the 4.5 floor. Dark bands are excluded via :not(), so the
+   light-on-dark pairing is untouched.
+   ========================================================================== */
+.rs-sec--band:not(.surface-dark){
+  background-color:var(--ds-bg-band);
+  background-image:
+    /* a soft lift out of the top-left, off the reading column */
+    radial-gradient(90% 120% at 6% -10%, rgba(255,255,255,.60), transparent 58%),
+    /* the faintest cool settle bottom-right, same hue family and restraint as
+       the kit's existing --ds-glow-wash so it reads as the same hand */
+    radial-gradient(80% 90% at 104% 112%, rgba(18,140,126,.06), transparent 60%);
+  background-repeat:no-repeat;
+  background-attachment:scroll;
+}
+
+/* ==========================================================================
+   THE CLOSING CTA GETS DEPTH  (owner request 2026-08-25: "pretty up the site")
+   ----------------------------------------------------------------------------
+   Every page carries at least one .surface-dark section, and they were all a flat
+   two-stop gradient. MEASURED distribution: 56 pages have a DARK closing section,
+   10 do not (about.html's closing section is light and its HERO is the dark one),
+   so keying on .rs-sec--close would have missed 10 pages entirely.
+   .rs-sec--band is excluded: dark bands ground on --ds-bg-band (#09312E), which is
+   deliberately darker, and restating the canvas gradient there would lighten them. A soft generated light-bloom underneath gives it a
+   floor and a horizon without asking to be noticed.
+
+   THE TRAP THIS RULE IS WRITTEN AROUND, quoted from this sheet's own §4 note:
+   ".surface-dark paints its ground as a background-IMAGE gradient, so a later
+   background-image rule on the same element would ERASE it and the band would be
+   dark by class name only." So the ground gradient is RESTATED here as the
+   bottom layer rather than inherited -- adding a bare background-image would
+   have silently deleted the dark ground on every page.
+
+   THE SCRIM IS WHY CONTRAST CANNOT MOVE. The texture carries a bright teal
+   bloom, and lightening a dark ground under light ink LOWERS contrast. Layer 1
+   is a near-ground-colour scrim at .88/.94, so the texture contributes at most
+   ~12% and the ground stays effectively as dark as it was. Measured after, not
+   assumed.
+
+   NOT A FABRICATED DEPICTION, so it carries no ⚠OWNER PLACEHOLDER marker and
+   forces no noindex. proofPolicy.fabrication_allowed_for governs "illustrative
+   before/after" and "illustrative office/team imagery" -- things that stand in
+   for evidence about this practice. This asset is abstract light on nothing. It
+   depicts no office, no person, no outcome and makes no claim, so it is
+   decoration in the same class as the sheet's existing --ds-glow-wash. That
+   distinction is what keeps the other 65 pages INDEXABLE: a generated PHOTO on
+   them would have required noindex under fabrication_requirements.
+   ========================================================================== */
+.rs-sec.surface-dark:not(.rs-sec--band){
+  background-image:
+    /* 1 · the scrim that protects the ink contrast */
+    linear-gradient(180deg, rgba(11,61,58,.88), rgba(11,66,62,.94)),
+    /* 2 · the generated light bloom */
+    url("../assets/TEXTURE-wash-dark.jpg"),
+    /* 3 · the canonical dark ground, RESTATED so it is not erased. Tokens, not
+       the literal hexes, so it tracks the dark palette rather than forking it. */
+    linear-gradient(180deg,var(--ds-canvas),var(--ds-bg-surface));
+  background-size:auto, cover, auto;
+  background-position:center, center 70%, center;
+  background-repeat:no-repeat, no-repeat, no-repeat;
 }
