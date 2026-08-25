@@ -1479,7 +1479,7 @@ p.cc-proof__scope{
    column and BLOCKED digital-x-rays, offer and sealants on G-DENSITY colD 0.71-0.84. */
 .cc-proof__frame{width:100%;aspect-ratio:4 / 5;max-height:clamp(280px,46vh,460px);}
 /* INSIDE the container it fills the column instead -- this is the owner's alignment fix. */
-.cc-proof .cc-proof__frame{width:100%;height:100%;aspect-ratio:auto;min-height:0;max-height:none;}
+.cc-proof .cc-proof__frame{width:100%;height:auto;min-height:0;max-height:none;align-self:start;}
 /* .rs-frame is already position:relative, so taking the IMG out of flow works in BOTH markup
    shapes: the frame then contributes no intrinsic height, the grid row is set by the TEXT
    column, and height:100% makes the frame fill exactly that. object-fit:cover on .rs-frame img
@@ -4105,7 +4105,8 @@ p.co-lead-in{
 .co-values__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);}
 /* the statement is the section's focal object: display face, one step under the
    sentence heading, held to a short measure so it reads as a held line. */
-p.co-values__say{
+p.co-values__say,
+h2.co-values__say{
   font-family:var(--ds-font-display);
   font-size:clamp(23px,2.7vw,33px);
   line-height:1.3;
@@ -4304,8 +4305,10 @@ main .col > .ar-wash + *{margin-top:0;}
 .hb-cost__media,
 .co-hero__art,
 .co-values__frame{
-  width:100%;height:100%;
-  aspect-ratio:auto;min-height:0;max-height:none;
+  /* CORRECTED 2026-08-25: aspect-ratio:auto here flattened cc-hero__frame to 2.00:1
+     on a HERO and hb-cost__media to 2.40:1. Ratio restored per class below. */
+  width:100%;height:auto;
+  min-height:0;max-height:none;
   align-self:stretch;            /* .hb-cost__media shipped align-self:center */
   /* .co-values__frame inherits margin-block:18px from .co-tile, which pushed it 18px down
      and left the columns 18px out at BOTH ends even after their heights matched. */
@@ -4567,17 +4570,19 @@ main .col > .ar-wash + *{margin-top:0;}
     flex-direction:column;
     min-height:0;
   }
+  /* CORRECTED 2026-08-25: same cause as above -- aspect-ratio:auto plus a px floor
+     crushed portrait sources (cc-problem__frame reached 2.59:1 on 13 pages). The
+     designed ratio now governs and the frame no longer stretches. */
   .cc-problem > .cc-problem__side > .rs-frame,
   .ar-two > .ar-two__k > .rs-frame,
   .co-story > .co-story__head > .rs-frame,
   .hb-fork > .hb-fork__else > .rs-frame,
   .cc-inhouse > .rs-frame,
   .cc-inhouse > .rs-stack > .rs-frame{
-    flex:1 1 auto;
-    align-self:stretch;
-    aspect-ratio:auto;
+    flex:0 0 auto;
+    align-self:start;
     height:auto;
-    min-height:clamp(180px,22vh,280px);
+    min-height:0;
     max-height:none;
     margin-block:0;
   }
@@ -4595,9 +4600,12 @@ main .col > .ar-wash + *{margin-top:0;}
      level down inside an .rs-stack were NOT, which is precisely why the audit
      still reported 5 rs-split pages after that pass was called done. */
   .rs-split > .rs-stack{align-self:stretch;min-height:0;}
+  /* CORRECTED 2026-08-25: the last of the aspect-ratio:auto + px-floor rules. On
+     invisalign this held a 768x1152 portrait at 632x204 = 3.10:1, the flattest
+     crop in the build. Ratio governs; the frame no longer stretches. */
   .rs-split > .rs-stack > .rs-frame{
-    flex:1 1 auto;align-self:stretch;aspect-ratio:auto;height:auto;
-    min-height:clamp(180px,22vh,280px);max-height:none;margin-block:0;
+    flex:0 0 auto;align-self:start;height:auto;
+    min-height:0;max-height:none;margin-block:0;
   }
   .rs-split > .rs-stack > .rs-frame > img{position:absolute;inset:0;}
 
@@ -4719,12 +4727,22 @@ main .col > .ar-wash + *{margin-top:0;}
    crushing the picture into a letterbox strip.
    ========================================================================== */
 @media (min-width:1024px){
-  .hb-why .rs-frame,
-  .cc-inhouse .rs-frame,
-  .rs-split .rs-frame{
+  /* CORRECTED 2026-08-25: this block set aspect-ratio:auto with a fixed px floor,
+     which flattened portrait sources to as much as 3.19:1. Only .hb-why__media is
+     narrow enough (331px) for the height match to be safe; the others keep their
+     designed ratio and simply sit at the top of their row. */
+  .hb-why .hb-why__media{
     aspect-ratio:auto;
     height:auto;
     min-height:clamp(180px,22vh,280px);
+    max-height:none;
+  }
+  .cc-inhouse .rs-frame,
+  .rs-split .rs-frame{
+    align-self:start;
+    flex:0 0 auto;
+    height:auto;
+    min-height:0;
     max-height:none;
   }
   /* .hb-why__media carries its own min-height:360px, which would otherwise hold
@@ -4734,4 +4752,142 @@ main .col > .ar-wash + *{margin-top:0;}
   .hb-why .rs-frame > img,
   .cc-inhouse .rs-frame > img,
   .rs-split .rs-frame > img{position:absolute;inset:0;}
+}
+
+/* ==========================================================================
+   STOP FLATTENING THE TWO ABOUT-PAGE TILES  (owner report 2026-08-25)
+   ----------------------------------------------------------------------------
+   A REGRESSION FROM MY OWN HEIGHT-MATCHING WORK, reported by the owner and then
+   measured: both photographs on about are 768x1152 PORTRAIT (ratio 0.67), and
+   the height-matching rules above were rendering them at
+       1-44-1  500x180  = 2.78 : 1
+       1-9-3   502x240  = 2.09 : 1
+   A portrait source shown at 2.78:1 is a thin horizontal slice of itself, which
+   is why heads were cut off. Matching a photo to a SHORT text block is only
+   right when the photo is a media COLUMN beside that text. These two are not:
+   .co-story__head STACKS its lead-in, its heading and its figure in one column,
+   and .co-values' copy is only 172px, so "match the text" here means "crush the
+   picture". The designed ratios are restored and the ratio now wins over the
+   height match for these two only -- every other component the earlier rules
+   cover is a genuine side-by-side media column and keeps the matching behaviour.
+   ========================================================================== */
+@media (min-width:1024px){
+  .co-story > .co-story__head > .rs-frame{
+    flex:0 0 auto;
+    aspect-ratio:16 / 10;      /* the ratio .rs-frame--wide was always asking for */
+    height:auto;
+    min-height:0;
+  }
+  .co-values__frame{
+    aspect-ratio:16 / 11;      /* the ratio the <=1023 rule already uses */
+    height:auto;
+    min-height:0;
+  }
+  /* the floor existed to stop .co-values' 172px copy collapsing the photo; the
+     ratio now guarantees a sane height, so the floor is no longer load-bearing */
+  .co-values{min-height:0;}
+}
+
+/* ==========================================================================
+   THE RATIO WINS OVER THE HEIGHT MATCH  (owner reported it twice, 2026-08-25)
+   ----------------------------------------------------------------------------
+   MY OWN REGRESSION, measured across all 66 pages: 30 frames were rendering a
+   768x1152 PORTRAIT source flatter than 1.9:1 --
+       rs-frame--tall      3 pages   worst 3.19 : 1
+       rs-frame--wide     10 pages   worst 3.10 : 1
+       cc-problem__frame  13 pages   worst 2.59 : 1
+       hb-cost__media      1 page          2.40 : 1
+       cc-proof__frame     1 page          2.08 : 1
+       cc-hero__frame      1 page (HERO)   2.00 : 1
+       rs-frame--hero      1 page (HERO)   2.00 : 1
+   Cause: the height-matching rules above set aspect-ratio:auto plus a FIXED px
+   floor. Where the copy beside them is short, the frame collapsed to that floor
+   while keeping the full column width, so a tall photograph became a horizontal
+   sliver of itself and heads were cropped out of frame.
+
+   WHY A FLOOR CANNOT FIX THIS: min-height is a length and cannot reference the
+   element's own width, so no single px floor is safe across frames that measure
+   331px wide in one component and 632px in another. Raising it enough for the
+   widest frame would push a 460px column of dead space under the narrow ones.
+
+   SO THE RATIO GOVERNS AND THE FRAME NO LONGER STRETCHES. align-self:start with
+   the designed ratio restored means the picture is ALWAYS correctly proportioned;
+   when the copy beside it runs longer the frame simply sits at the top of its
+   row. An imperfect height match reads as a normal editorial column. A 3:1 crop
+   of a portrait reads as broken, which is what was shipping.
+
+   .hb-why__media is NOT included: it measures 331px wide against 393px of copy,
+   so matching gives it a 0.85 ratio -- the height match works there and stays.
+   ========================================================================== */
+@media (min-width:1024px){
+  .rs-frame--wide,
+  .rs-frame--tall,
+  .rs-frame--portrait,
+  .cc-problem__frame,
+  .cc-proof__frame,
+  .cc-hero__frame,
+  .hb-cost__media,
+  .co-hero__art{
+    align-self:start;
+    flex:0 0 auto;
+    height:auto;
+    min-height:0;
+    max-height:none;
+  }
+  /* each modifier's own designed ratio, restored verbatim from its base rule */
+  .rs-frame--wide{aspect-ratio:16 / 10;}
+  .rs-frame--tall,
+  .rs-frame--portrait{aspect-ratio:4 / 5;}
+  .cc-problem__frame{aspect-ratio:16 / 10;}
+  .cc-proof__frame{aspect-ratio:16 / 10;}
+  .cc-hero__frame{aspect-ratio:16 / 11;}
+  .hb-cost__media{aspect-ratio:16 / 10;}
+  .co-hero__art{aspect-ratio:16 / 10;}
+}
+
+/* ==========================================================================
+   THE ABOUT HERO IS ONE PICTURE  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   The hero shipped a .co-mosaic of three tiles -- a 3/4 lead beside two stacked
+   3/4 thumbnails at 144x112 each. At that size the two small ones read as
+   decoration rather than as photographs of anything, so the hero is now the
+   single lead image: the reception desk carrying the Radiant Smiles mark.
+
+   THE RATIO IS MEASURED, NOT CHOSEN BY EYE. The copy column measures 340px and
+   the art column is 523px wide, so at this width:
+       4/5    -> 654px   nearly double the copy, the hero would balloon
+       4/3    -> 392px   52px taller than the copy
+       16/10  -> 327px   13px SHORTER than the copy   <- the balanced one
+   16/10 also holds the hero at the height the mosaic already occupied (327px),
+   so nothing below it shifts.
+
+   object-position sits ABOVE centre because the source is a 768x1152 portrait
+   and the desk with its sun mark sits in the upper-middle band; a centred crop
+   of a 16/10 window would cut the mark out of frame.
+   ========================================================================== */
+.co-tile--solo{
+  aspect-ratio:16 / 10;
+  width:100%;
+}
+.co-tile--solo img{object-position:50% 38%;}
+
+/* ==========================================================================
+   .co-why: THE HEADING SITS WITH ITS ARGUMENT  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   MEASURED on about at 1440: the heading column renders 142px against a 390px
+   argument stack -- a 248px gap, and every other two-column row on the page sits
+   between 0 and 13px:
+       co-hero  340 / 327  delta 13
+       co-story 153 / 148  delta  5
+       co-why   142 / 390  delta 248   <-- the outlier
+       co-values 345/345   delta  0
+       co-proof 230 / 230  delta  0
+   align-items:start pinned the heading to the top and left ~250px of empty dark
+   ground under it. Centring splits that space above and below instead, so the
+   heading reads as belonging to the whole argument rather than only its first
+   line. Nothing else changes: the columns keep their .9fr/1.1fr weighting, the
+   gap token, and the reading order.
+   ========================================================================== */
+@media (min-width:1024px){
+  .co-why{align-items:center;}
 }
