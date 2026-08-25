@@ -4689,3 +4689,49 @@ main .col > .ar-wash + *{margin-top:0;}
   background-position:center, center 70%, center;
   background-repeat:no-repeat, no-repeat, no-repeat;
 }
+
+/* ==========================================================================
+   MEDIA STOPS OUTRUNNING ITS TEXT  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   MEASURED, and the earlier pass MISSED this whole class. That audit compared a
+   media column against the text column's BOX, and those boxes already matched
+   because align-items:stretch had equalised them. What it never compared was the
+   text column's CONTENT: on restorations .hb-why__args measures a 497px box
+   around 393px of content, so 104px of the photo hangs below anything to read.
+   Re-audited across all 66 pages against CONTENT height instead, which is what
+   surfaced hb-why (9 pages, worst 197px), cc-inhouse (9, 448) and rs-split
+   (5, 456) -- all three with the image still `position:static`.
+
+   WHY THE EARLIER FIX DID NOT REACH THEM: it was scoped by exact DOM shape
+   (`.rs-split > .rs-frame`, `.cc-inhouse > .rs-stack > .rs-frame`), and the
+   structure probe found TEN different shapes under .cc-inhouse alone. These
+   instances simply nest deeper. Targeting `.rs-frame` as a DESCENDANT covers
+   every shape without needing to enumerate them.
+
+   SAFE AGAINST THE PORTRAIT GRIDS, verified rather than assumed: .cc-inhouse's
+   face treatments use .cc-face / .cc-roster / .rs-medallion and NEVER .rs-frame
+   (grep: 0 elements carry both), so squaring a roster of faces to a text height
+   -- which would be meaningless -- cannot happen here.
+
+   THE MECHANISM is the one already proven on .cc-proof: take the image OUT OF
+   FLOW so the frame has no intrinsic height, drop the ratio, and let the row
+   height be decided by the text column. The floor stops a short column from
+   crushing the picture into a letterbox strip.
+   ========================================================================== */
+@media (min-width:1024px){
+  .hb-why .rs-frame,
+  .cc-inhouse .rs-frame,
+  .rs-split .rs-frame{
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(180px,22vh,280px);
+    max-height:none;
+  }
+  /* .hb-why__media carries its own min-height:360px, which would otherwise hold
+     the photo above the copy no matter what this rule says. */
+  .hb-why .hb-why__media{min-height:clamp(180px,22vh,280px);}
+
+  .hb-why .rs-frame > img,
+  .cc-inhouse .rs-frame > img,
+  .rs-split .rs-frame > img{position:absolute;inset:0;}
+}
