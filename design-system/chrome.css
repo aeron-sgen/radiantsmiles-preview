@@ -512,7 +512,11 @@ ul{margin:0;padding:0;list-style:none;}
 .directory__h{font-size:28px;}
 .ledger{margin-top:var(--ds-space-md);border-top:1px solid var(--ds-line);}
 .ledger__row{
-  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr) auto;
+  /* 2 columns since 2026-08-25: the middle cell held a phone number per office and the
+     owner asked the directory to carry the LOCATION LINK only. Every number is still
+     published on its own office page (4-5 tel links each) and on contact.html (7), so
+     nothing became unreachable. */
+  display:grid;grid-template-columns:minmax(0,1fr) auto;
   gap:var(--ds-space-md);align-items:center;
   padding-block:10px;
   border-bottom:1px solid var(--ds-line);
@@ -795,4 +799,28 @@ ul{margin:0;padding:0;list-style:none;}
   background:linear-gradient(to bottom,
     var(--ds-scrim) 0%, var(--ds-scrim) 13%, transparent 31%,
     transparent 43%, var(--ds-scrim) 66%, rgba(9,48,45,.84) 100%);
+}
+
+/* ==========================================================================
+   HEADER AND FOOTER RUN FULL WIDTH  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   Both already painted their GROUND edge to edge -- they are block elements. What
+   was capped is their CONTENT: each wraps in .container, which is
+   max-width:1180px and centred, so on a wide screen the wordmark and the footer
+   columns stopped well short of the glass while the ground ran past them.
+
+   THE CHILD COMBINATOR IS DELIBERATE. .site-header contains THREE .container
+   elements: the bar itself, plus one inside each mega panel. Only the bar is a
+   DIRECT child, so `>` releases the bar and the footer while leaving the dropdown
+   panels capped at the reading width they were designed for -- a full-bleed mega
+   panel would throw its columns to opposite edges of a 1920px screen.
+
+   The gutter stays responsive rather than becoming flush: clamp(24px,4vw,64px)
+   holds the existing 24px on small screens and opens to 64px on wide ones, so
+   content never touches the viewport edge.
+   ========================================================================== */
+.site-header > .container,
+.site-footer > .container{
+  max-width:none;
+  padding-inline:clamp(var(--ds-space-md),4vw,var(--ds-space-xl));
 }
