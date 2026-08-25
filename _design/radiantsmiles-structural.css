@@ -4344,15 +4344,17 @@ main .col > .ar-wash + *{margin-top:0;}
    ========================================================================== */
 @media (min-width:1060px){
   .rs-split > .rs-frame{
-    align-self:stretch;
-    height:100%;
-    aspect-ratio:auto;
+    align-self:start;
+    height:auto;
+    /* aspect-ratio:auto REMOVED 2026-08-25: it stripped the modifier ratio
+       and, with the img out of flow and align-self:start, left the frame 0px tall.
+       Measured: 32 images invisible across the build. */
     /* The floor exists only to stop a genuinely tiny text column collapsing the photo to a
        sliver. Set at 240px/28vh it resolved to 252 and was TALLER than real text columns --
        bone-grafting's two splits measured 184 and 236 -- so the FRAME set the row and the
        columns stayed 68px and 16px out, i.e. the floor was causing the misalignment it was
        meant to guard against. 18vh resolves to ~162, below every measured text column. */
-    min-height:clamp(150px,18vh,220px);
+    min-height:0;
   }
   .rs-split > .rs-frame > img{position:absolute;inset:0;}
 }
@@ -4613,8 +4615,9 @@ main .col > .ar-wash + *{margin-top:0;}
      read as a banner, not a hero. */
   .rs-hero__inner > .rs-hero__art{align-self:stretch;display:flex;flex-direction:column;min-height:0;}
   .rs-hero__inner > .rs-hero__art > .rs-frame{
-    flex:1 1 auto;align-self:stretch;aspect-ratio:auto;height:auto;
-    min-height:clamp(220px,30vh,360px);max-height:none;margin-block:0;
+    /* aspect-ratio:auto REMOVED 2026-08-25, same cause as .rs-split above. */
+    flex:0 0 auto;align-self:start;width:100%;height:auto;
+    min-height:0;max-height:none;margin-block:0;
   }
   .rs-hero__inner > .rs-hero__art > .rs-frame > img{position:absolute;inset:0;}
 }
@@ -4828,6 +4831,13 @@ main .col > .ar-wash + *{margin-top:0;}
   .cc-hero__frame,
   .hb-cost__media,
   .co-hero__art{
+    /* width:100% IS LOAD-BEARING. align-self governs the CROSS axis, so inside a
+       flex COLUMN (.co-story__head, .cc-problem__side) `start` collapses WIDTH,
+       not height -- and because the <img> is absolutely positioned there is no
+       content to hold the box open, so the frame resolved to 0x0 and the photo
+       vanished. Measured: 61 images across the build rendered at zero size before
+       this line was added. */
+    width:100%;
     align-self:start;
     flex:0 0 auto;
     height:auto;
@@ -4890,4 +4900,33 @@ main .col > .ar-wash + *{margin-top:0;}
    ========================================================================== */
 @media (min-width:1024px){
   .co-why{align-items:center;}
+}
+
+/* ==========================================================================
+   .co-story: THE PHOTO FILLS ITS COLUMN  (owner request 2026-08-25)
+   ----------------------------------------------------------------------------
+   MEASURED on about at 1440 after the section merge: both columns resolve to
+   716px, but the head column's content (lead-in 31 + heading 94 + figure 363)
+   ends 200px short of the bottom, so a 200px band of empty ground sat under the
+   photograph while the argument column beside it ran full height.
+
+   Letting the figure take that space IMPROVES the crop rather than hurting it:
+   580 x 563 is a ratio of 1.03, much nearer the source's own 0.67 portrait than
+   the 1.60 it was being held at. This is the opposite of the flattening problem
+   -- that happened where a column was SHORT; here the column is tall.
+
+   THE FLOOR IS THE GUARD. min-height:320px means the worst case at this column
+   width is 580/320 = 1.81 : 1, still inside the 1.9 limit the squash audit
+   enforces, so a future copy edit that shortens the argument column cannot
+   reintroduce a letterbox. Scoped to .co-story, which ships on about alone.
+   ========================================================================== */
+@media (min-width:1024px){
+  .co-story > .co-story__head > .rs-frame{
+    flex:1 1 auto;
+    width:100%;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:320px;
+  }
 }
