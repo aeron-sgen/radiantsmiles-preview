@@ -20,6 +20,99 @@
       "alt_declares_placeholder": true,
       "resolves_when": "real photography of a Radiant Smiles reception is supplied; then restore real alt, set noindex false, delete this entry",
       "supersedes_note": "imagery-system.md §3 recorded the fal-extend allowance as NOT exercised (owner decision 2026-08-10). Reopened by the owner on 2026-08-21 for placeholders only."
+    },
+    {
+      "id": "care-periodontics-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-periodontics.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "care-restorations-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-restorations.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "care-general-dentistry-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-general-dentistry.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "care-orthodontics-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-orthodontics.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "care-cosmetic-dentistry-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-cosmetic-dentistry.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "care-oral-surgery-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-care-oral-surgery.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-pro/v1.1 via the fal MCP",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (asked for a card carousel and for fal-generated images where none were supplied)",
+      "depicts": "illustrative dental subject matter only -- models, instruments and ceramic forms",
+      "never_depicts": "no patients, no staff, no real mouths, no before/after, no clinical results (proofPolicy.real_only_for)",
+      "noindex_until_swapped": true
+    },
+    {
+      "id": "treatment-corridor-placeholder",
+      "file": "assets/GENERATED-PLACEHOLDER-treatment-corridor.jpg",
+      "used_on": [
+        "pages/index.content.html"
+      ],
+      "generator": "fal flux-2/klein/9b/edit (IMAGE-TO-IMAGE from the real first-party photo)",
+      "derived_from": "assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg",
+      "generated_at": "2026-08-25",
+      "authorised_by": "owner, 2026-08-25 (chose this slot and chose img2img from the real photo)",
+      "depicts": "an invented interior that keeps the REAL corridor composition and bay structure; surfaces, colour and light are synthetic",
+      "never_depicts": "no people, no staff, no patients, no teeth, no procedure, no signage",
+      "real_original_still_live_on": "the other 25 pages that use the source photograph, unaltered",
+      "noindex_until_swapped": true
     }
   ]
 }

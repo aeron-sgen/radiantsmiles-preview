@@ -13,8 +13,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../_design/radiantsmiles-tokens.css?v=b6a47ef0">
-  <link rel="stylesheet" href="../_design/radiantsmiles-chrome.css?v=1766c351">
-  <link rel="stylesheet" href="../_design/radiantsmiles-structural.css?v=04c64495">
+  <link rel="stylesheet" href="../_design/radiantsmiles-chrome.css?v=d025239b">
+  <link rel="stylesheet" href="../_design/radiantsmiles-structural.css?v=1ef641cd">
 
 </head>
 <body>
@@ -384,11 +384,7 @@
 
           <div class="cc-rail__grp">
             <p class="cc-rail__k">Also:</p>
-            <a class="rs-chip" href="locations.html">all seven offices</a>
-            <span class="cc-rail__dot" aria-hidden="true">&middot;</span>
             <a class="rs-chip" href="offer.html">new patient offer</a>
-            <span class="cc-rail__dot" aria-hidden="true">&middot;</span>
-            <a class="rs-chip" href="contact.html">contact</a>
           </div>
 
         </div>
@@ -1128,6 +1124,95 @@
   var mq = window.matchMedia('(min-width:1101px)');
   var onMQ = function () { if (mq.matches && drawer.classList.contains('is-open')) closeDrawer(); };
   if (mq.addEventListener) mq.addEventListener('change', onMQ); else if (mq.addListener) mq.addListener(onMQ);
+
+  /* ------------------------------------------------------------------
+     CARE CAROUSEL · DRAG-TO-PAN. Owner request 2026-08-25: on desktop the
+     rail should be DRAGGED, not pushed with a scrollbar.
+
+     POINTER-GATED, NOT WIDTH-GATED. It arms only where a fine pointer with
+     hover exists -- a mouse or a trackpad. Touch and pen are left completely
+     alone: the native flick they already have is better than anything this
+     could synthesise, and capturing their pointer events would break it.
+
+     PROGRESSIVE ENHANCEMENT, FAIL-VISIBLE. The scrollbar is hidden by CSS
+     keyed on `.is-draggable`, and ONLY this code adds that class. If the
+     script never runs, the class never lands, the scrollbar stays and the
+     rail is still fully usable -- it can never fail into a dead rail with no
+     scrollbar AND no drag.
+
+     THE CLICK-AFTER-DRAG PROBLEM: every card is a link, so releasing a drag
+     on top of a card would navigate. `justDragged` + a capture-phase click
+     handler swallow exactly that one click. The 5px threshold is what keeps
+     a plain click on a card working normally.
+     ------------------------------------------------------------------ */
+  var rails = [].slice.call(document.querySelectorAll('.cc-carousel__track'));
+  var finePointer = window.matchMedia('(hover:hover) and (pointer:fine)');
+  var noMotion    = window.matchMedia('(prefers-reduced-motion:reduce)');
+  var DRAG_MIN = 5;
+
+  if (rails.length && finePointer.matches) {
+    rails.forEach(function (rail) {
+      var down = false, dragging = false, justDragged = false;
+      var startX = 0, startLeft = 0, pid = null;
+
+      rail.classList.add('is-draggable');
+
+      /* capture phase, so it beats the card link's own handler */
+      rail.addEventListener('click', function (ev) {
+        if (!justDragged) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+        justDragged = false;
+      }, true);
+
+      rail.addEventListener('pointerdown', function (e) {
+        if (e.button !== 0) return;
+        down = true; dragging = false; justDragged = false;
+        startX = e.clientX;
+        startLeft = rail.scrollLeft;
+        pid = e.pointerId;
+      });
+
+      rail.addEventListener('pointermove', function (e) {
+        if (!down || e.pointerId !== pid) return;
+        var dx = e.clientX - startX;
+        if (!dragging && Math.abs(dx) > DRAG_MIN) {
+          dragging = true;
+          rail.classList.add('is-dragging');
+          /* mandatory snap fights a live drag -- it would yank the rail back to
+             a card edge on every move. Off for the duration, restored on
+             release so the rail still settles on a card. */
+          rail.style.scrollSnapType = 'none';
+          if (rail.setPointerCapture) { try { rail.setPointerCapture(pid); } catch (err) {} }
+        }
+        if (dragging) { e.preventDefault(); rail.scrollLeft = startLeft - dx; }
+      });
+
+      function release() {
+        if (!down) return;
+        down = false;
+        if (pid !== null && rail.hasPointerCapture && rail.hasPointerCapture(pid)) {
+          try { rail.releasePointerCapture(pid); } catch (err) {}
+        }
+        pid = null;
+        if (!dragging) return;
+        dragging = false;
+        justDragged = true;
+        rail.classList.remove('is-dragging');
+        /* settle onto the nearest card -- smoothly, unless the reader asked
+           for no motion, in which case it lands immediately. */
+        if (!noMotion.matches) { rail.style.scrollBehavior = 'smooth'; }
+        rail.style.scrollSnapType = '';
+        window.setTimeout(function () { rail.style.scrollBehavior = ''; }, 420);
+      }
+
+      rail.addEventListener('pointerup', release);
+      rail.addEventListener('pointercancel', release);
+      rail.addEventListener('pointerleave', release);
+      /* the browser's own image/link drag would hijack the pan */
+      rail.addEventListener('dragstart', function (e) { e.preventDefault(); });
+    });
+  }
 })();
 </script>
 

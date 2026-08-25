@@ -1,8 +1,114 @@
 [
   {
     "id": "hero-reception-placeholder",
-    "prompt": "Wide architectural interior photograph of a calm, EMPTY modern dental practice reception at dusk. Deep teal green walls, warm oak slatted reception counter, soft warm pendant lights pooling light on the counter, large glazed frontage with dark blue evening outside, polished concrete floor, one small brass-yellow accent detail. Uncluttered with generous empty negative space across the left third of the frame. Editorial architectural photography, natural shallow depth of field, muted low contrast, calm and reassuring. NO people, no faces, no hands, no patients, no staff, no teeth, no mouths, no dental instruments, no chairs with patients, no signage, no lettering, no text, no words, no watermark, no logos, no brand marks.",
+    "prompt": "Wide architectural interior photograph of a calm, EMPTY modern dental practice reception at dusk. Deep teal green walls, a warm oak slatted reception counter, soft warm pendant lights, large glazed frontage with dark blue evening outside, polished concrete floor, one small brass-yellow accent. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
     "image_size": "landscape_16_9",
-    "out": "assets/GENERATED-PLACEHOLDER-hero-reception.jpg"
+    "out": "assets/GENERATED-PLACEHOLDER-hero-reception.jpg",
+    "model": "fal-ai/flux-pro/v1.1",
+    "live_version": "v5",
+    "regenerated_at": "2026-08-25",
+    "note": "PLACEHOLDER. v5 2026-08-25 revamp -- adopted, genuinely better than v3 (warmer under-counter glow, calmer dusk glazing). Replace with real photography before lifting the homepage noindex."
+  },
+  {
+    "id": "care-periodontics-placeholder",
+    "prompt": "Editorial macro still-life photograph of a clean dental study model with healthy pale pink gum tissue and natural white teeth, a slim polished stainless periodontal probe resting neatly beside it, on a warm oak surface against a deep saturated dark teal-green background. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-periodontics.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. Final set 2026-08-25. Each image identifies its OWN care category using models, instruments and ceramic forms only -- never a patient, a clinician or a clinical result (proofPolicy.real_only_for). Chosen best-of across two generation passes: v3 where it read cleaner, v2 where v3 regressed or duplicated another card. Replace with real photography before lifting the homepage noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v3"
+  },
+  {
+    "id": "care-restorations-placeholder",
+    "prompt": "Editorial macro still-life photograph of glossy white ceramic dental crowns on a warm oak tray with a pale plaster dental model behind them, deep teal green background. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-restorations.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. Final set 2026-08-25. Each image identifies its OWN care category using models, instruments and ceramic forms only -- never a patient, a clinician or a clinical result (proofPolicy.real_only_for). Chosen best-of across two generation passes: v3 where it read cleaner, v2 where v3 regressed or duplicated another card. Replace with real photography before lifting the homepage noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v2"
+  },
+  {
+    "id": "care-general-dentistry-placeholder",
+    "prompt": "Editorial macro still-life photograph. A dental mouth mirror with a small round reflective head, a slim pointed explorer probe, and a curved scaler, laid in a neat parallel row directly on a bare polished warm oak surface, completely empty apart from the three steel instruments. Deep saturated dark teal-green background wall. Soft diffuse studio light from the left, one small brass-yellow accent ring on a handle. Minimal, generous negative space. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. No people, no faces, no hands, no open mouths, no signage, no lettering, no text, no words, no numbers, no watermark, no logos.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-general-dentistry.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. v4 2026-08-25 -- redone on owner request. v2/v3 kept putting a TOWEL in frame despite explicit \"NO towel\" clauses; naming the object in the negative prompt appears to summon it. v4 omits all fabric vocabulary and instead fully specifies a BARE oak surface. No fabric present. Replace with real photography before lifting the homepage noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v4"
+  },
+  {
+    "id": "care-orthodontics-placeholder",
+    "prompt": "Editorial macro still-life photograph of two clear transparent orthodontic aligner trays shaped to a dental arch, one slightly overlapping the other, crisp rim light catching the thin clear plastic edges, on a warm oak surface against a deep saturated dark teal-green background. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-orthodontics.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. v5 2026-08-25 revamp -- adopted, crisper single aligner with better rim light than v3. Replace with real photography before lifting the noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v5"
+  },
+  {
+    "id": "care-cosmetic-dentistry-placeholder",
+    "prompt": "Editorial macro still-life photograph of five ultra-thin translucent porcelain veneer shells, tooth-shaped and pearly white, standing upright in a neat row, bright key light passing through the porcelain, on a warm oak surface against a deep saturated dark teal-green background. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-cosmetic-dentistry.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. Final set 2026-08-25. Each image identifies its OWN care category using models, instruments and ceramic forms only -- never a patient, a clinician or a clinical result (proofPolicy.real_only_for). Chosen best-of across two generation passes: v3 where it read cleaner, v2 where v3 regressed or duplicated another card. Replace with real photography before lifting the homepage noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v3"
+  },
+  {
+    "id": "care-oral-surgery-placeholder",
+    "prompt": "Editorial still-life photograph of a sterile stainless instrument tray with neatly folded white cloth over covered instruments, on a warm oak cabinet in a calm private clinical room with a deep teal green wall. Editorial product photography, shallow depth of field, muted low contrast, calm, clinical and premium. NO people, no faces, no hands, no patients, no staff, no open mouths, no lips, no blood, no gore, no before-and-after comparison, no labels, no printed cards, no signage, no lettering, no text, no words, no numbers, no watermark, no logos, no brand marks.",
+    "image_size": "landscape_4_3",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/GENERATED-PLACEHOLDER-care-oral-surgery.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "note": "PLACEHOLDER. Final set 2026-08-25. Each image identifies its OWN care category using models, instruments and ceramic forms only -- never a patient, a clinician or a clinical result (proofPolicy.real_only_for). Chosen best-of across two generation passes: v3 where it read cleaner, v2 where v3 regressed or duplicated another card. Replace with real photography before lifting the homepage noindex.",
+    "regenerated_at": "2026-08-25",
+    "live_version": "v2"
+  },
+  {
+    "id": "texture-wash-dark",
+    "prompt": "Abstract atmospheric background only. Deep dark teal green, a soft luminous bloom rising from the lower left and falling away into darkness, extremely smooth, faint fine film grain. Pure atmosphere: no objects, no figures, no architecture, no lettering, no logos.",
+    "image_size": "landscape_16_9",
+    "model": "fal-ai/flux-pro/v1.1",
+    "out": "assets/TEXTURE-wash-dark.jpg",
+    "usedBy": [
+      "all pages via .rs-sec.surface-dark:not(.rs-sec--band)"
+    ],
+    "classification": "DECORATIVE TEXTURE, not a fabricated depiction",
+    "why_no_placeholder_marker": "proofPolicy.fabrication_allowed_for governs \"illustrative before/after imagery\" and \"illustrative office/team imagery\" -- assets that stand in as evidence about this practice. This is abstract light on nothing: it depicts no office, no person, no procedure and no outcome, and makes no claim. It is decoration in the same class as the sheet's existing --ds-glow-wash / --ds-grain tokens, so it carries no OWNER PLACEHOLDER marker and forces no noindex. That distinction is what keeps the other 65 pages INDEXABLE -- a generated PHOTO on them would have required noindex under fabrication_requirements."
+  },
+  {
+    "id": "treatment-corridor-placeholder",
+    "prompt": "IMAGE-TO-IMAGE from the real corridor photo. Restyle this dental treatment corridor into a calm premium editorial interior, keeping the exact one-point-perspective composition and the bays along both sides. Deep teal green walls, warm oak slatted panelling, polished concrete floor, soft warm architectural lighting, one small brass accent. Remove every sign and letter. Completely empty, no people.",
+    "model": "fal-ai/flux-2/klein/9b/edit",
+    "source_image": "assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg",
+    "out": "assets/GENERATED-PLACEHOLDER-treatment-corridor.jpg",
+    "usedBy": [
+      "index"
+    ],
+    "live_version": "v1-i2i",
+    "note": "PLACEHOLDER on index ONLY. The real photograph remains the live image on the other 25 pages, unaltered."
   }
 ]

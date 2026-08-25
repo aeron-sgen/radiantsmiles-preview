@@ -85,7 +85,7 @@ ul{margin:0;padding:0;list-style:none;}
   background:transparent;color:var(--ds-ink-heading);
   border:1px solid var(--ds-line-control);
 }
-.btn--ghost:hover{background:var(--ds-bg-surface);}
+.btn--ghost:hover{background:var(--ds-bg-surface);box-shadow:var(--ds-shadow-card);transform:translateY(-1px);}
 /* A label that WRAPS inside a 52px control is a broken control. The short label is the same
    promise in fewer words, swapped in only where the full one measurably does not fit. */
 .lbl-short{display:none;}
@@ -704,7 +704,7 @@ ul{margin:0;padding:0;list-style:none;}
   }
   .mega,.drop-panel,.mega .cat,.mega .loc,.mega .feat{transform:none!important;}
   .qlink::after{transform:scaleX(1)!important;}
-  .btn--accent:hover{transform:none!important;}
+  .btn--accent:hover,.btn--ghost:hover{transform:none!important;}
 }
 
 /* ==========================================================================

@@ -104,7 +104,13 @@
             <!-- IMAGE SLOT, met with a first-party photograph of one of our own front
                  desks. Nothing in the frame stands in for a review, a rating or a
                  patient, because proofPolicy.real_only_for forbids that substitution. -->
-            <div class="rs-frame cc-proof__frame">
+            <!-- rs-frame--face: the source is a FULL-BODY portrait (768x1152, head near the
+                 top, feet at the bottom). This frame crops to a landscape box, and the sheet's
+                 default object-position:50% 50% landed the crop on her torso and cut her head
+                 off. --face is the kit's existing modifier for exactly this, biasing the crop to
+                 50% 26% so the face is in frame. Chosen over a per-file rule because 15 DIFFERENT
+                 images share .cc-proof__frame across 34 instances and most are framed correctly. -->
+            <div class="rs-frame cc-proof__frame rs-frame--face">
               <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-92-768x1152.jpg"
                    width="768" height="1152" loading="lazy" decoding="async"
                    alt="A team member standing at the front desk of one of our offices, with monitors on the counter behind her.">
@@ -133,7 +139,7 @@
      C1 parent counts the owner supplied, periodontics 9, restorations 8, general
      dentistry 4, orthodontics 3, cosmetic dentistry 2, oral surgery 2. Re-ordering is
      permitted by the copy contract; rewriting is not, and nothing below is rewritten. -->
-<!-- pick: SECTION-COMPONENTS.md # 14 Tabbed content | considered: #6,#9,#34 | why: the brief calls this switcher interactive, and interactive here has a hard constraint: no JavaScript ships on this build, so the only real disclosure the kit owns is the native details and summary element already used sitewide. Entry 14 is the catalog entry whose behaviour is exactly what a switcher does, one panel open at a time while the other five stay one click away, and the script-free delivery of it is the expand-row from FAQ-ACCORDION # 1. Six panels closed to six labels is also what makes this the router's core act rather than a services page in miniature: the reader eliminates five groups by reading six words each. Entry 6, the qualifier, is what services.html already uses for its own six routes, and repeating that shape here would make the home a shorter copy of the page it is supposed to route to. Entry 9, services 3-col, spends a full card each on six groups and pushes the seven offices below a second screen. Entry 34, the FAQ accordion, is the same mechanism cited for the wrong reason: these are not questions, and labelling them as questions would misdescribe the content to a screen reader. The first panel opens by default so the section is never a stack of six closed bars with nothing in it. -->
+<!-- pick: SECTION-COMPONENTS.md # 9 Services 3-col, delivered as a scroll-snap card carousel | supersedes: # 14 Tabbed content (the six-panel accordion this section shipped as until 2026-08-25) | considered: #6,#25,#34 | why: OWNER REQUEST 2026-08-25, convert the dropdown to a card carousel. The accordion made the reader pay a click per area and showed five of six as bare labels; entry 9 is the catalog entry whose content shape is exactly what each area needs, picture plus name plus one sentence plus its route, and a horizontal scroller is what lets six of those live in one screen-height instead of six stacked cards pushing the seven offices below a second screen -- the same budget argument that ruled entry 9 out in its static 3-col form. Entry 25, the carousel entry, is testimonial-shaped, one item at a time with navigation, and is cited here only for its MECHANISM, not its content. Entry 6 is what services.html already uses, so repeating it here would make the home a shorter copy of the page it routes to. Entry 34 would relabel six care areas as questions and misdescribe them to a screen reader. NO SCRIPT IS ADDED: the scroller is native overflow plus CSS scroll-snap, so the shell script stays chrome-only and the other 65 pages are untouched. ORDER IS UNCHANGED from the accordion, and so is every sentence -- the copy contract permits re-ordering, not rewriting, and nothing below is rewritten. -->
 <section class="rs-sec rs-sec--band">
   <div class="container">
     <div class="row">
@@ -143,62 +149,106 @@
           <h2 class="rs-h2">Six areas of care. All of them in house, at all seven offices.</h2>
         </div>
 
-        <div class="cc-faq">
+        <!-- ⚠OWNER PLACEHOLDER — SIX GENERATED IMAGES, NONE A PHOTOGRAPH OF THIS PRACTICE.
+             The six card images below are SYNTHETIC (fal flux-pro/v1.1, generated 2026-08-25 on the
+             owner's instruction to use fal where no real asset was supplied). They ship under
+             proofPolicy.fabrication_allowed_for, which permits them ONLY as flagged placeholders and
+             ONLY with all three fabrication_requirements met: this marker, noindex until swapped (set
+             in the META above), and an entry each in _fabrication-manifest.json.
+             WHAT THEY DEPICT: dental models, instruments and ceramic forms ONLY. NO patients, NO staff,
+             NO real mouths, NO before-and-after and NO clinical results — the categories
+             proofPolicy.real_only_for reserves for real evidence, and which C7 §4 forbids illustrating.
+             So none of the six can be read as a patient, a clinician, or an outcome this practice
+             produced. Each alt text describes the object shown, and claims nothing about this practice.
+             imagery-system.md §1 still says "Real over stock, always"; this is the flagged-placeholder
+             branch of that rule, not an exception to it.
+             TO RESOLVE: replace each with real photography of the care actually delivered, restore real
+             alt text, set noindex back to false, and delete the six matching _fabrication-manifest.json
+             entries. -->
+        <div class="cc-carousel">
+          <div class="cc-carousel__track" role="region" tabindex="0"
+               aria-label="Six areas of care, scroll sideways for all six">
 
-          <details class="cc-panel cc-faq__item" open>
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Periodontics.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">The gum and bone that hold your teeth in place, from bleeding gums to deep cleaning.</p>
-            <a class="rs-qlink" href="periodontics.html">Periodontics</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-periodontics.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A dental model showing healthy gum tissue, with a slim periodontal probe laid beside it.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Periodontics.</h3>
+                <p class="rs-copy cc-card__d">The gum and bone that hold your teeth in place, from bleeding gums to deep cleaning.</p>
+                <a class="rs-qlink" href="periodontics.html">Periodontics</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Restorations.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Fillings, crowns, bridges, inlays, onlays, dentures, implants and root canals.</p>
-            <a class="rs-qlink" href="restorations.html">Restorations</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-restorations.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="Two white ceramic dental crowns on a wooden tray, with a plaster dental model behind them.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Restorations.</h3>
+                <p class="rs-copy cc-card__d">Fillings, crowns, bridges, inlays, onlays, dentures, implants and root canals.</p>
+                <a class="rs-qlink" href="restorations.html">Restorations</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">General dentistry.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Exams, cleanings, preventative care, digital X-rays, fluoride and sealants.</p>
-            <a class="rs-qlink" href="general-dentistry.html">General dentistry</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-general-dentistry.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A dental mirror, explorer and scaler laid out in a row on a bare oak surface.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">General dentistry.</h3>
+                <p class="rs-copy cc-card__d">Exams, cleanings, preventative care, digital X-rays, fluoride and sealants.</p>
+                <a class="rs-qlink" href="general-dentistry.html">General dentistry</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Orthodontics.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Invisalign, and braces for children and adults.</p>
-            <a class="rs-qlink" href="orthodontics.html">Orthodontics</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-orthodontics.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A clear orthodontic aligner tray resting on a round oak block.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Orthodontics.</h3>
+                <p class="rs-copy cc-card__d">Invisalign, and braces for children and adults.</p>
+                <a class="rs-qlink" href="orthodontics.html">Orthodontics</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Cosmetic dentistry.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Porcelain veneers and teeth whitening, for a tooth that is sound but does not look how you want.</p>
-            <a class="rs-qlink" href="cosmetic-dentistry.html">Cosmetic dentistry</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-cosmetic-dentistry.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A row of five glossy white porcelain tooth forms standing on a wooden surface.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Cosmetic dentistry.</h3>
+                <p class="rs-copy cc-card__d">Porcelain veneers and teeth whitening, for a tooth that is sound but does not look how you want.</p>
+                <a class="rs-qlink" href="cosmetic-dentistry.html">Cosmetic dentistry</a>
+              </div>
+            </div>
 
-          <details class="cc-panel cc-faq__item">
-            <summary class="cc-faq__q">
-              <h3 class="cc-faq__qt">Oral surgery.</h3>
-              <span class="cc-faq__ind" aria-hidden="true"></span>
-            </summary>
-            <p class="rs-copy cc-faq__a">Wisdom teeth and bone grafting, handled by our own clinicians.</p>
-            <a class="rs-qlink" href="oral-surgery.html">Oral surgery</a>
-          </details>
+            <div class="cc-panel cc-card">
+              <figure class="cc-card__frame">
+                <img src="../assets/GENERATED-PLACEHOLDER-care-oral-surgery.jpg"
+                     width="1024" height="768" loading="lazy" decoding="async"
+                     alt="A sterile instrument tray with folded cloth, on a cabinet in a quiet clinical room.">
+              </figure>
+              <div class="cc-card__body">
+                <h3 class="cc-card__t">Oral surgery.</h3>
+                <p class="rs-copy cc-card__d">Wisdom teeth and bone grafting, handled by our own clinicians.</p>
+                <a class="rs-qlink" href="oral-surgery.html">Oral surgery</a>
+              </div>
+            </div>
 
+          </div>
+          <p class="cc-carousel__hint">Drag to see all six.</p>
         </div>
       </div>
     </div>
@@ -354,13 +404,29 @@
             <p class="rs-copy">That is why the standard does not change with the address. The office nearest your home and the office nearest your work are the same practice.</p>
           </div>
 
-          <!-- IMAGE SLOT, met with a first-party photograph of our own treatment room
-               corridor. It shows the thing the claim is about, one building's worth of
-               operatories, and claims nothing the alt text does not name. -->
+          <!-- ⚠OWNER PLACEHOLDER — GENERATED IMAGE, NOT A PHOTOGRAPH OF THIS PRACTICE.
+               This slot USED to carry a first-party photograph of the real treatment room
+               corridor. On the owner's instruction (2026-08-25) it now carries a SYNTHETIC
+               image, generated image-to-image (fal flux-2/klein/9b/edit) FROM that same
+               photograph, so the composition, the perspective and the bay structure are the
+               real building's -- but the surfaces, colours and light are invented.
+               It ships under proofPolicy.fabrication_allowed_for "illustrative office/team
+               imagery", which permits it ONLY as a flagged placeholder and ONLY with all three
+               fabrication_requirements met: this marker, noindex until swapped (set in the META
+               above), and an entry in _fabrication-manifest.json.
+               It depicts NO people, NO teeth, NO clinical procedure and NO signage, so it cannot
+               be read as a patient, a clinician or a clinical outcome. Its alt text states
+               plainly that it is not a photograph of this practice.
+               THE REAL PHOTOGRAPH IS NOT DELETED and is NOT altered: it is still the live image
+               on the OTHER 25 pages that use it. Only this one slot was swapped, deliberately,
+               because index is the only noindex page and those 25 are indexed -- putting a
+               generated photo on them would have breached fabrication_requirements.
+               TO RESOLVE: point this slot back at the real photograph (or supply new first-party
+               photography), restore the real alt text, and delete the matching manifest entry. -->
           <div class="rs-frame rs-frame--tall">
-            <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg"
-                 width="768" height="1152" loading="lazy" decoding="async"
-                 alt="The treatment room corridor at one of our offices, with the bays open along both sides.">
+            <img src="../assets/GENERATED-PLACEHOLDER-treatment-corridor.jpg"
+                 width="832" height="1248" loading="lazy" decoding="async"
+                 alt="Illustration of a treatment room corridor with care bays along both sides. This is a placeholder image, not a photograph of a Radiant Smiles office.">
             <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
           </div>
 
