@@ -46,24 +46,43 @@
                offer, so a reader who sees a price and two buttons has to see the hold in the same
                band. Nothing is invented to fill it: no date, no exclusion list, no age. -->
 
-          <!-- SECTION-COMPONENTS.md #6 "Is this for me" qualifier, folded into this band rather
-               than given a band of its own. The section-4 copy answers one question, who the lower
-               price is for, and it answers it with a cited coverage figure rather than with a
-               promotion. No consequence is appended to the ADA finding: only the two things the
-               source records are stated, the 55% share and that visits track coverage. -->
-          <div class="cc-arg">
-            <h2 class="rs-h2">This is for new patients.</h2>
-            <p class="rs-copy">The lower price is the same visit for seniors, at <span class="cc-fig">$29</span> rather than <span class="cc-fig">$45</span>.</p>
-            <p class="rs-copy">The reason the senior price exists is a coverage gap, not a promotion. The ADA Health Policy Institute reports that <span class="cc-fig">55%</span> of adults aged 65 and older have no dental benefits, fetched 30 July 2026.</p>
-            <p class="rs-copy">Dental visits track coverage directly, which is the second finding that same ADA source records.</p>
-            <p class="rs-copy">A stated price on the first visit means the cost of that visit is known before you book it.</p>
-          </div>
+
 
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<!-- pick: SECTION-COMPONENTS.md #6 "Is this for me" qualifier, given a BAND OF ITS OWN
+     (owner 2026-08-26). It previously sat inside the lead band's .rs-stack, under the hero,
+     which meant it inherited the hero's column and rendered as prose against 485px of idle
+     space with the lead's texture running behind it -- it read as an unfinished half of the
+     hero rather than as its own idea. Measured at 1440: col 1132, prose 647.
+     The copy is carried word for word; only its container changed.
+     GROUND: --band, so it separates from the lead above and the dark band below rather than
+     bleeding into either. -->
+<section class="rs-sec rs-sec--band rs-sec--prose">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div class="rs-head">
+          <h2 class="rs-h2">This is for new patients.</h2>
+        </div>
+        <!-- Two columns rather than one 1132px line: the measure that made this look empty
+             is the SAME measure that keeps it readable, so the fix spends the width on a
+             second column instead of stretching the line to ~110ch. -->
+        <div class="rs-prose2">
+          <p class="rs-copy">The lower price is the same visit for seniors, at <span class="cc-fig">$29</span> rather than <span class="cc-fig">$45</span>.</p>
+          <p class="rs-copy">The reason the senior price exists is a coverage gap, not a promotion. The ADA Health Policy Institute reports that <span class="cc-fig">55%</span> of adults aged 65 and older have no dental benefits, fetched 30 July 2026.</p>
+          <p class="rs-copy">Dental visits track coverage directly, which is the second finding that same ADA source records.</p>
+          <p class="rs-copy">A stated price on the first visit means the cost of that visit is known before you book it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- pick: SECTION-COMPONENTS.md # 11 Service pillars 2-col with image | considered: #27,#9 | why: the reader has just been given a number and the only question that follows it is what the number buys. Three things are bought, they are not sequential, and one of them outranks the other two, so the pattern has to hold three unequal items beside one photograph without pretending they are steps. # 11 does exactly that: the cards form the two-column grid the media-and-cards law prescribes for three items, the lead card takes the full width and the display face, and the media column STRETCHES to the grid rather than sitting capped beside it, which is the arm of the law that keeps a photograph from opening a void next to a card stack. #27 Numbered process steps is the pattern a sibling page uses for its four-beat procedure, and it is rejected here because numbering these three would assert an order the copy does not carry: the examination, the X-rays and the conversation are one visit, not a queue. #9 Services 3-col is rejected because a row of three equals gives the examination the same weight as the conversation, and the examination is the thing being paid for. The section heading is hoisted clear of the split so it precedes both the cards and the photograph at every width, and the boundary of the offer, what it does NOT include, closes the band in running prose under the grid where a reader who is checking the small print will actually read it. GROUND: the first of two dark anchors, spent on the band that carries the offer's substance. -->
 <section class="rs-sec surface-dark">
