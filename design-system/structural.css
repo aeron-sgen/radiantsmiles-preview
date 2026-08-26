@@ -1229,6 +1229,58 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
 
    The container itself is capped at --ds-container-max, so the line cannot grow past
    ~1132px no matter how wide the viewport gets. */
+/* ---- .rs-prose2: a prose-only band spends its width on a SECOND COLUMN -------------
+   Owner 2026-08-26. A section whose only content is running prose renders at the 64ch
+   measure inside a 1132px column, i.e. 485px idle (measured on every offer.html band).
+   Where a component fills that width the idle space is invisible; where the band is
+   prose ALONE it reads half-finished.
+
+   Two columns, NOT one wide line. The measure that makes a prose-only band look empty is
+   the same measure that keeps it readable -- stretching to 1132px would set ~110ch, about
+   double the comfortable range. Two ~534px columns are ~53ch each, inside the range, and
+   the band is full. CSS multi-column also flows in true reading order (down column one,
+   then column two), which a 2-track grid would not.
+
+   break-inside:avoid-column keeps a paragraph whole; without it the flow splits one
+   mid-sentence across the gutter. margin-top:0 on the first child of each column stops
+   the second column starting lower than the first when a paragraph margin lands at the
+   break. Collapses to one column below 900px, where the container is too narrow for two
+   readable measures. */
+.rs-prose2{
+  columns:2;
+  column-gap:var(--ds-space-xl);
+  /* the hairline between the columns is the site's own divider system, not a new device --
+     the same 1px --ds-line that separates the footer rows and the ledger. It does the work
+     a gutter alone cannot: it tells the eye the two columns are one set rather than two
+     unrelated blocks, which is what a bare 64px gap reads as. */
+  column-rule:1px solid var(--ds-line);
+}
+.rs-prose2 > p{max-width:none;break-inside:avoid-column;margin-top:0;}
+.rs-prose2 > p + p{margin-top:var(--ds-space-md);}
+@media (max-width:900px){
+  /* one column: a rule with nothing either side of it is just a stray line */
+  .rs-prose2{columns:1;column-rule:none;}
+}
+
+/* ---- .rs-sec--prose: a soft signature bloom on a prose-only band -------------------
+   Owner 2026-08-26, asked for "images or gradients, not too much". A GRADIENT rather than
+   a generated image on purpose: it costs no bytes, is drawn from the palette tokens so it
+   cannot drift off-brand the way the first two fal attempts did (both came back lime), and
+   this band sits directly under the lead band's photographic wash -- two photographic
+   grounds stacked would compete rather than complement.
+
+   The bloom enters from the TOP-RIGHT, mirroring the lead wash above it, so the two bands
+   read as a pair moving the eye down and across rather than repeating the same corner.
+   Opacities are deliberately low (.07 signature, .55 white on an #E0EFEE ground) so the
+   ground stays --ds-bg-band and the dark ink over it keeps its contrast; measured after,
+   not assumed. Scoped to a modifier so the other bands on the site are untouched. */
+.rs-sec--prose{
+  background-color:var(--ds-bg-band);
+  background-image:
+    radial-gradient(72% 128% at 100% 0%, rgba(18,140,126,.07), transparent 62%),
+    radial-gradient(56% 96% at 0% 100%, rgba(255,255,255,.55), transparent 58%);
+}
+
 .col--prose-span > p{max-width:none;}
 /* CLASS-QUALIFIED, and the reason matters. The bare rule above is (0,1,1) -- the same
    specificity as p.cc-arg__lead, which sets max-width:26ch at :1334, AFTER this block.
