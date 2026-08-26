@@ -271,14 +271,25 @@
 
     <div class="row">
       <div class="col">
-        <div class="cc-proof">
+        <!-- MERGED BY COLUMN, owner 2026-08-26. Was two stacked rows: grid rows align,
+             so the photo set row 1's height and the short record beside it left dead
+             space the argument could not rise into. Regrouped so the left cell carries
+             record + argument and the right cell photo + evidence; both then stretch
+             level. .cc-proof is KEPT as the wrapper -- `.cc-proof .cc-proof__frame` is
+             scoped and dropping it falls the photo back to the unscoped 4/5 base. -->
+        <div class="cc-proof cc-proof--merged">
 
-          <div>
+          <div class="cc-proof__col">
             <p class="cc-proof__record">Our Lake Mead office is rated <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
             <p class="rs-copy cc-proof__scope">That figure covers that office alone.</p>
+            <div class="cc-arg">
+            <p class="cc-arg__lead">This treatment only makes sense inside a course of periodontal care. It needs the chart before it and the review after it.</p>
+            <p class="rs-copy">Both happen here. Periodontics is one of six specialties this practice delivers in-house, across seven offices in Las Vegas, North Las Vegas and Henderson.</p>
+            <p class="rs-copy">Where offices are separately owned or separately branded, the chart and the follow up can sit with different people. One roster is what keeps the same clinical team involved from the charting to the review.</p>
+          </div>
           </div>
 
-          <div>
+          <div class="cc-proof__col">
             <!-- IMAGE SLOT, met in part. Copy 5 asks for a photograph of the actual office
                  and the actual equipment, never a stock clinic shot. This is a first party
                  photograph of our own equipment in use in one of our offices. Nothing in
@@ -294,24 +305,9 @@
                    alt="A gloved hand reaching into an open equipment unit at one of our offices, working under its interior light.">
               <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
             </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="cc-inhouse">
-
-          <div class="cc-arg">
-            <p class="cc-arg__lead">This treatment only makes sense inside a course of periodontal care. It needs the chart before it and the review after it.</p>
-            <p class="rs-copy">Both happen here. Periodontics is one of six specialties this practice delivers in-house, across seven offices in Las Vegas, North Las Vegas and Henderson.</p>
-            <p class="rs-copy">Where offices are separately owned or separately branded, the chart and the follow up can sit with different people. One roster is what keeps the same clinical team involved from the charting to the review.</p>
-          </div>
-
-          <div class="cc-panel cc-evidence">
+            <div class="cc-panel cc-evidence">
             <p class="rs-copy">Our clinicians are named on the site with their credentials. Dr. Adrian Ruiz holds a DDS from UCLA, 1995. Dr. Norma Miranda holds a DDS from UCLA, 1976. Both are recorded on our own <a class="rs-qlink" href="team.html">team page</a>, fetched 30 July 2026.</p>
+          </div>
           </div>
 
         </div>

@@ -198,7 +198,7 @@
          the live site. Until that assignment is supplied, this section links to the full
          team and asserts nobody in particular. -->
     <div class="row">
-      <div class="col">
+      <div class="col col--prose-span">
         <p class="rs-copy">All six specialty groups are delivered at this office. Same-day and emergency appointments are available.</p>
         <p class="rs-copy">Ten dentists are named on our team page, each with their credentials stated. Two of them are fluent in Spanish. <a class="rs-qlink" href="team.html">meet the team</a></p>
       </div>
@@ -224,44 +224,50 @@
 <section class="rs-sec surface-dark">
   <div class="container">
 
+    <!-- WARNING carried verbatim from copy block 6, per the copy lock:
+         FLAG: the 23 year figure is BBB reported, not first-party. The owner is asked to
+         confirm the founding year, per content-bible.md section 2. The practice is NOT BBB
+         accredited, and no BBB rating is cited on this page. -->
+
+    <!-- MERGED BY COLUMN, owner 2026-08-26 ("move the one encased in a box up and make
+         sure theyre the same height as the right"). This was TWO stacked .row blocks: a
+         .cc-proof row (record | photo) above a .cc-inhouse row (argument | evidence).
+         Because grid rows align, the first row's height was set by the 300px photo while
+         the record beside it was only 151px, leaving 149px of dead space that the
+         argument box could not rise into -- measured at 1440 before the change.
+         Regrouping by COLUMN rather than by row is what closes it: the left cell now
+         carries record + argument as one flow, the right cell photo + evidence.
+         Both cells then stretch to the same height (574/574 measured after).
+
+         .cc-proof IS KEPT as the wrapper on purpose. `.cc-proof .cc-proof__frame`
+         (structural.css:1517) is scoped, and the sheet's own note at :1463 records that
+         the 26 pages using .cc-proof do NOT share one structure. Dropping the wrapper
+         would fall the photo back to the unscoped base rule at :1515 -- aspect-ratio 4/5
+         and a max-height clamp -- i.e. a portrait crop instead of the 16/10 landscape. -->
     <div class="row">
       <div class="col">
-        <div class="cc-proof">
+        <div class="cc-proof cc-proof--merged">
 
-          <div>
+          <div class="cc-proof__col">
             <p class="cc-proof__record">Our Lake Mead office is rated <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
+            <div class="cc-arg">
+              <p class="cc-arg__lead">This is not a branch of something else.</p>
+              <p class="rs-copy">One brand, one roster of clinicians, one domain. Choose the office that suits your week rather than the one nearest the first appointment you made.</p>
+              <p class="rs-copy">The market alternative is a group of separately owned or separately branded practices sharing a name. Under that model nobody can promise you the same standard at each address.</p>
+            </div>
           </div>
 
-          <div>
+          <div class="cc-proof__col">
             <div class="rs-frame cc-proof__frame">
               <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-80-768x1152.jpg"
                    width="768" height="1152" loading="lazy" decoding="async"
                    alt="Digital X-ray equipment in one of our offices, a white imaging unit with a hand on its touch screen.">
               <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
             </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- WARNING carried verbatim from copy block 6, per the copy lock:
-         FLAG: the 23 year figure is BBB reported, not first-party. The owner is asked to
-         confirm the founding year, per content-bible.md section 2. The practice is NOT BBB
-         accredited, and no BBB rating is cited on this page. -->
-    <div class="row">
-      <div class="col">
-        <div class="cc-inhouse">
-
-          <div class="cc-arg">
-            <p class="cc-arg__lead">This is not a branch of something else.</p>
-            <p class="rs-copy">One brand, one roster of clinicians, one domain. Choose the office that suits your week rather than the one nearest the first appointment you made.</p>
-            <p class="rs-copy">The market alternative is a group of separately owned or separately branded practices sharing a name. Under that model nobody can promise you the same standard at each address.</p>
-          </div>
-
-          <div class="cc-panel cc-evidence">
-            <p class="rs-copy">Radiant Smiles runs <a class="rs-qlink" href="locations.html">seven of its own offices</a> across Las Vegas, North Las Vegas and Henderson.</p>
-            <p class="rs-source">Its BBB business profile records the practice as in business 23 years, fetched 30 July 2026.</p>
+            <div class="cc-panel cc-evidence">
+              <p class="rs-copy">Radiant Smiles runs <a class="rs-qlink" href="locations.html">seven of its own offices</a> across Las Vegas, North Las Vegas and Henderson.</p>
+              <p class="rs-source">Its BBB business profile records the practice as in business 23 years, fetched 30 July 2026.</p>
+            </div>
           </div>
 
         </div>

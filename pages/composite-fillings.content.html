@@ -192,51 +192,44 @@
 <section class="rs-sec surface-dark rs-spot">
   <div class="container">
 
-    <div class="row">
-      <div class="col">
-        <div class="cc-proof">
-
-          <div>
-            <p class="cc-proof__record">Our Lake Mead office is rated <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
-            <p class="rs-copy cc-proof__scope">That is the record for one office, not for all seven.</p>
-          </div>
-
-          <!-- IMAGE SLOT, met. Block 5 asks for a photograph of the actual office and the
-               actual equipment and rules out stock clinic imagery. Digital X-rays are one
-               of only two devices this build can name first-party, and this is our own
-               unit in our own office. -->
-          <div>
-            <div class="rs-frame cc-proof__frame">
-              <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-80-768x1152.jpg"
-                   width="768" height="1152" loading="lazy" decoding="async"
-                   alt="A member of our team at the touchscreen of the digital X-ray unit in one of our offices.">
-              <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
     <!-- WARNING carried verbatim from block 5 of the copy, per the copy lock:
          OWNER: confirm whether a practice-wide rating exists, and which platform is the
          system of record. Per content-bible.md section 6 the scope stays attached every
          time this figure is used. The scope line above is why it is not restated. -->
 
     <!-- pick: COMPANY-SECTIONS.md #2 Manifesto / values creed type-block | considered: #4,#5 | rigor: heavy | why: block 6 is a claim about STRUCTURE, that one group owns and staffs all seven offices, and a structural claim has no artifact to photograph, so the honest form is a type-block that states it and a keyed panel that sources it. This entry is the only one in the menu built to carry a company position on type alone, and it lands the wedge without introducing a fourth object family into a band that already runs a display record and a photograph. DEVIATION, declared: the creed-scale slogan the pattern usually opens with is dropped, because a slogan would have to be written and every word here is fixed; the opening line is the copy's own sentence at display size instead. #4 Founder bios named duo grid is rejected because the two clinicians named here are cited for their school and year, not presented as founders, and a bio grid would promise biography this page does not write. #5 Press third-party coverage strip is rejected because no press exists in the handoff and a strip with nothing real in it is decoration. CHROME: the sourced panel keeps its keyed rule and its card ground so the citation stays visibly separate from our own claim. -->
+
     <div class="row">
       <div class="col">
-        <div class="cc-inhouse">
+        <!-- MERGED BY COLUMN, owner 2026-08-26. Was two stacked rows: grid rows align,
+             so the photo set row 1's height and the short record beside it left dead
+             space the argument could not rise into. Regrouped so the left cell carries
+             record + argument and the right cell photo + evidence; both then stretch
+             level. .cc-proof is KEPT as the wrapper -- `.cc-proof .cc-proof__frame` is
+             scoped and dropping it falls the photo back to the unscoped 4/5 base. -->
+        <div class="cc-proof cc-proof--merged">
 
-          <div class="cc-arg">
+          <div class="cc-proof__col">
+            <p class="cc-proof__record">Our Lake Mead office is rated <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
+            <p class="rs-copy cc-proof__scope">That is the record for one office, not for all seven.</p>
+            <div class="cc-arg">
             <p class="cc-arg__lead">The cavity is repaired by the same practice that found it.</p>
             <p class="rs-copy">We are one dental group running seven offices across Las Vegas, North Las Vegas and Henderson. We are not a franchise and not a referral network.</p>
             <p class="rs-copy">That matters on small work more than people expect. Where offices are separately owned, a consistent standard between them cannot be promised.</p>
           </div>
+          </div>
 
-          <div class="cc-panel cc-evidence">
+          <div class="cc-proof__col">
+            <div class="rs-frame cc-proof__frame">
+              <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-80-768x1152.jpg"
+                   width="768" height="1152" loading="lazy" decoding="async"
+                   alt="A member of our team at the touchscreen of the digital X-ray unit in one of our offices.">
+              <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
+            </div>
+            <div class="cc-panel cc-evidence">
             <p class="rs-copy">Our clinicians are named, not anonymous. <a class="rs-qlink" href="dr-adrian-ruiz.html">Dr. Adrian Ruiz</a> took his DDS at UCLA in 1995, and <a class="rs-qlink" href="dr-norma-miranda.html">Dr. Norma Miranda</a> hers at UCLA in 1976.</p>
             <p class="rs-source">Both are recorded on our own team page, fetched 30 July 2026.</p>
+          </div>
           </div>
 
         </div>

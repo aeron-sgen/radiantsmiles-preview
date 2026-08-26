@@ -280,16 +280,33 @@
 <section class="rs-sec rs-sec--band">
   <div class="container">
 
+    <!-- OWNER FLAG, carried from section 5 of the copy: confirm whether a
+         practice-wide figure exists, and which platform is the system of record.
+         Per content-bible.md section 2 this rating is the sourced replacement for
+         the ranking superlative currently live on the site. It must not be restated
+         as a practice-wide rating until confirmed. The scope sentence above is
+         rendered for that reason and must not be removed. -->
+
     <div class="row">
       <div class="col">
-        <div class="cc-proof">
+        <!-- MERGED BY COLUMN, owner 2026-08-26. Was two stacked rows: grid rows align,
+             so the photo set row 1's height and the short record beside it left dead
+             space the argument could not rise into. Regrouped so the left cell carries
+             record + argument and the right cell photo + evidence; both then stretch
+             level. .cc-proof is KEPT as the wrapper -- `.cc-proof .cc-proof__frame` is
+             scoped and dropping it falls the photo back to the unscoped 4/5 base. -->
+        <div class="cc-proof cc-proof--merged">
 
-          <div>
+          <div class="cc-proof__col">
             <p class="cc-proof__record">Our Lake Mead office holds <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
             <p class="rs-copy cc-proof__scope">That is one office's record, not a combined figure for all seven.</p>
+            <div class="cc-arg">
+            <p class="cc-arg__lead">A cleaning is a thorough look at the whole mouth. Our own prophylaxis page says many health problems first present themselves to the dentist. What matters is what happens after that, when something needs attention.</p>
+            <p class="rs-copy">That is a point about how we are built, not about anyone else. A single office that refers out sends you elsewhere at exactly that moment.</p>
+          </div>
           </div>
 
-          <div>
+          <div class="cc-proof__col">
             <!-- IMAGE SLOT for section 5 of the copy, which asks for a photograph of the
                  actual office or the actual instrument tray. This is our own treatment-room
                  corridor. No photograph in assets/ shows a laid-out instrument tray, and
@@ -300,31 +317,10 @@
                    alt="The corridor between the treatment rooms at one of our offices, with the bays open on both sides.">
               <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
             </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
-    <!-- OWNER FLAG, carried from section 5 of the copy: confirm whether a
-         practice-wide figure exists, and which platform is the system of record.
-         Per content-bible.md section 2 this rating is the sourced replacement for
-         the ranking superlative currently live on the site. It must not be restated
-         as a practice-wide rating until confirmed. The scope sentence above is
-         rendered for that reason and must not be removed. -->
-
-    <div class="row">
-      <div class="col">
-        <div class="cc-inhouse">
-
-          <div class="cc-arg">
-            <p class="cc-arg__lead">A cleaning is a thorough look at the whole mouth. Our own prophylaxis page says many health problems first present themselves to the dentist. What matters is what happens after that, when something needs attention.</p>
-            <p class="rs-copy">That is a point about how we are built, not about anyone else. A single office that refers out sends you elsewhere at exactly that moment.</p>
-          </div>
-
-          <div class="cc-evidence">
+            <div class="cc-evidence">
             <p class="rs-copy">We handle general, cosmetic, restorative, surgical, periodontal and orthodontic care in-house, across seven offices in Las Vegas, North Las Vegas and Henderson. One practice, one clinical roster, one brand.</p>
             <p class="rs-copy"><a class="rs-qlink" href="team.html">Our team page</a> names the ten dentists on that roster, so you can read who they are before you book. Dr. Adrian Ruiz took his DDS at UCLA in 1995, and Dr. Norma Miranda hers at UCLA in 1976. Both are recorded on our own team page, fetched 30 July 2026.</p>
+          </div>
           </div>
 
         </div>

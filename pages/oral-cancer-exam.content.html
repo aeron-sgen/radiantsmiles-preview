@@ -190,32 +190,6 @@
 <section class="rs-sec surface-dark">
   <div class="container">
 
-    <div class="row">
-      <div class="col">
-        <div class="cc-proof">
-
-          <div>
-            <p class="cc-proof__record">Our Lake Mead office holds <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
-            <p class="rs-copy cc-proof__scope">That figure covers that one office, not all seven.</p>
-            <p class="rs-source">No outcome, survival figure or detection rate appears on this page, because we hold none from a cited source.</p>
-          </div>
-
-          <!-- IMAGE SLOT, met. The copy asks for a photograph of the actual office or
-               the actual exam light, and rules out stock clinic imagery. This is a real
-               first-party frame of our own treatment room corridor with the bays open. -->
-          <div>
-            <div class="rs-frame cc-proof__frame">
-              <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg"
-                   width="768" height="1152" loading="lazy" decoding="async"
-                   alt="A corridor between treatment rooms in one of our offices, empty, with a lit panel beside each doorway.">
-              <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-
     <!-- WARNING carried verbatim from section 5 of the copy, per the copy lock:
          OWNER: confirm whether a practice-wide figure exists, and which platform is
          the system of record. Per content-bible.md section 2 this rating is the
@@ -224,25 +198,35 @@
          The scope line above is why it is not restated here. -->
 
     <!-- pick: TEAM-GALLERY-SECTIONS.md # 2 Team, circular roster | considered: # 1,#5 | why: the wedge in section 6 of the copy is that the clinicians are NAMED, and a claim about named people is worth more as their real faces than as a fourth paragraph. # 2 is the circular medallion, this vertical's own portrait convention and one of this brand's measured signature moves, and it reads premium at a roster count rather than at a card count. It is spent here at the size the copy actually supports: the copy names TWO clinicians, so TWO medallions ship, each linked to that clinician's own page. # 1 Team card grid is rejected because its portrait-plus-name-plus-role card is a heavier object than a two person cluster can carry beside prose, and it would introduce a second card family into a section that already runs a panel. #5 Gallery hover-zoom tiles is rejected because these are people, not work, and a zoom-tile stage turns a clinician into a portfolio item. DEVIATIONS, both deliberate and both for the same reason: no hover-reveal bio and no name plate render under a face, because this page writes no bio copy and assigns no clinician to this treatment. Each clinician is named in alt text and in the sentence beside them, so the pair is identified without the page making a per-clinician claim. -->
+
     <div class="row">
       <div class="col">
-        <div class="cc-inhouse">
+        <!-- MERGED BY COLUMN, owner 2026-08-26. Was two stacked rows: grid rows align,
+             so the photo set row 1's height and the short record beside it left dead
+             space the argument could not rise into. Regrouped so the left cell carries
+             record + argument and the right cell photo + evidence; both then stretch
+             level. .cc-proof is KEPT as the wrapper -- `.cc-proof .cc-proof__frame` is
+             scoped and dropping it falls the photo back to the unscoped 4/5 base. -->
+        <div class="cc-proof cc-proof--merged">
 
-          <div class="cc-arg">
+          <div class="cc-proof__col">
+            <p class="cc-proof__record">Our Lake Mead office holds <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
+            <p class="rs-copy cc-proof__scope">That figure covers that one office, not all seven.</p>
+            <p class="rs-source">No outcome, survival figure or detection rate appears on this page, because we hold none from a cited source.</p>
+            <div class="cc-arg">
             <p class="cc-arg__lead">Screening is only as useful as the comparison behind it. A patch that looked like nothing at the last visit matters a great deal if it has grown.</p>
             <p class="rs-copy">Where offices are separately owned or separately branded, the clinician you see may not be the one who looked last time. That is a point about structure, not about any other practice.</p>
           </div>
+          </div>
 
-          <!-- CHROME, decided rather than defaulted. This roster block keeps the keyed
-               signature rule of .cc-evidence and DROPS the .cc-panel ground the section 2
-               evidence block carries. Two reasons, one visual and one measured. Visually it
-               already holds prose, a source line and two circular portraits on the deep
-               ground, and a card edge around that much object is the heaviest thing on the
-               page. Measured: four consecutive sections were resolving to the same
-               hairline-card chrome, which verify-section-visual-rhythm reads as monotony and
-               which it is. Dropping the ground on this ONE block is the variation, and the
-               third-party keying that actually carries meaning stays. -->
-          <div class="cc-evidence">
+          <div class="cc-proof__col">
+            <div class="rs-frame cc-proof__frame">
+              <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg"
+                   width="768" height="1152" loading="lazy" decoding="async"
+                   alt="A corridor between treatment rooms in one of our offices, empty, with a lit panel beside each doorway.">
+              <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
+            </div>
+            <div class="cc-evidence">
             <p class="rs-copy">We are one practice running seven offices across Las Vegas, North Las Vegas and Henderson, with one clinical team. The clinicians are named, among them <a class="rs-qlink" href="dr-adrian-ruiz.html">Dr. Adrian Ruiz</a>, DDS UCLA 1995, and <a class="rs-qlink" href="dr-norma-miranda.html">Dr. Norma Miranda</a>, DDS UCLA 1976.</p>
             <p class="rs-source">Captured first-party from the practice's own doctors page on 30 July 2026.</p>
 
@@ -259,6 +243,7 @@
               </div>
             </div>
 
+          </div>
           </div>
 
         </div>

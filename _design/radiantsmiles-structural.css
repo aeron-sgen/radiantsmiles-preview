@@ -1176,6 +1176,28 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    token-pure -- 48px would have fitted better but is not in the scale. */
 .col{display:block;min-width:0;}
 
+/* ---- .col--prose-span: a prose block with no sibling spans its column --------------
+   Owner 2026-08-26: "make these a full span to utilize the space".
+
+   p.rs-copy / p.rs-lede / .cc-arg__lead carry a reading measure (64ch / 56ch), which is
+   the right default when the paragraph sits beside something. In three places it does
+   NOT: the .col holds prose and nothing else, so the measure left the band half empty.
+   Measured at 1440: lone-mountain 647 of 1132 used (485px idle), north-decatur 460 of
+   1132 (672px idle), faq 692 of 1132 (440px idle). Those three are the ONLY blocks in
+   the build that match -- a full-width .col whose children are all <p> and which holds
+   no card, grid, frame, image or svg -- so this is an opt-in class on three elements,
+   never a global measure change.
+
+   Dropping the cap is safe HERE specifically because every one of these paragraphs is
+   short: at the container's 1132px they set to one line each (north-decatur's lede takes
+   two lines of display type). The 45-75ch guidance protects the eye's return sweep to
+   the start of the NEXT line, which a one-line paragraph never makes. A long multi-line
+   paragraph must keep its measure -- do not widen this selector to cover one.
+
+   The container itself is capped at --ds-container-max, so the line cannot grow past
+   ~1132px no matter how wide the viewport gets. */
+.col--prose-span > p{max-width:none;}
+
 /* ==========================================================================
    7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
    Decisive" (owner pick 2026-08-14).
@@ -1510,6 +1532,39 @@ p.cc-proof__scope{
   gap:var(--ds-space-xl);
   align-items:start;
 }
+/* The evidence panel matches the argument beside it (owner 2026-08-26: "make sure
+   theyre the same height as the right"). Measured on lone-mountain at 1440: .cc-arg
+   312px against a 243px panel, so the bordered card stopped 69px short and the row
+   read as unfinished. align-items:start above stays -- it is doing real work for the
+   OTHER children of this grid (the .rs-frame photos carry their own align-self:start
+   further down the sheet, and a .cc-roster portrait row must not be stretched into a
+   band of ovals). This is align-SELF on the panel alone, so only the bordered card
+   changes and every sibling keeps the alignment it had. Direct-child combinator
+   because .cc-evidence also appears nested in other arrangements on 6 pages, where
+   it is not the column opposite .cc-arg and must not be stretched. Applies where the
+   panel is a real sibling of .cc-arg: 17 pages. */
+.cc-inhouse > .cc-evidence{align-self:stretch;}
+
+/* ---- .cc-proof--merged: record+argument left, photo+evidence right -----------------
+   Owner 2026-08-26. See the markup comment in lone-mountain.content.html for why the
+   two rows were regrouped by COLUMN. Each cell is a flex column so the evidence panel
+   can take the slack under the photo and both cells finish level.
+
+   align-items:stretch is set HERE rather than on .cc-proof, whose default start is load
+   bearing for the other 25 pages that use it. The photo keeps its own align-self:start
+   from .cc-proof .cc-proof__frame (:1517) -- in a flex COLUMN that governs WIDTH, not
+   height, which is exactly the trap that blanked 61 images on 2026-08-25; the same rule
+   ships width:100% alongside it, so the frame stays full-width and visible. */
+.cc-proof--merged{align-items:stretch;}
+.cc-proof--merged > .cc-proof__col{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-md);
+  min-width:0;
+}
+.cc-proof--merged > .cc-proof__col > .rs-frame{flex:0 0 auto;}
+/* the panel absorbs the leftover height so its bottom edge meets the argument's */
+.cc-proof--merged > .cc-proof__col > .cc-evidence{flex:1 1 auto;}
 .cc-roster{
   display:grid;
   grid-template-columns:repeat(10,minmax(0,1fr));

@@ -276,19 +276,29 @@
 
     <div class="row">
       <div class="col">
-        <h2 class="rs-h2">Surgery here is done by our own clinicians, in our own offices.</h2>
+        <!-- MERGED BY COLUMN, owner 2026-08-26. Was two stacked rows: grid rows align,
+             so the photo set row 1's height and the short record beside it left dead
+             space the argument could not rise into. Regrouped so the left cell carries
+             record + argument and the right cell photo + evidence; both then stretch
+             level. .cc-proof is KEPT as the wrapper -- `.cc-proof .cc-proof__frame` is
+             scoped and dropping it falls the photo back to the unscoped 4/5 base. -->
+        <div class="cc-proof cc-proof--merged">
 
-        <div class="cc-proof">
-          <div>
+          <div class="cc-proof__col">
             <p class="cc-proof__record">Our Lake Mead office is rated <span class="cc-fig">4.5</span> stars across <span class="cc-fig">506</span> patient reviews on Birdeye, fetched 30 July 2026.</p>
             <!-- WARNING CARRIED FROM SECTION 5 OF THE COPY. OWNER: confirm whether that figure is
                  practice-wide or Lake Mead only, and name the platform of record. Per the content
                  bible this rating is the sourced replacement for the ranking superlative currently
                  live on the site. It must not be restated as a practice-wide rating until
                  confirmed, so it ships scoped to the one office and is never aggregated. -->
+            <div class="cc-arg">
+            <p class="cc-arg__lead">We are one dental group running seven offices across Las Vegas, North Las Vegas and Henderson. One practice, one roster, one brand.</p>
+            <p class="rs-copy">Grafting is a staged treatment, so continuity is the whole point. The extraction, the graft, the healing checks and the implant are all handled by the same practice.</p>
+            <p class="rs-copy">Under a referral model, each stage is a new office, a new intake form and a new wait.</p>
+          </div>
           </div>
 
-          <div>
+          <div class="cc-proof__col">
             <!-- IMAGE SLOT, partly met and said so. The copy asks for the actual surgical operatory
                  and the actual equipment. This is a real first-party photograph of our own
                  treatment-room corridor with the bays and their equipment visible. No photograph in
@@ -299,23 +309,7 @@
                    alt="The treatment room corridor at one of our offices, with the bays open along both sides.">
               <span class="rs-grade rs-grade--soft" aria-hidden="true"></span>
             </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col">
-        <div class="cc-inhouse">
-
-          <div class="cc-arg">
-            <p class="cc-arg__lead">We are one dental group running seven offices across Las Vegas, North Las Vegas and Henderson. One practice, one roster, one brand.</p>
-            <p class="rs-copy">Grafting is a staged treatment, so continuity is the whole point. The extraction, the graft, the healing checks and the implant are all handled by the same practice.</p>
-            <p class="rs-copy">Under a referral model, each stage is a new office, a new intake form and a new wait.</p>
-          </div>
-
-          <div class="cc-panel cc-evidence">
+            <div class="cc-panel cc-evidence">
             <p class="rs-copy">Our clinicians are named on <a class="rs-qlink" href="team.html">the site</a> with their qualifications.</p>
             <p class="rs-copy">Dr. Adrian Ruiz holds a DDS from UCLA, 1995. Dr. Norma Miranda holds a DDS from UCLA, 1976.</p>
             <p class="rs-copy">Both are recorded on our own team page, fetched 30 July 2026.</p>
@@ -324,6 +318,7 @@
                  surgery, and at which office, is not published anywhere first-party. Confirm both
                  before this section ships. No claim is made here that a booking selects a
                  clinician, because booking resolves to an office. -->
+          </div>
           </div>
 
         </div>
