@@ -110,5 +110,18 @@
     ],
     "live_version": "v1-i2i",
     "note": "PLACEHOLDER on index ONLY. The real photograph remains the live image on the other 25 pages, unaltered."
+  },
+  {
+    "id": "texture-wash-light",
+    "prompt": "A cool desaturated abstract gradient wash in a strictly limited palette: pale ice-mint #EDF5F4 as the dominant field, a soft muted sea-green teal #128C7E blooming faintly from the lower-right corner at very low opacity, and cool white #FFFFFF light in the upper-left. Blue-green cool temperature only. Smooth misty diffusion, like breath on cold glass. Very low contrast, restrained, clinical calm, spa-like. Subtle fine grain. NO yellow, NO lime, NO olive, NO chartreuse, NO warm tones, NO gold, NO objects, NO people, NO text, NO hard edges.",
+    "image_size": "1024x576",
+    "model": "fal-ai/flux/dev",
+    "out": "assets/TEXTURE-wash-light.jpg",
+    "usedBy": [
+      "all pages via .rs-sec--lead:not(.surface-dark)"
+    ],
+    "classification": "DECORATIVE TEXTURE, not a fabricated depiction",
+    "why_no_placeholder_marker": "proofPolicy.fabrication_allowed_for governs \"illustrative before/after imagery\" and \"illustrative office/team imagery\" -- assets that stand in as evidence about this practice. This is abstract light on nothing: it depicts no office, no person, no procedure and no outcome, and makes no claim. It is decoration in the same class as the sheet's existing --ds-glow-wash / --ds-grain tokens, so it carries no OWNER PLACEHOLDER marker and forces no noindex. That distinction is what keeps the other 65 pages INDEXABLE -- a generated PHOTO on them would have required noindex under fabrication_requirements.",
+    "note_2026_08_26": "Owner asked for the offer.html hero, which measured flat (background-image:none) while every band section already carried texture. TWO earlier generations were REJECTED for drifting lime/yellow; the accepted file averages #BBEEE1 (g-b +13, cool). Applied under a .90/.96 ground scrim so the texture contributes ~4-10%; worst heading contrast across the 50 lead bands measured 10.19:1, well above the 4.5:1 AAA floor for large text."
   }
 ]

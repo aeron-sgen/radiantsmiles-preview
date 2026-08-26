@@ -201,6 +201,39 @@ h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-headi
 .rs-sec--band:not(.surface-dark){background:var(--ds-bg-band);}
 /* G1: top and bottom padding differ on purpose where a section leads or closes. */
 .rs-sec--lead{padding-block:calc(var(--rs-sec-pad) + var(--ds-space-lg)) calc(var(--rs-sec-pad) + var(--ds-space-xl));}
+
+/* ---- the lead band gets AIR. (owner 2026-08-26: the offer hero "looks very unalive") -
+   Measured before: background-color rgb(237,245,244), background-image NONE. Every band
+   section already carries a texture; the LEAD -- the first thing anyone sees -- was the
+   one flat panel on the site.
+
+   :not(.surface-dark) mirrors the guard on .rs-sec above, and for the same documented
+   reason: .surface-dark paints its ground as a background-IMAGE gradient, so setting
+   background-image here unguarded would ERASE the dark ground and leave those leads dark
+   by class name only.
+
+   THE SCRIM IS LOAD-BEARING, not decoration. The wash is a saturated mint (#BBEEE1
+   average, measured on the file) and this ground carries DARK ink, so letting it through
+   at full strength would drop heading contrast. Layer 1 restates the ground colour at
+   .90/.96, so the texture contributes ~4-10% and the ground stays effectively --ds-bg-surface.
+   The build's contrast gate re-checks this on every page; it is not taken on trust.
+
+   The asset is a fal-generated ABSTRACT WASH. Per the note on TEXTURE-wash-dark below,
+   that is NOT a fabricated depiction -- it asserts nothing about this practice -- so it
+   carries no ⚠OWNER PLACEHOLDER marker, needs no _fabrication-manifest entry, and forces
+   no noindex. It is recorded in _images.json exactly as the dark one is. Two earlier
+   generations were REJECTED for drifting lime/yellow (measured g-b of +12..+15 on the
+   accepted one against a much warmer cast on the rejects); yellow is the accent token
+   here and belongs on buttons, never on a ground. */
+.rs-sec--lead:not(.surface-dark){
+  background-color:var(--ds-bg-surface);
+  background-image:
+    linear-gradient(180deg, rgba(237,245,244,.90), rgba(237,245,244,.96)),
+    url("../assets/TEXTURE-wash-light.jpg");
+  background-size:cover, cover;
+  background-position:center, center;
+  background-repeat:no-repeat, no-repeat;
+}
 .rs-sec--close{padding-block:var(--rs-sec-pad) calc(var(--rs-sec-pad) + var(--ds-space-md));}
 
 /* texture layers. Absolutely positioned, never interactive, always under the
@@ -1299,6 +1332,49 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    the image's intrinsic width and the mirror split stops collapsing cleanly at
    the narrow end of its range. */
 .cc-hero__art{min-width:0;}
+
+/* ---- .cc-hero--wide-copy: give the READING column the wider track ------------------
+   .cc-hero is .86fr / 1.14fr and its comment above reads "Photo left, copy right", so
+   the SECOND child gets the wide track. 18 of the 24 pages using it actually put the
+   copy FIRST, which lands the headline in the 459px column and the photo in the 609px
+   one. Most survive that: measured at 1440, every other cc-hero h1 sets in 2-4 lines.
+
+   offer.html does not. Its h1 is 51 characters against a typical ~30, so at 62px in a
+   459px column it broke to SEVEN line boxes and split "X-ray" across a line at the
+   hyphen. Flipping the tracks for this page alone gives the headline 609px.
+
+   Scoped to a modifier rather than changed on .cc-hero because doing it globally would
+   shrink the photo from 609 to 459 on 17 pages that have nothing wrong with them --
+   a large visual change to fix one outlier. The other 17 are still asymmetric the wrong
+   way round; that is a separate call, not this one. */
+.cc-hero--wide-copy{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);align-items:stretch;}
+
+/* Giving the copy the wide track narrowed the photo to 459px, and .cc-hero centres its
+   children, so the picture sat as a small floating rectangle with a tall empty column
+   under it -- measured 459x315 inside a ~700px cell. That reads emptier than the problem
+   it replaced. The photo now fills the cell instead, so it anchors the band.
+
+   Same mechanism as .rs-split > .rs-frame: the <img> is already position:absolute, so the
+   frame has no intrinsic height, dropping the ratio hands the height to the row, and
+   align-self:stretch is what makes it take it. width:100% + min-width:0 are the
+   G-MEDIA-TRACK anchor-standard -- without them the browser derives WIDTH from the
+   stretched HEIGHT and the photo bursts its track. The floor covers a short copy column. */
+.cc-hero--wide-copy > .cc-hero__art{align-self:stretch;}
+.cc-hero--wide-copy > .cc-hero__art > .cc-hero__frame{
+  width:100%;
+  min-width:0;
+  flex:1 1 auto;
+  align-self:stretch;
+  aspect-ratio:auto;
+  height:auto;
+  min-height:clamp(260px,32vh,420px);
+  max-height:none;
+}
+
+/* "X-ray" carries a real hyphen, which is a legal break opportunity, so the line broke
+   mid-word. hyphens:manual does not prevent breaking at an EXISTING hyphen -- only a
+   nowrap span (or U+2011) does. */
+.rs-nowrap{white-space:nowrap;}
 .cc-hero__frame{
   width:100%;
   aspect-ratio:4 / 5;
