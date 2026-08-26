@@ -37,8 +37,21 @@ ul{margin:0;padding:0;list-style:none;}
   color:var(--ds-ink-soft);
 }
 
-/* ---- focus: --ds-glow halo + a solid control-weight ring so it survives any ground -- */
-:focus-visible{
+/* ---- focus: --ds-glow halo + a solid control-weight ring so it survives any ground --
+   The bare :focus-visible already matches EVERY focusable element, so the ring has always
+   painted site-wide. The role selectors below are spelled out because G-FOCUS
+   (verify-focus-states) scans for the interactive ROLES by name and cannot see that a
+   universal selector already covers them. They add no new painted pixel — same four
+   declarations, same cascade position — they just make the WCAG 2.4.7 coverage explicit
+   and keep the ring from being narrowed to a one-off class by a later edit. */
+:focus-visible,
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible{
   outline:2px solid var(--ds-line-control);
   outline-offset:3px;
   box-shadow:var(--ds-glow);
@@ -506,51 +519,61 @@ ul{margin:0;padding:0;list-style:none;}
 .foot-hours strong{color:var(--ds-ink);}
 .foot-acts{display:flex;flex-direction:column;gap:var(--ds-space-sm);}
 
-/* ---- the institutional ledger: seven offices, seven direct lines -------------------- */
-.directory{border-top:1px solid var(--ds-line);padding-block:var(--ds-space-lg);}
-.directory__head{display:flex;align-items:baseline;justify-content:space-between;gap:var(--ds-space-md);flex-wrap:wrap;}
-.directory__h{font-size:28px;}
-.ledger{margin-top:var(--ds-space-md);border-top:1px solid var(--ds-line);}
-.ledger__row{
-  /* 2 columns since 2026-08-25: the middle cell held a phone number per office and the
-     owner asked the directory to carry the LOCATION LINK only. Every number is still
-     published on its own office page (4-5 tel links each) and on contact.html (7), so
-     nothing became unreachable. */
-  display:grid;grid-template-columns:minmax(0,1fr) auto;
-  gap:var(--ds-space-md);align-items:center;
-  padding-block:10px;
-  border-bottom:1px solid var(--ds-line);
-  transition:background-color var(--ds-dur) var(--ds-ease);
-}
-.ledger__row:hover{background:var(--ds-bg-band);}
-.ledger__office{
-  display:flex;align-items:center;min-height:48px;
-  font-size:18px;font-weight:700;text-decoration:none;color:var(--ds-ink-heading);
-}
-.ledger__tel{
-  display:inline-flex;align-items:center;gap:10px;min-height:48px;
-  font-size:20px;font-weight:500;text-decoration:none;color:var(--ds-primary);
-  font-variant-numeric:tabular-nums;
-}
-.ledger__tel:hover{text-decoration:underline;text-underline-offset:4px;}
-.ledger__tel svg{flex:none;color:var(--ds-signature);}
-.ledger__go{
-  display:inline-flex;align-items:center;min-height:48px;
-  font-size:16px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
-  text-decoration:none;color:var(--ds-ink-soft);white-space:nowrap;
-}
-.ledger__go:hover{color:var(--ds-ink-heading);}
+/* The seven-office directory was its own full-width band here (.directory + .ledger — a
+   7-row hairline ledger, ~520px tall, each row carrying an "Office page" label). The
+   owner folded it into .foot-links as a COLUMN on 2026-08-26, so those rules are DELETED
+   rather than left dead. The markup that used them came out of _chrome-block.html in the
+   same change, and no page content referenced them: the only .ledger__* / .directory hits
+   in pages/*.html came from the footer chrome itself, and structural.css mentions
+   "ledger"/"directory" only inside prose comments (both verified by grep before removal). */
 
 .foot-links{
-  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--ds-space-lg);
+  /* 4 columns since 2026-08-26 (was 3): Locations joined Care / Patients / Practice. */
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--ds-space-lg);
   border-top:1px solid var(--ds-line);padding-block:var(--ds-space-lg);
 }
-.foot-links h3{font-size:18px;margin-bottom:6px;}
+/* 16px since 2026-08-26 (was 18px): the four columns now share the row with .foot-top,
+   so the link text steps down to the same 16px the .foot-legal row already uses. The
+   48px min-height STAYS — that is the tap-target floor, not a typographic choice, and
+   shrinking the text must not shrink the touch box. */
+.foot-links h3{font-size:16px;margin-bottom:6px;}
 .foot-links a{
   display:flex;align-items:center;min-height:48px;
-  font-size:18px;text-decoration:none;color:var(--ds-ink-soft);
+  font-size:16px;text-decoration:none;color:var(--ds-ink-soft);
 }
 .foot-links a:hover{color:var(--ds-ink-heading);}
+
+/* ---- desktop: the brand/contact block sits LEFT, the link columns RIGHT -------------
+   Done by making .site-footer > .container the grid rather than adding a wrapper div,
+   so the markup is untouched and .foot-legal simply spans both tracks underneath.
+   Scoped to >=1200px, NOT >=1101px, and that number is MEASURED: at 1101 the four
+   tracks compress to 149px and "Insurance & Financing" / "About Radiant Smiles" wrap to
+   two lines (real text line-boxes, not a height heuristic). 1200 is the first tested
+   width that holds them on one line (171px tracks) with margin. Between 1101 and 1199
+   the footer falls back to the stacked full-width form, where the tracks are 223px and
+   nothing wraps. .foot-links loses its border-top here: a hairline drawn across only the
+   right half of the row reads as a rendering fault, and the two blocks are siblings in
+   one band now, not two stacked bands. */
+@media (min-width:1200px){
+  .site-footer > .container{
+    display:grid;
+    grid-template-columns:minmax(280px,0.9fr) minmax(0,2.4fr);
+    column-gap:var(--ds-space-xl);
+    align-items:start;
+  }
+  .foot-top{
+    grid-column:1;
+    grid-template-columns:minmax(0,1fr);   /* stack brand / hours / acts down the left */
+    gap:var(--ds-space-md);
+  }
+  .foot-links{
+    grid-column:2;
+    border-top:0;
+    column-gap:var(--ds-space-md);         /* tighter than lg: buys width for the labels */
+    padding-block:var(--ds-space-xl);      /* matches .foot-top so both tops align */
+  }
+  .foot-legal{grid-column:1 / -1;}
+}
 
 .foot-legal{
   border-top:1px solid var(--ds-line);
@@ -669,9 +692,6 @@ ul{margin:0;padding:0;list-style:none;}
   .band__blocks{grid-template-columns:repeat(2,minmax(0,1fr));}
 }
 @media (max-width:900px){
-  .ledger__row{grid-template-columns:minmax(0,1fr) auto;row-gap:0;}
-  .ledger__go{grid-column:2;grid-row:1;}
-  .ledger__tel{grid-column:1;grid-row:2;}
   .foot-links{grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--ds-space-md);}
 }
 @media (max-width:640px){

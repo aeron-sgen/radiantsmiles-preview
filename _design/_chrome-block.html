@@ -340,8 +340,9 @@
 
 <!-- ============================================================================
      FOOTER: FOOTER-STYLES.md #14 Hours-and-contact prominent.
-     Contact / hours / act across the top, then the seven-office ledger. This is a
-     seven-office practice: the footer's real job is "which office, what number".
+     Contact / hours / act across the top, then the link columns with the seven-office
+     directory FIRST. This is a seven-office practice: the footer's real job is
+     "which office" — the numbers themselves live on contact.html and in the drawer.
      ============================================================================ -->
 <footer class="site-footer">
   <div class="container">
@@ -358,8 +359,8 @@
       <div>
         <h2 class="foot-h">Hours &amp; contact</h2>
         <!-- OWNER FLAG: per-office opening hours are NOT in the locked spec and are NOT
-             invented here. Supply them and each one drops into its ledger row below. -->
-        <p class="foot-hours"><strong>Hours vary by office.</strong> Call the office nearest you and its front desk will book you directly. Every direct line is in the ledger below.</p>
+             invented here. Supply them and each one drops onto its office page. -->
+        <p class="foot-hours"><strong>Hours vary by office.</strong> Call the office nearest you and its front desk will book you directly. Every direct line is on the contact page.</p>
       </div>
 
       <div class="foot-acts">
@@ -368,45 +369,24 @@
       </div>
     </div>
 
-    <section class="directory" aria-labelledby="directory-h">
-      <div class="directory__head">
-        <h2 class="directory__h" id="directory-h">Seven offices, seven direct lines</h2>
-        <p class="eyebrow">Las Vegas &amp; Henderson</p>
-      </div>
-
-      <div class="ledger">
-        <div class="ledger__row">
-          <a class="ledger__office" href="lone-mountain.html">Lone Mountain</a>
-          <a class="ledger__go" href="lone-mountain.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="sunrise-manor.html">Sunrise Manor</a>
-          <a class="ledger__go" href="sunrise-manor.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="summerlin.html">Summerlin</a>
-          <a class="ledger__go" href="summerlin.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="north-las-vegas.html">North Las Vegas</a>
-          <a class="ledger__go" href="north-las-vegas.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="henderson.html">Henderson</a>
-          <a class="ledger__go" href="henderson.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="north-decatur.html">North Decatur</a>
-          <a class="ledger__go" href="north-decatur.html">Office page</a>
-        </div>
-        <div class="ledger__row">
-          <a class="ledger__office" href="blue-diamond.html">Blue Diamond</a>
-          <a class="ledger__go" href="blue-diamond.html">Office page</a>
-        </div>
-      </div>
-    </section>
-
     <nav class="foot-links" aria-label="Footer">
+      <!-- The seven-office directory is a COLUMN of this nav, not its own band (owner,
+           2026-08-26). It was a full-width 7-row ledger (~520px of footer) carrying an
+           "Office page" label per row; the office NAME is now the link and the label is
+           gone. No phone numbers here: every direct line is on contact.html (all 7) and
+           in the mobile drawer on every page, so nothing became unreachable. -->
+      <div>
+        <h3>Locations</h3>
+        <ul>
+          <li><a href="lone-mountain.html">Lone Mountain</a></li>
+          <li><a href="sunrise-manor.html">Sunrise Manor</a></li>
+          <li><a href="summerlin.html">Summerlin</a></li>
+          <li><a href="north-las-vegas.html">North Las Vegas</a></li>
+          <li><a href="henderson.html">Henderson</a></li>
+          <li><a href="north-decatur.html">North Decatur</a></li>
+          <li><a href="blue-diamond.html">Blue Diamond</a></li>
+        </ul>
+      </div>
       <div>
         <h3>Care</h3>
         <ul>
