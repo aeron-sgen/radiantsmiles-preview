@@ -1197,6 +1197,16 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    The container itself is capped at --ds-container-max, so the line cannot grow past
    ~1132px no matter how wide the viewport gets. */
 .col--prose-span > p{max-width:none;}
+/* CLASS-QUALIFIED, and the reason matters. The bare rule above is (0,1,1) -- the same
+   specificity as p.cc-arg__lead, which sets max-width:26ch at :1334, AFTER this block.
+   Source order therefore handed the win to 26ch and north-decatur shipped still capped
+   at 460px of a 1132px column. It passed the local gates and was caught only by the
+   LIVE render check. Qualifying by class lifts these to (0,2,1) so they beat any
+   single-class measure no matter where it sits in the sheet. Add the class here if a
+   future prose block uses a different one. */
+.col--prose-span > p.rs-copy,
+.col--prose-span > p.rs-lede,
+.col--prose-span > p.cc-arg__lead{max-width:none;}
 
 /* ==========================================================================
    7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
@@ -2040,6 +2050,19 @@ p.hb-why__is{
   font-weight:600;
   padding:var(--ds-space-lg);
   border-radius:var(--ds-r-surface);
+  /* The two cards sit in one grid row, so both take the height of the taller -- and the
+     shorter one then held its text against the top edge with the slack dumped underneath.
+     Measured on restorations at 1440: both cards 331px, but .hb-why__was carries 122px of
+     text inside a 251px content box, so 129px sat empty below it and the card read as
+     unfinished (owner 2026-08-26: "utilize the whole space here").
+
+     Centring the text rather than un-stretching the card is the deliberate choice: these
+     two are a THIS-not-THAT pair and must stay the same size as each other, so the fix has
+     to spend the slack, not remove it. align-content (not align-items) because the text is
+     an anonymous grid item -- with a single anonymous child, align-items would size and
+     place the item's box rather than distribute the free space around the whole content. */
+  display:grid;
+  align-content:center;
 }
 /* the arrangement this practice is not. Flat, unlifted, hairline only. */
 p.hb-why__was{
