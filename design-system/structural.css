@@ -194,6 +194,8 @@ h1,h2,h3,h4{margin:0;font-family:var(--ds-font-display);color:var(--ds-ink-headi
 .rs-wrap--narrow{max-width:calc(var(--ds-container-max) - var(--ds-space-2xl) * 2);}
 
 .rs-sec{position:relative;padding-block:var(--rs-sec-pad);}
+
+
 /* :not(.surface-dark) so a section re-skinned by the token class keeps the
    token sheet's own gradient. Without the guard this rule, being later in the
    cascade at equal specificity, would silently repaint every dark band. */
@@ -1682,6 +1684,7 @@ p.cc-proof__scope{
    it is not the column opposite .cc-arg and must not be stretched. Applies where the
    panel is a real sibling of .cc-arg: 17 pages. */
 .cc-inhouse > .cc-evidence{align-self:stretch;}
+
 
 /* ---- .cc-proof--merged: record+argument left, photo+evidence right -----------------
    Owner 2026-08-26. See the markup comment in lone-mountain.content.html for why the
@@ -4448,7 +4451,6 @@ p.co-close__say{
    max-width at a verified 16px root, so nothing moves; the change is proven by a full-page pixel
    diff on the three pages that render them. Same remedy the T-FEATURE section 7 promotion used. */
 
-
 /* ==========================================================================
    COLUMN STACK SPACING (owner: "fix the spacing", 2026-08-20)
    A .col is display:block, so children stacked directly inside it sit at 0px
@@ -4906,8 +4908,25 @@ main .col > .ar-wash + *{margin-top:0;}
    distinction is what keeps the other 65 pages INDEXABLE: a generated PHOTO on
    them would have required noindex under fabrication_requirements.
    ========================================================================== */
+/* ---- the dark bands read FLAT, and it is measurable (owner 2026-08-26) --------------
+   Sampled 15 points across a dark band on the built page: the painted spread was
+   R=1 G=11 B=9, rgb(10,56,53) to rgb(11,67,62). Eleven units of green across a whole
+   band is not a texture anyone can see -- the .88/.94 scrim below was doing its
+   contrast job so thoroughly that it left nothing of the bloom it sits on.
+
+   HOW MUCH LIFT IS AVAILABLE, measured rather than guessed. Ink on this ground is
+   rgb(202,219,219) for body copy. Walking the ground lighter: +10G holds 6.76:1,
+   +20G holds 5.87:1, +30G holds 5.09:1, and +40G FAILS at 4.43:1. So the ceiling is
+   about +30 green and the two radials below peak near +19, inside that with margin.
+
+   The radials go on TOP of the scrim (first in the list paints last) precisely because
+   the scrim is what flattened the texture -- putting them under it would be flattened
+   too. They are the signature teal, so the lift is on-palette rather than a grey wash. */
 .rs-sec.surface-dark:not(.rs-sec--band){
   background-image:
+    /* 0 · the bloom, ABOVE the scrim so it survives it */
+    radial-gradient(58% 80% at 88% 8%, rgba(18,140,126,.26), transparent 64%),
+    radial-gradient(64% 70% at 6% 100%, rgba(18,140,126,.14), transparent 62%),
     /* 1 · the scrim that protects the ink contrast */
     linear-gradient(180deg, rgba(11,61,58,.88), rgba(11,66,62,.94)),
     /* 2 · the generated light bloom */
@@ -4915,9 +4934,22 @@ main .col > .ar-wash + *{margin-top:0;}
     /* 3 · the canonical dark ground, RESTATED so it is not erased. Tokens, not
        the literal hexes, so it tracks the dark palette rather than forking it. */
     linear-gradient(180deg,var(--ds-canvas),var(--ds-bg-surface));
-  background-size:auto, cover, auto;
-  background-position:center, center 70%, center;
-  background-repeat:no-repeat, no-repeat, no-repeat;
+  background-size:auto, auto, auto, cover, auto;
+  background-position:center, center, center, center 70%, center;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+}
+
+/* The :not() above excludes --band + surface-dark, and 4 sections in this build ARE that
+   combination -- so they carried NO texture at all and were the flattest panels on the
+   site. They get the same bloom over their OWN ground: --ds-bg-band is #09312E on dark,
+   a sunk band deliberately deeper than --ds-canvas, so restating the canvas gradient here
+   would have quietly repainted them as ordinary dark sections and thrown away the very
+   distinction the --band modifier exists to make. */
+.rs-sec--band.surface-dark{
+  background-image:
+    radial-gradient(58% 80% at 88% 8%, rgba(18,140,126,.24), transparent 64%),
+    radial-gradient(64% 70% at 6% 100%, rgba(18,140,126,.12), transparent 62%),
+    linear-gradient(180deg, var(--ds-bg-band), var(--ds-bg-band));
 }
 
 /* ==========================================================================
@@ -5072,6 +5104,44 @@ main .col > .ar-wash + *{margin-top:0;}
   .cc-hero__frame{aspect-ratio:16 / 11;}
   .hb-cost__media{aspect-ratio:16 / 10;}
   .co-hero__art{aspect-ratio:16 / 10;}
+}
+
+/* MOVED HERE 2026-08-26, and the move IS the fix. This rule first sat beside the other
+   .cc-inhouse rules near :1550, at the same (0,2,0) specificity as the
+   `.cc-inhouse .rs-frame{align-self:start;min-height:0}` block further down. Source
+   order gave that block align-self and min-height while THIS one still supplied
+   aspect-ratio:auto -- ratio gone, `start` instead of `stretch`, floor 0 -- and all
+   three frames measured 0px tall. Same collapse that shipped 61 invisible images on
+   2026-08-25. Sitting after that block, this rule wins every property it declares. */
+/* ---- the photo matches its argument when it IS the whole column --------------------
+   Owner 2026-08-26, on the offer closing band: "for the top part of it make it balanced".
+   Measured at 1440: .cc-arg 577x629 against a 491x307 photo -- 322px of dead space under
+   the picture.
+
+   THE DIRECT-CHILD COMBINATOR IS THE SAFETY RULE, not a detail. Where the frame is a
+   direct grid child it IS its whole column, so handing it the row height is safe. Where
+   it is nested (.cc-problem__side, .ar-two__k) the column ALSO carries its own copy that
+   already exceeds the opposing text -- 389+24+320 against 383 measured earlier -- so
+   stretching there needs a negative frame height and crushes the photo. That is why the
+   earlier pass deliberately left .cc-inhouse alone; this rule reaches only the safe shape.
+
+   Site-wide that shape occurs 3 times, and all three are out: offer +322, bruxism +163,
+   dentures-partial-dentures -159 (photo TALLER than its text). One rule squares all three.
+
+   Mechanism as before: the <img> is already position:absolute so the frame has no
+   intrinsic height, dropping the ratio hands the height to the row, and stretch takes it.
+   width:100% + min-width:0 are the G-MEDIA-TRACK anchor-standard -- without them the
+   browser derives WIDTH from the stretched HEIGHT and the photo bursts its track. */
+@media (min-width:1060px){
+  .cc-inhouse > .rs-frame{
+    width:100%;
+    min-width:0;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(240px,30vh,400px);
+    max-height:none;
+  }
 }
 
 /* ==========================================================================
