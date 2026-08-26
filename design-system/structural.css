@@ -568,6 +568,19 @@ p.rs-copy{
   overflow:hidden;
   border-radius:var(--rs-r-frame);
   background:var(--ds-primary-soft);
+  /* The UA stylesheet gives <figure> margin-inline:40px, and the reset does not
+     zero it. Most .rs-frame instances are flex/grid items whose width the layout
+     constrains, so the UA margin only insets them harmlessly -- but any frame
+     carrying width:100% then measures 100% of its parent PLUS 80px of margin and
+     bursts out of the column: box-sizing:border-box covers padding and border,
+     NEVER margin. Live proof: about.html's .co-tile--solo (width:100% added
+     2026-08-25) rendered at left=56 w=343 in a 375px viewport -> scrollWidth 399,
+     i.e. the page scrolled sideways on a phone. Confirmed identical on the live
+     build 03a4f62, so this predates the footer work. Root cause identified via
+     CDP CSS.getMatchedStylesForNode, which named the UA sheet as the only source
+     of that 40px -- no project rule sets it. Verified by injection across all 66
+     pages at 375: 1 overflowing page before, 0 after. */
+  margin-inline:0;
 }
 .rs-frame--hero{border-radius:var(--rs-r-hero);box-shadow:var(--rs-e2);}
 .rs-frame--wide{aspect-ratio:16 / 10;}
@@ -4853,6 +4866,85 @@ main .col > .ar-wash + *{margin-top:0;}
   .cc-hero__frame{aspect-ratio:16 / 11;}
   .hb-cost__media{aspect-ratio:16 / 10;}
   .co-hero__art{aspect-ratio:16 / 10;}
+}
+
+/* ==========================================================================
+   THE PHOTO MATCHES ITS TEXT COLUMN  (owner request 2026-08-26)
+   ----------------------------------------------------------------------------
+   Owner: "make the image the same size as the container text". Measured before
+   the change, at 1440 across all 66 pages: 52 pages carried a side-by-side
+   media+text row whose columns disagreed by more than 24px, worst 527px -- the
+   photo set the row height and overhung the copy by hundreds of pixels.
+
+   THE MECHANISM. Every frame here already has its <img> at position:absolute,
+   so the frame has NO intrinsic height. Dropping the ratio therefore leaves the
+   GRID ROW to decide the height, and the row is sized by the text column.
+   align-self:stretch is what makes the frame take that row height.
+
+   WHY stretch AND NOT start -- this is the exact line that shipped 61 invisible
+   images on 2026-08-25. That change paired `aspect-ratio:auto` with
+   `align-self:start`: with the ratio gone and the img out of flow the frame had
+   nothing left to give it height, and `start` does not stretch, so it resolved
+   to 0px. `stretch` is the difference: the frame is handed the row's height,
+   which the text guarantees is non-zero. The min-height floor covers the one
+   remaining case, a text column shorter than the floor.
+
+   width:100% + min-width:0 ARE THE ANCHOR-STANDARD, not decoration (G-MEDIA-TRACK
+   blocked the first draft of this block for omitting them, and names it "the bug
+   that recurred 3x"). Without a width anchor the browser is free to derive the
+   frame's WIDTH from its now-stretched HEIGHT, so the photo balloons wider than
+   its 1fr track, overlaps the neighbouring column and overflows on mobile.
+   min-width:0 lets the grid item shrink below intrinsic width on narrow screens.
+
+   SCOPE IS DELIBERATELY NARROWER THAN "everything the audit flagged". Only rows
+   where the PHOTO is the sole height driver of its column are matched:
+     .rs-split > .rs-frame          frame IS the grid child          29 -> 3 rows
+     .rs-hero__inner ... > .rs-frame  sole child of a stretched column  2 -> 0
+     .hb-cost > .hb-cost__media     photo was SHORTER than the copy    8 -> 0
+   NOT matched, because their media column carries its OWN content that is
+   already taller than the opposing text, so matching would crush the photo to
+   nothing (measured): .cc-problem__side is cc-evidence 389 + gap 24 + frame 320
+   against text 383 -- the non-image content ALONE exceeds the text column.
+   Same shape for .cc-inhouse, .ar-two__k, and the 3 .rs-split rows whose media
+   child is an .rs-stack (braces-for-adults, invisalign, north-las-vegas). Those
+   keep their designed ratio and sit at the top of the row.
+
+   The child combinator is load-bearing: it excludes those nested .rs-stack
+   frames, which the earlier `.rs-split .rs-frame` descendant rule still governs.
+
+   SPECIFICITY, not !important: (0,2,0)/(0,3,0) here beats the modifier rules
+   above ((0,1,0)) and ties-but-follows the earlier .rs-split / .rs-hero__art
+   rules, so this block wins on source order.
+   ========================================================================== */
+@media (min-width:1060px){
+  .rs-split > .rs-frame{
+    width:100%;
+    min-width:0;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(200px,24vh,320px);
+    max-height:none;
+  }
+  .rs-hero__inner > .rs-hero__art > .rs-frame{
+    width:100%;
+    min-width:0;
+    flex:1 1 auto;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(200px,24vh,320px);
+    max-height:none;
+  }
+  .hb-cost > .hb-cost__media{
+    width:100%;
+    min-width:0;
+    align-self:stretch;
+    aspect-ratio:auto;
+    height:auto;
+    min-height:clamp(200px,24vh,320px);
+    max-height:none;
+  }
 }
 
 /* ==========================================================================
