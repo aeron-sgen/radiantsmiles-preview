@@ -1869,6 +1869,36 @@ p.cc-faq__a{padding-bottom:var(--ds-space-lg);}
 /* RULE REMOVED. Its only declaration was max-width:60ch, which never applied -
    p.rs-copy's 64ch outranked it. See the note at p.cc-faq__a. */
 
+/* ---- THE OFFER BAND'S SECOND BEAT. ----------------------------------------
+   MEASURED 2026-08-27 on index at 1440: this dark band carries TWO .row blocks --
+   the centred price statement, then a left-aligned "First time here." stack. The
+   centre/left mismatch inside one band read as a mistake, and the owner already
+   ruled on this exact shape on offer.html 2026-08-26 ("these 2 sections should not
+   be merged"). The rows are not split here, because index is the ONLY page whose
+   second row carries its own heading -- the other 9 multi-row cc-offer sections
+   continue the first row's thought and must stay as they are.
+   So the second beat is SEPARATED and aligned instead: a hairline above it and the
+   stack centred to match the price, which makes the band one composed unit.
+
+   THE SELECTOR IS DELIBERATELY NARROW. Without `:has(.rs-stack)` it matched TEN
+   pages (verified: antibiotic-treatment, composite-fillings, faq, lone-mountain,
+   north-las-vegas x2, periodontal-disease, prophylaxis, summerlin, sunrise-manor x2)
+   and pushed a divider into all of them. With it, the match is index alone.
+   The .rs-qlink override is required: .rs-qlink carries its own `align-self:start`,
+   and a child's align-self always beats the parent's align-items. */
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack){
+  margin-top:var(--ds-space-lg);
+  padding-top:var(--ds-space-lg);
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack) .rs-stack{
+  align-items:center;
+  text-align:center;
+}
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack) .rs-stack > .rs-qlink{
+  align-self:center;
+}
+
 /* ==========================================================================
    SECTION 8 - T-HUB TEMPLATE LAYER (hb-*)
    The promoted body layer for the ten HUB pages, from T-HUB concept B,
@@ -2896,6 +2926,34 @@ p.ar-find{
   .ar-rail{gap:0 var(--ds-space-sm);}
 }
 
+/* ---- 5b . CLOSE CARD, TWO COLUMN. -----------------------------------------
+   MEASURED 2026-08-27 on all 9 doctor pages: the card is 1132x330 and its content
+   filled 0.35 of the width. Every child was a column item under
+   `flex-direction:column; align-items:flex-start`, so the two buttons sat UNDER the
+   quiet link and ~730px of the card was empty deep-teal.
+   From 820px up the card is a two-column grid: the claim and its link hold the
+   measure on the left, the acts take the right edge and become what the eye lands
+   on. Below 820px the original stack is untouched, so the max-width rules above
+   (margin-top, padding) and the 479px full-width acts still govern the phone.
+   AFTER: fillW 0.89 @1440 / 0.90 @860, height 330 -> 234, no overflow at
+   1440/1100/900/860/600/390. */
+@media (min-width:820px){
+  .ar-close__card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"head acts" "link acts";
+    align-items:center;
+    column-gap:var(--ds-space-lg);
+    row-gap:var(--ds-space-2xs);
+  }
+  .ar-close__card > .ar-head{grid-area:head;align-self:end;}
+  .ar-close__card > .rs-qlink{grid-area:link;align-self:start;justify-self:start;}
+  .ar-close__card > .ar-acts{grid-area:acts;align-self:center;justify-self:end;}
+}
+@media (min-width:1024px){
+  .ar-close__card{column-gap:var(--ds-space-xl);}
+}
+
 /* ---- 6 . REDUCED MOTION. Every move in this sheet is opt out. ------------- */
 @media (prefers-reduced-motion:reduce){
   .ar-face,
@@ -3635,6 +3693,42 @@ p.ix-slot-p{
   color:var(--ds-ink-soft);
 }
 
+/* ---- 4b . THE FLAGGED PLACEHOLDER, COMPOSED. ------------------------------
+   MEASURED 2026-08-27 on index / reviews: the slot rendered 1132x412 as a flex
+   COLUMN -- the drawn mark sat alone on one row with ~900px of empty plate beside
+   it, and the five field names ran as a 3-column grid whose last row left a whole
+   cell blank. It read as an unfinished page rather than a declared absence.
+   From 820px up the mark and the field list sit side by side, and the field names
+   become wrapping pills so an ODD count of five never leaves a hole.
+   THE DASHED EDGE, THE GRID TEXTURE AND THE MONO TYPE ARE DELIBERATE AND STAY --
+   this element must read as a flagged placeholder and never as content (see the
+   note above .ix-slot). Only the composition changed.
+   AFTER: 1132x238 @1440, 852x206 @900, no overflow at 1440/900/820/760/390. */
+.ix-slot > .ix-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--ds-space-xs);
+  margin-top:var(--ds-space-md);
+}
+.ix-slot > .ix-grid > li{display:flex;}
+.ix-slot > .ix-grid .ix-item-meta{
+  display:inline-block;
+  padding:6px 12px;
+  border:1px dashed var(--ds-line-control);
+  border-radius:999px;
+  background-color:var(--ds-bg-surface);
+}
+@media (min-width:820px){
+  .ix-slot{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    column-gap:var(--ds-space-xl);
+    min-height:0;
+  }
+  .ix-slot > .ix-grid{margin-top:0;}
+}
+
 /* ---- 5 . THE CLOSING ASK ------------------------------------------------ */
 .ix-close{
   position:relative;
@@ -4315,6 +4409,34 @@ p.co-lead-in{
   box-shadow:var(--ds-shadow-lift);
   padding:var(--ds-space-md) var(--ds-space-md) var(--ds-space-md) var(--ds-space-lg);
   margin-top:var(--ds-space-md);
+}
+
+/* ---- 4b . THE PROBLEM AND ITS ANSWER, SIDE BY SIDE. -----------------------
+   MEASURED 2026-08-27 on index at 1440: each block stacked a 620px measure
+   paragraph directly above a 1132px full-width answer card, three times running.
+   The 620 -> 1132 width jump is what made the band read as misaligned; the prose
+   measure itself is correct and is NOT widened here.
+   From 960px up the cost holds the left column and the answer card takes the
+   right, so the two edges agree and the pair reads as one comparison.
+
+   SCOPED WITH :has(> .hb-why__is) ON PURPOSE. about.html uses .co-why__p too, but
+   its blocks carry a lone paragraph and no answer card -- under an unscoped grid
+   those would drop to half width and the page would get WORSE. Verified 2026-08-27:
+   about is byte-identical in height and child widths at 1440/960/900/390.
+   AFTER on index: stack 835px -> 634px, children equalise to 534px, no overlap and
+   no spill at 1440/960/900/390. Below 960 the original stack is untouched. */
+@media (min-width:960px){
+  .co-why__p:has(> .hb-why__is){
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:"head answer" "copy answer";
+    align-items:start;
+    column-gap:var(--ds-space-xl);
+    row-gap:var(--ds-space-xs);
+  }
+  .co-why__p:has(> .hb-why__is) > .rs-h3{grid-area:head;margin-top:0;}
+  .co-why__p:has(> .hb-why__is) > .rs-copy{grid-area:copy;margin-bottom:0;}
+  .co-why__p:has(> .hb-why__is) > .hb-why__is{grid-area:answer;align-self:center;margin-top:0;}
 }
 
 /* ---- 5 . VALUES. One statement, one room, and a visible amount of air. ---- */
