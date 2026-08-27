@@ -1685,6 +1685,30 @@ p.cc-proof__scope{
    panel is a real sibling of .cc-arg: 17 pages. */
 .cc-inhouse > .cc-evidence{align-self:stretch;}
 
+/* SPEND THE STRETCH RATHER THAN LEAVE IT AT THE BOTTOM.
+   MEASURED 2026-08-27 at 1440 across the five pages that carry this shape: the
+   stretch above makes the panel exactly as tall as the frame beside it, and the
+   panel's short evidence line then held the TOP edge with all the slack dumped
+   underneath -- dental-implants 469px tall around 140px of text, so 249px of dead
+   deep-teal below it. north-decatur 179px, braces-for-adults 155px,
+   dental-exams-cleanings 137px, fixed-bridges 123px.
+   Centring the content is the same remedy, and for the same reason, as the one
+   already taken on p.hb-why__is / p.hb-why__was: the panel must KEEP matching the
+   frame's height, so the slack has to be spent, not removed.
+   align-content (not align-items) because several of these panels carry more than
+   one child -- centring the row GROUP keeps the children's own spacing intact.
+   VERIFIED the internal spacing is untouched: content height is byte-identical
+   before and after on all five pages at 1440/1200/1060/1000/768/390 (30 of 30).
+   Gated at 1060 because below it the grid is one column, the panel is no longer
+   stretched, and there is no slack to spend (measured 3/1 top/bottom either way).
+   AFTER at 1440: dental-implants 3/246 -> 125/123, north-decatur 3/176 -> 91/88. */
+@media (min-width:1060px){
+  .cc-inhouse > .cc-evidence{
+    display:grid;
+    align-content:center;
+  }
+}
+
 
 /* ---- .cc-proof--merged: record+argument left, photo+evidence right -----------------
    Owner 2026-08-26. See the markup comment in lone-mountain.content.html for why the
@@ -1706,6 +1730,37 @@ p.cc-proof__scope{
 .cc-proof--merged > .cc-proof__col > .rs-frame{flex:0 0 auto;}
 /* the panel absorbs the leftover height so its bottom edge meets the argument's */
 .cc-proof--merged > .cc-proof__col > .cc-evidence{flex:1 1 auto;}
+
+/* SAME REMEDY, THE PROOF COLUMN. The flex:1 1 auto above grows the panel to fill
+   its column, and on antibiotic-treatment that left the evidence line at the TOP
+   of a 387px panel around 170px of text -- 137px dead at the bottom (measured
+   2026-08-27 at 1440). Centring spends it, exactly as for .cc-inhouse above.
+   MEASURED ACROSS ALL SIX PAGES that carry .cc-proof__col: antibiotic-treatment
+   3/134 -> 69/67, composite-fillings 3/7 -> 6/4 (it had almost no slack, so this
+   is a 3px shift), and bone-grafting / lone-mountain / oral-cancer-exam /
+   prophylaxis-teeth-cleaning do not move at all -- their panels have no slack.
+   No reflow, no spill and no growth at 1440/1200/1060/1000/768/390. */
+@media (min-width:1060px){
+  .cc-proof__col > .cc-evidence{
+    display:grid;
+    align-content:center;
+  }
+}
+
+/* A LONE HELD STATEMENT IS CENTRED IN ITS PANEL.
+   MEASURED 2026-08-27 on faq at 1440: a .cc-arg__lead is capped to a 26ch measure
+   (460px) and sat alone inside a 1132px panel, so 591px of the panel was empty to
+   its right and the statement read as a paragraph that had lost its column rather
+   than as the held claim it is.
+   :only-child is doing real work here -- .cc-arg__lead also appears alongside
+   sibling copy elsewhere, where it leads a block and must stay ranged left.
+   AFTER: 1/591 -> 296/296 at 1440, 1/538 -> 269/269 at 1060, no reflow or spill.
+   Left ungated by width on purpose: at 390 the measure already exceeds the panel,
+   so the rule has no effect there (verified -- no movement at 390). */
+.cc-evidence:has(> .cc-arg__lead:only-child) > .cc-arg__lead{
+  margin-inline:auto;
+  text-align:center;
+}
 .cc-roster{
   display:grid;
   grid-template-columns:repeat(10,minmax(0,1fr));
@@ -4536,6 +4591,26 @@ p.co-close__say{
   font-weight:600;
   color:var(--ds-ink-heading);
   max-width:22ch;
+}
+
+/* THE CLOSING CARD, SIDE BY SIDE. Same defect and same remedy as .ar-close__card.
+   MEASURED 2026-08-27 on about at 1440: the card is 1132px wide, the statement is
+   held to max-width:22ch (452px) and the acts sat UNDERNEATH it, so content filled
+   0.44 of the content box and ~640px was empty.
+   BREAKPOINT MEASURED, NOT GUESSED. The first draft opened this at 820px and made
+   the card WORSE in the 820-1023 band: 452 + 398 + a 64px gap overruns the content
+   box there, so the acts wrapped to a second row and the card GREW (249 -> 289 at
+   820, 258 -> 298 at 900). They first fit at 1024.
+   AFTER: fill 0.44 -> 1.00 and height 327 -> 251 at 1440, 274 -> 198 at 1024;
+   unchanged at 900/820/768/600/390, no spill at any of the eight widths. */
+@media (min-width:1024px){
+  .co-close{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--ds-space-xl);
+  }
+  .co-close > .rs-acts{flex:0 0 auto;}
 }
 
 /* ---- 8 . BREAKPOINTS. Additive max-width steps only. --------------------- */
