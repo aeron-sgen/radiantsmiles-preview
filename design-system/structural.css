@@ -1327,9 +1327,18 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    CLASS-QUALIFIED to (0,2,1) for the reason documented on .col--prose-span: the bare
    (0,1,1) form loses on source order to p.cc-arg__lead's 26ch further down the sheet,
    which is how north-decatur once shipped still capped and passed the local gates. */
-.prose-span > p.rs-copy,
-.prose-span > p.rs-lede,
-.prose-span > p.cc-arg__lead{max-width:none;}
+/* THE CLASS IS DOUBLED ON PURPOSE, and it replaces an enumerated class list.
+   The first cut named the three paragraph classes it had met (rs-copy, rs-lede,
+   cc-arg__lead) purely to reach (0,2,1) and beat p.cc-arg__lead's 26ch. The scan then
+   surfaced the same situation on co-note, lg-mast__eff, ct-dir__lede, ar-limit__t,
+   ix-state, ix-close-p and more, and an ever-growing list of class names is a rule that
+   silently misses the next one. `.prose-span.prose-span > p` is (0,2,1) by repeating
+   the class instead of naming the child's, so it covers EVERY paragraph class and still
+   outranks any single-class measure wherever that sits in the sheet.
+   The safety is in WHERE the class is applied, never in the selector: a container only
+   carries .prose-span after every one of its capped paragraphs was measured to set a
+   single line at full width. */
+.prose-span.prose-span > p{max-width:none;}
 
 /* ==========================================================================
    7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
