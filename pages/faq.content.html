@@ -22,7 +22,12 @@
             </div>
           </div>
 
-          <div class="rs-frame rs-frame--hero rs-frame--tall">
+          <!-- rs-frame--face: this is a 768x1152 FULL-BODY source dropped into a 2:1 hero box,
+               so object-fit:cover at the default 50% showed source rows 384-768 of 1152 --
+               the subject's torso, with her head (rows ~205-330) cropped off entirely.
+               The site's existing face modifier biases the crop to 26%, which shows rows
+               200-584: her head with headroom, and the counter she is standing at. -->
+          <div class="rs-frame rs-frame--hero rs-frame--tall rs-frame--face">
             <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-92-768x1152.jpg"
                  width="768" height="1152" decoding="async"
                  alt="A team member standing at the front desk of one of our offices, with monitors on the counter behind her.">
