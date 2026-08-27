@@ -565,6 +565,12 @@ p.rs-copy{
 @media (min-width:1060px){
   .rs-split{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;}
   .rs-split--flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);}
+  /* EVEN. The 0.86/1.14 asymmetry above exists to pair COPY with MEDIA -- the wider
+     track is the media track. Where a split carries two TEXT columns and no media
+     (faq, after the owner removed the photograph 2026-08-27) that asymmetry has
+     nothing to justify it and makes the two read as unequal. This variant is the
+     even case, and stretch so the two columns share one height. */
+  .rs-split--even{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;}
 }
 .rs-stack{display:flex;flex-direction:column;gap:var(--rs-block-gap);}
 
@@ -1355,6 +1361,29 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
 }
 
+/* THE PANEL HAD NO BLOCK RHYTHM INSIDE IT.
+   MEASURED 2026-08-27 across all 66 pages at 1440: .cc-panel is a bare block and the
+   sheet's reset zeroes its children's margins, so a heading sat FLUSH against the
+   paragraph under it -- 155 touching stacked pairs (gap < 6px) on 39 pages:
+   132 in cc-faq__item (SUMMARY > P), 17 in cc-evidence (P > P > P), 6 in cc-card.
+   .rs-stack beside them carries gap:24px, so the two read as different typography.
+   This restores the same block rhythm INSIDE the panel.
+
+   PAIR SELECTORS, NOT `> * + *`, ON PURPOSE. 17 of these panels lay their children
+   out SIDE BY SIDE (grid), where a blanket adjacent-sibling margin would push the
+   second column down. Verified: 155 -> 8 touching pairs with 0 of the 17 side-by-side
+   pairs knocked out of alignment and 0 pages gaining horizontal overflow.
+
+   THE REMAINING 8 ARE CORRECT AND ARE LEFT ALONE. Six are index's cc-card specialty
+   cards, whose <figure> is FLUSH to the card edge (panel padding 0, inset 1px = the
+   border, figure 318 of 320) -- a gap there would open a strip between the photo and
+   the card edge, which is the opposite of the intent. */
+.cc-panel > h2 + p,
+.cc-panel > h3 + p,
+.cc-panel > h4 + p,
+.cc-panel > p + p,
+.cc-panel > summary + p{margin-top:var(--rs-block-gap);}
+
 /* the inline figure. A comparing reader scans for numbers, so every figure in
    the running prose is promoted typographically WITHOUT the sentence around it
    being split, reordered or reworded. This is the page's scannability engine
@@ -1796,7 +1825,25 @@ p.cc-proof__scope{
 }
 
 /* ---- 7 . THE CROSS-LINK RAIL --------------------------------------------- */
-.cc-rail{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+/* ONE LINE (owner 2026-08-27, "can we make them into a single line").
+   The rail was a flex COLUMN, so "Related:" and "Also:" stacked into two rows even
+   where they had room to sit together. It is now a wrapping ROW.
+   THE GAP IS MEASURED, NOT PICKED. At --ds-space-lg (40px) three rails still wrapped
+   at 1440 -- digital-x-rays over by 6px, sirolaser by 7, sealants by 39. At
+   --ds-space-md (24px) that becomes ONE: 34 of 35 rails hold a single line at 1440
+   and 1200, with 0 spill at 1440/1200/1024/768/600/390.
+   SEALANTS STILL WRAPS AND SHOULD. It carries five chips and is 39px over even at the
+   tighter gap, so flex-wrap drops it to a second row rather than overflowing.
+   Below 1024 the rails wrap progressively by design -- that is the responsive
+   behaviour, not a regression (measured: 14 single-line at 1024, 4 at 390, 0 spill). */
+.cc-rail{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-items:center;
+  column-gap:var(--ds-space-md);
+  row-gap:var(--ds-space-xs);
+}
 .cc-rail__grp{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-xs);}
 .cc-rail__k{
   font-family:var(--ds-font-display);
@@ -1808,6 +1855,20 @@ p.cc-proof__scope{
   margin-right:var(--ds-space-2xs);
 }
 .cc-rail__dot{color:var(--ds-ink-soft);font-size:18px;line-height:1;padding-inline:var(--ds-space-2xs);}
+
+/* THE RAIL FOLLOWS THE AXIS OF THE SECTION IT SITS IN.
+   OWNER 2026-08-27, on faq: "this looks out of place". The rail is ranged LEFT, which
+   is right in a normal band, but in the CLOSING section it sat directly above a
+   CENTRED statement and its two centred buttons -- so the band opened on one axis and
+   finished on another. Same mismatch, same remedy, as index's offer band.
+   SCOPED to closes that actually carry a centred .cc-offer: measured 2026-08-27, only
+   6 of the 35 rails on the site are inside one (faq, insurance-financing,
+   lone-mountain, periodontal-disease, sirolaser, sunrise-manor). The other 29 stay
+   ranged left, and were verified unmoved.
+   THE CENTRING IS ON justify-content BECAUSE THE RAIL IS A FLEX ROW (see .cc-rail
+   above, made a single wrapping row 2026-08-27). justify-content is its MAIN axis;
+   align-items would only centre it vertically and leave it ranged left. */
+.rs-sec--close:has(.cc-offer) .cc-rail{justify-content:center;}
 @media (max-width:519px){
   .cc-rail__dot{display:none;}
 }

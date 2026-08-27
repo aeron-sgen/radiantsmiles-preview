@@ -133,20 +133,19 @@
 <section class="rs-sec surface-dark">
   <div class="container">
 
-    <div class="row">
-      <div class="col">
-        <div class="rs-stack">
-          <h2 class="rs-h2">Do you see emergencies?</h2>
-          <p class="rs-copy">Yes. Same-day and emergency appointments are available, and every one of our seven offices lists them.</p>
-        </div>
-      </div>
-    </div>
-
+<!-- OWNER 2026-08-27: "make this align". The heading and its answer used to sit in
+         their OWN full-width row above the split, so the evidence panel in the split's
+         right column started ~142px BELOW the h2 and could never line up with it.
+         The two rows are merged into ONE split: the whole question set holds the left
+         column, the panel holds the right, and .rs-split's align-items:start then puts
+         the panel's top edge level with the h2's. No copy changed, nothing dropped. -->
     <div class="row">
       <div class="col">
         <div class="rs-split rs-split--flip">
 
           <div class="rs-stack">
+            <h2 class="rs-h2">Do you see emergencies?</h2>
+            <p class="rs-copy">Yes. Same-day and emergency appointments are available, and every one of our seven offices lists them.</p>
             <h3 class="rs-h3">How do I get seen fastest?</h3>
             <p class="rs-copy">Call the office nearest you rather than booking online. Every office phone number is on the <a class="rs-qlink" href="locations.html">locations</a> page and on that office's own page.</p>
             <h3 class="rs-h3">Which offices are open at the weekend?</h3>
@@ -166,16 +165,10 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col">
-        <div class="rs-frame rs-frame--wide">
-          <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2025_01_1-19-2-768x1152.jpg"
-               width="768" height="1152" loading="lazy" decoding="async"
-               alt="The treatment room corridor at one of our offices, with the operatory bays open and their equipment in place.">
-          <span class="rs-grade rs-grade--tint" aria-hidden="true"></span>
-        </div>
-      </div>
-    </div>
+<!-- OWNER 2026-08-27: the full-width corridor photograph was REMOVED from this band at
+         the owner's request. It ran 1132x708 and carried the section on its own, so the
+         band is now the question set beside its evidence panel and nothing else. No copy
+         was touched. -->
 
   </div>
 </section>
@@ -360,20 +353,23 @@
 
     <div class="row">
       <div class="col">
-        <div class="rs-split rs-split--flip">
+<!-- OWNER 2026-08-27: the photograph was REMOVED from this band at the owner's
+             request. Its crop cut the subject's head off at the frame's top edge, so it
+             read as a mistake rather than a portrait. Nothing else was dropped: both
+             question-and-answer pairs move VERBATIM.
+             With the media column gone the split has no media to pair with, so it becomes
+             an EVEN two-column text layout (rs-split--even) rather than one wide short
+             block of copy -- the two pairs then sit at balanced heights across the width. -->
+        <div class="rs-split rs-split--even">
 
           <div class="rs-stack">
             <h2 class="rs-h2">Is it the same team at every office?</h2>
             <p class="rs-copy">One practice, one clinical roster, <a class="rs-qlink" href="locations.html">seven offices</a> across Las Vegas, North Las Vegas and Henderson. You are seen by that same roster at whichever office you visit.</p>
-            <h3 class="rs-h3">Are the offices separately owned?</h3>
-            <p class="rs-copy">No. We own and run all seven ourselves. Where a group's offices are separately owned or separately branded, a consistent standard between them cannot be promised.</p>
           </div>
 
-          <div class="rs-frame rs-frame--tall">
-            <img src="../assets/radiantsmilesnv.com_wp-content_uploads_2026_05_Radiant-Smiles-14-768x1152.jpg"
-                 width="768" height="1152" loading="lazy" decoding="async"
-                 alt="Someone standing in front of the practice sign at the front desk of one of our offices.">
-            <span class="rs-grade rs-grade--tint" aria-hidden="true"></span>
+          <div class="rs-stack">
+            <h3 class="rs-h3">Are the offices separately owned?</h3>
+            <p class="rs-copy">No. We own and run all seven ourselves. Where a group's offices are separately owned or separately branded, a consistent standard between them cannot be promised.</p>
           </div>
 
         </div>
