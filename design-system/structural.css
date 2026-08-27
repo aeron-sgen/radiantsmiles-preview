@@ -565,6 +565,12 @@ p.rs-copy{
 @media (min-width:1060px){
   .rs-split{grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr);align-items:start;}
   .rs-split--flip{grid-template-columns:minmax(0,1.14fr) minmax(0,.86fr);}
+  /* EVEN. The 0.86/1.14 asymmetry above exists to pair COPY with MEDIA -- the wider
+     track is the media track. Where a split carries two TEXT columns and no media
+     (faq, after the owner removed the photograph 2026-08-27) that asymmetry has
+     nothing to justify it and makes the two read as unequal. This variant is the
+     even case, and stretch so the two columns share one height. */
+  .rs-split--even{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;}
 }
 .rs-stack{display:flex;flex-direction:column;gap:var(--rs-block-gap);}
 
@@ -1295,6 +1301,36 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
 .col--prose-span > p.rs-lede,
 .col--prose-span > p.cc-arg__lead{max-width:none;}
 
+/* ---- .prose-span: any container may spend its idle width on the prose ------------
+   Owner 2026-08-27: "make use of the whole container", then "do that for the other
+   pages that have a similar situation".
+   .col--prose-span above only reaches a .col whose children are ALL <p>. The same
+   situation occurs one and two levels down -- inside .rs-stack, .cc-arg, .lg-index --
+   so this is the parent-agnostic form and is what new work should use. The older
+   col-scoped rule is left in place because three pages already carry it.
+
+   THE TEST FOR APPLYING IT IS MEASURED, NEVER ASSUMED. Every page was rendered at
+   1440 with the cap lifted and the resulting LINE COUNT recorded. A group qualifies
+   only when >=75% of its paragraphs then set to a SINGLE line, because the 45-75ch
+   guidance exists to protect the eye's return sweep to the start of the next line and
+   a one-line paragraph never makes that sweep.
+   Of 21 prose groups with >=150px of idle width, 10 qualified and 11 did NOT and keep
+   their measure -- offer.html's bands stay at 4 and 5 lines even when widened,
+   periodontal-disease goes 6/4 -> 3/3, onlay-restorations 4122 -> 2121. Widening those
+   would set ~110ch of genuinely multi-line prose, which is the bug, not the fix.
+
+   DELIBERATELY EXCLUDED: .cc-faq__item. One invisalign accordion answer qualified on
+   the numbers, but the site carries 132 of them; widening a single one would leave the
+   other 131 capped and the component inconsistent. That is a component-level decision,
+   not a per-page one.
+
+   CLASS-QUALIFIED to (0,2,1) for the reason documented on .col--prose-span: the bare
+   (0,1,1) form loses on source order to p.cc-arg__lead's 26ch further down the sheet,
+   which is how north-decatur once shipped still capped and passed the local gates. */
+.prose-span > p.rs-copy,
+.prose-span > p.rs-lede,
+.prose-span > p.cc-arg__lead{max-width:none;}
+
 /* ==========================================================================
    7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
    Decisive" (owner pick 2026-08-14).
@@ -1354,6 +1390,29 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
   border-radius:var(--ds-r-surface);
   box-shadow:var(--ds-shadow-card),var(--ds-inset-hi);
 }
+
+/* THE PANEL HAD NO BLOCK RHYTHM INSIDE IT.
+   MEASURED 2026-08-27 across all 66 pages at 1440: .cc-panel is a bare block and the
+   sheet's reset zeroes its children's margins, so a heading sat FLUSH against the
+   paragraph under it -- 155 touching stacked pairs (gap < 6px) on 39 pages:
+   132 in cc-faq__item (SUMMARY > P), 17 in cc-evidence (P > P > P), 6 in cc-card.
+   .rs-stack beside them carries gap:24px, so the two read as different typography.
+   This restores the same block rhythm INSIDE the panel.
+
+   PAIR SELECTORS, NOT `> * + *`, ON PURPOSE. 17 of these panels lay their children
+   out SIDE BY SIDE (grid), where a blanket adjacent-sibling margin would push the
+   second column down. Verified: 155 -> 8 touching pairs with 0 of the 17 side-by-side
+   pairs knocked out of alignment and 0 pages gaining horizontal overflow.
+
+   THE REMAINING 8 ARE CORRECT AND ARE LEFT ALONE. Six are index's cc-card specialty
+   cards, whose <figure> is FLUSH to the card edge (panel padding 0, inset 1px = the
+   border, figure 318 of 320) -- a gap there would open a strip between the photo and
+   the card edge, which is the opposite of the intent. */
+.cc-panel > h2 + p,
+.cc-panel > h3 + p,
+.cc-panel > h4 + p,
+.cc-panel > p + p,
+.cc-panel > summary + p{margin-top:var(--rs-block-gap);}
 
 /* the inline figure. A comparing reader scans for numbers, so every figure in
    the running prose is promoted typographically WITHOUT the sentence around it
@@ -1685,6 +1744,30 @@ p.cc-proof__scope{
    panel is a real sibling of .cc-arg: 17 pages. */
 .cc-inhouse > .cc-evidence{align-self:stretch;}
 
+/* SPEND THE STRETCH RATHER THAN LEAVE IT AT THE BOTTOM.
+   MEASURED 2026-08-27 at 1440 across the five pages that carry this shape: the
+   stretch above makes the panel exactly as tall as the frame beside it, and the
+   panel's short evidence line then held the TOP edge with all the slack dumped
+   underneath -- dental-implants 469px tall around 140px of text, so 249px of dead
+   deep-teal below it. north-decatur 179px, braces-for-adults 155px,
+   dental-exams-cleanings 137px, fixed-bridges 123px.
+   Centring the content is the same remedy, and for the same reason, as the one
+   already taken on p.hb-why__is / p.hb-why__was: the panel must KEEP matching the
+   frame's height, so the slack has to be spent, not removed.
+   align-content (not align-items) because several of these panels carry more than
+   one child -- centring the row GROUP keeps the children's own spacing intact.
+   VERIFIED the internal spacing is untouched: content height is byte-identical
+   before and after on all five pages at 1440/1200/1060/1000/768/390 (30 of 30).
+   Gated at 1060 because below it the grid is one column, the panel is no longer
+   stretched, and there is no slack to spend (measured 3/1 top/bottom either way).
+   AFTER at 1440: dental-implants 3/246 -> 125/123, north-decatur 3/176 -> 91/88. */
+@media (min-width:1060px){
+  .cc-inhouse > .cc-evidence{
+    display:grid;
+    align-content:center;
+  }
+}
+
 
 /* ---- .cc-proof--merged: record+argument left, photo+evidence right -----------------
    Owner 2026-08-26. See the markup comment in lone-mountain.content.html for why the
@@ -1706,6 +1789,37 @@ p.cc-proof__scope{
 .cc-proof--merged > .cc-proof__col > .rs-frame{flex:0 0 auto;}
 /* the panel absorbs the leftover height so its bottom edge meets the argument's */
 .cc-proof--merged > .cc-proof__col > .cc-evidence{flex:1 1 auto;}
+
+/* SAME REMEDY, THE PROOF COLUMN. The flex:1 1 auto above grows the panel to fill
+   its column, and on antibiotic-treatment that left the evidence line at the TOP
+   of a 387px panel around 170px of text -- 137px dead at the bottom (measured
+   2026-08-27 at 1440). Centring spends it, exactly as for .cc-inhouse above.
+   MEASURED ACROSS ALL SIX PAGES that carry .cc-proof__col: antibiotic-treatment
+   3/134 -> 69/67, composite-fillings 3/7 -> 6/4 (it had almost no slack, so this
+   is a 3px shift), and bone-grafting / lone-mountain / oral-cancer-exam /
+   prophylaxis-teeth-cleaning do not move at all -- their panels have no slack.
+   No reflow, no spill and no growth at 1440/1200/1060/1000/768/390. */
+@media (min-width:1060px){
+  .cc-proof__col > .cc-evidence{
+    display:grid;
+    align-content:center;
+  }
+}
+
+/* A LONE HELD STATEMENT IS CENTRED IN ITS PANEL.
+   MEASURED 2026-08-27 on faq at 1440: a .cc-arg__lead is capped to a 26ch measure
+   (460px) and sat alone inside a 1132px panel, so 591px of the panel was empty to
+   its right and the statement read as a paragraph that had lost its column rather
+   than as the held claim it is.
+   :only-child is doing real work here -- .cc-arg__lead also appears alongside
+   sibling copy elsewhere, where it leads a block and must stay ranged left.
+   AFTER: 1/591 -> 296/296 at 1440, 1/538 -> 269/269 at 1060, no reflow or spill.
+   Left ungated by width on purpose: at 390 the measure already exceeds the panel,
+   so the rule has no effect there (verified -- no movement at 390). */
+.cc-evidence:has(> .cc-arg__lead:only-child) > .cc-arg__lead{
+  margin-inline:auto;
+  text-align:center;
+}
 .cc-roster{
   display:grid;
   grid-template-columns:repeat(10,minmax(0,1fr));
@@ -1741,7 +1855,25 @@ p.cc-proof__scope{
 }
 
 /* ---- 7 . THE CROSS-LINK RAIL --------------------------------------------- */
-.cc-rail{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+/* ONE LINE (owner 2026-08-27, "can we make them into a single line").
+   The rail was a flex COLUMN, so "Related:" and "Also:" stacked into two rows even
+   where they had room to sit together. It is now a wrapping ROW.
+   THE GAP IS MEASURED, NOT PICKED. At --ds-space-lg (40px) three rails still wrapped
+   at 1440 -- digital-x-rays over by 6px, sirolaser by 7, sealants by 39. At
+   --ds-space-md (24px) that becomes ONE: 34 of 35 rails hold a single line at 1440
+   and 1200, with 0 spill at 1440/1200/1024/768/600/390.
+   SEALANTS STILL WRAPS AND SHOULD. It carries five chips and is 39px over even at the
+   tighter gap, so flex-wrap drops it to a second row rather than overflowing.
+   Below 1024 the rails wrap progressively by design -- that is the responsive
+   behaviour, not a regression (measured: 14 single-line at 1024, 4 at 390, 0 spill). */
+.cc-rail{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  align-items:center;
+  column-gap:var(--ds-space-md);
+  row-gap:var(--ds-space-xs);
+}
 .cc-rail__grp{display:flex;flex-wrap:wrap;align-items:center;gap:var(--ds-space-xs);}
 .cc-rail__k{
   font-family:var(--ds-font-display);
@@ -1753,6 +1885,20 @@ p.cc-proof__scope{
   margin-right:var(--ds-space-2xs);
 }
 .cc-rail__dot{color:var(--ds-ink-soft);font-size:18px;line-height:1;padding-inline:var(--ds-space-2xs);}
+
+/* THE RAIL FOLLOWS THE AXIS OF THE SECTION IT SITS IN.
+   OWNER 2026-08-27, on faq: "this looks out of place". The rail is ranged LEFT, which
+   is right in a normal band, but in the CLOSING section it sat directly above a
+   CENTRED statement and its two centred buttons -- so the band opened on one axis and
+   finished on another. Same mismatch, same remedy, as index's offer band.
+   SCOPED to closes that actually carry a centred .cc-offer: measured 2026-08-27, only
+   6 of the 35 rails on the site are inside one (faq, insurance-financing,
+   lone-mountain, periodontal-disease, sirolaser, sunrise-manor). The other 29 stay
+   ranged left, and were verified unmoved.
+   THE CENTRING IS ON justify-content BECAUSE THE RAIL IS A FLEX ROW (see .cc-rail
+   above, made a single wrapping row 2026-08-27). justify-content is its MAIN axis;
+   align-items would only centre it vertically and leave it ranged left. */
+.rs-sec--close:has(.cc-offer) .cc-rail{justify-content:center;}
 @media (max-width:519px){
   .cc-rail__dot{display:none;}
 }
@@ -1868,6 +2014,36 @@ p.cc-faq__a{padding-bottom:var(--ds-space-lg);}
 }
 /* RULE REMOVED. Its only declaration was max-width:60ch, which never applied -
    p.rs-copy's 64ch outranked it. See the note at p.cc-faq__a. */
+
+/* ---- THE OFFER BAND'S SECOND BEAT. ----------------------------------------
+   MEASURED 2026-08-27 on index at 1440: this dark band carries TWO .row blocks --
+   the centred price statement, then a left-aligned "First time here." stack. The
+   centre/left mismatch inside one band read as a mistake, and the owner already
+   ruled on this exact shape on offer.html 2026-08-26 ("these 2 sections should not
+   be merged"). The rows are not split here, because index is the ONLY page whose
+   second row carries its own heading -- the other 9 multi-row cc-offer sections
+   continue the first row's thought and must stay as they are.
+   So the second beat is SEPARATED and aligned instead: a hairline above it and the
+   stack centred to match the price, which makes the band one composed unit.
+
+   THE SELECTOR IS DELIBERATELY NARROW. Without `:has(.rs-stack)` it matched TEN
+   pages (verified: antibiotic-treatment, composite-fillings, faq, lone-mountain,
+   north-las-vegas x2, periodontal-disease, prophylaxis, summerlin, sunrise-manor x2)
+   and pushed a divider into all of them. With it, the match is index alone.
+   The .rs-qlink override is required: .rs-qlink carries its own `align-self:start`,
+   and a child's align-self always beats the parent's align-items. */
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack){
+  margin-top:var(--ds-space-lg);
+  padding-top:var(--ds-space-lg);
+  border-top:1px solid rgba(255,255,255,.16);
+}
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack) .rs-stack{
+  align-items:center;
+  text-align:center;
+}
+.rs-sec:has(> .container > .row > .col > .cc-offer) > .container > .row + .row:has(.rs-stack) .rs-stack > .rs-qlink{
+  align-self:center;
+}
 
 /* ==========================================================================
    SECTION 8 - T-HUB TEMPLATE LAYER (hb-*)
@@ -2896,6 +3072,34 @@ p.ar-find{
   .ar-rail{gap:0 var(--ds-space-sm);}
 }
 
+/* ---- 5b . CLOSE CARD, TWO COLUMN. -----------------------------------------
+   MEASURED 2026-08-27 on all 9 doctor pages: the card is 1132x330 and its content
+   filled 0.35 of the width. Every child was a column item under
+   `flex-direction:column; align-items:flex-start`, so the two buttons sat UNDER the
+   quiet link and ~730px of the card was empty deep-teal.
+   From 820px up the card is a two-column grid: the claim and its link hold the
+   measure on the left, the acts take the right edge and become what the eye lands
+   on. Below 820px the original stack is untouched, so the max-width rules above
+   (margin-top, padding) and the 479px full-width acts still govern the phone.
+   AFTER: fillW 0.89 @1440 / 0.90 @860, height 330 -> 234, no overflow at
+   1440/1100/900/860/600/390. */
+@media (min-width:820px){
+  .ar-close__card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    grid-template-areas:"head acts" "link acts";
+    align-items:center;
+    column-gap:var(--ds-space-lg);
+    row-gap:var(--ds-space-2xs);
+  }
+  .ar-close__card > .ar-head{grid-area:head;align-self:end;}
+  .ar-close__card > .rs-qlink{grid-area:link;align-self:start;justify-self:start;}
+  .ar-close__card > .ar-acts{grid-area:acts;align-self:center;justify-self:end;}
+}
+@media (min-width:1024px){
+  .ar-close__card{column-gap:var(--ds-space-xl);}
+}
+
 /* ---- 6 . REDUCED MOTION. Every move in this sheet is opt out. ------------- */
 @media (prefers-reduced-motion:reduce){
   .ar-face,
@@ -3635,6 +3839,42 @@ p.ix-slot-p{
   color:var(--ds-ink-soft);
 }
 
+/* ---- 4b . THE FLAGGED PLACEHOLDER, COMPOSED. ------------------------------
+   MEASURED 2026-08-27 on index / reviews: the slot rendered 1132x412 as a flex
+   COLUMN -- the drawn mark sat alone on one row with ~900px of empty plate beside
+   it, and the five field names ran as a 3-column grid whose last row left a whole
+   cell blank. It read as an unfinished page rather than a declared absence.
+   From 820px up the mark and the field list sit side by side, and the field names
+   become wrapping pills so an ODD count of five never leaves a hole.
+   THE DASHED EDGE, THE GRID TEXTURE AND THE MONO TYPE ARE DELIBERATE AND STAY --
+   this element must read as a flagged placeholder and never as content (see the
+   note above .ix-slot). Only the composition changed.
+   AFTER: 1132x238 @1440, 852x206 @900, no overflow at 1440/900/820/760/390. */
+.ix-slot > .ix-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--ds-space-xs);
+  margin-top:var(--ds-space-md);
+}
+.ix-slot > .ix-grid > li{display:flex;}
+.ix-slot > .ix-grid .ix-item-meta{
+  display:inline-block;
+  padding:6px 12px;
+  border:1px dashed var(--ds-line-control);
+  border-radius:999px;
+  background-color:var(--ds-bg-surface);
+}
+@media (min-width:820px){
+  .ix-slot{
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr);
+    align-items:center;
+    column-gap:var(--ds-space-xl);
+    min-height:0;
+  }
+  .ix-slot > .ix-grid{margin-top:0;}
+}
+
 /* ---- 5 . THE CLOSING ASK ------------------------------------------------ */
 .ix-close{
   position:relative;
@@ -4317,6 +4557,34 @@ p.co-lead-in{
   margin-top:var(--ds-space-md);
 }
 
+/* ---- 4b . THE PROBLEM AND ITS ANSWER, SIDE BY SIDE. -----------------------
+   MEASURED 2026-08-27 on index at 1440: each block stacked a 620px measure
+   paragraph directly above a 1132px full-width answer card, three times running.
+   The 620 -> 1132 width jump is what made the band read as misaligned; the prose
+   measure itself is correct and is NOT widened here.
+   From 960px up the cost holds the left column and the answer card takes the
+   right, so the two edges agree and the pair reads as one comparison.
+
+   SCOPED WITH :has(> .hb-why__is) ON PURPOSE. about.html uses .co-why__p too, but
+   its blocks carry a lone paragraph and no answer card -- under an unscoped grid
+   those would drop to half width and the page would get WORSE. Verified 2026-08-27:
+   about is byte-identical in height and child widths at 1440/960/900/390.
+   AFTER on index: stack 835px -> 634px, children equalise to 534px, no overlap and
+   no spill at 1440/960/900/390. Below 960 the original stack is untouched. */
+@media (min-width:960px){
+  .co-why__p:has(> .hb-why__is){
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    grid-template-areas:"head answer" "copy answer";
+    align-items:start;
+    column-gap:var(--ds-space-xl);
+    row-gap:var(--ds-space-xs);
+  }
+  .co-why__p:has(> .hb-why__is) > .rs-h3{grid-area:head;margin-top:0;}
+  .co-why__p:has(> .hb-why__is) > .rs-copy{grid-area:copy;margin-bottom:0;}
+  .co-why__p:has(> .hb-why__is) > .hb-why__is{grid-area:answer;align-self:center;margin-top:0;}
+}
+
 /* ---- 5 . VALUES. One statement, one room, and a visible amount of air. ---- */
 .co-values{
   display:grid;
@@ -4325,6 +4593,27 @@ p.co-lead-in{
   align-items:center;
 }
 .co-values__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+
+/* SPEND THE STRETCH, DO NOT REMOVE IT.
+   OWNER 2026-08-27, on about: "this section looks out of place".
+   MEASURED at 1440: the statement is 171px of type sitting in a 345px row beside a
+   345px photo, pinned to the TOP with 174px of dead band under it -- so the section
+   read as a short line abandoned in the corner of a tall row.
+   THE CAUSE IS NOT .co-values{align-items:center} ABOVE -- that rule is overridden by
+   the media-equalisation block further down this sheet, which sets align-items:stretch
+   on .cc-hero/.hb-cost/.co-hero/.co-values so the FRAME can fill the row (the row is
+   set by the text column and the frame takes height:100%). Reverting that stretch would
+   put the photograph back to a letterboxed strip, which is the bug it was added to fix.
+   So the stretch stays and the COPY centres inside its stretched cell instead -- the
+   same remedy already taken on p.hb-why__is and .cc-inhouse > .cc-evidence.
+   justify-content, not align-items: .co-values__copy is a flex COLUMN, so the vertical
+   axis is its MAIN axis.
+   AFTER: T0/B174 -> T87/B87 at 1440, T0/B158 -> T79/B79 at 1060, and the figure's
+   height is byte-identical at 1440/1200/1060/1000/768/390. Gated at 1060 because below
+   it the grid is one column, the copy is not stretched, and there is nothing to spend. */
+@media (min-width:1060px){
+  .co-values__copy{justify-content:center;}
+}
 /* the statement is the section's focal object: display face, one step under the
    sentence heading, held to a short measure so it reads as a held line. */
 p.co-values__say,
@@ -4414,6 +4703,26 @@ p.co-close__say{
   font-weight:600;
   color:var(--ds-ink-heading);
   max-width:22ch;
+}
+
+/* THE CLOSING CARD, SIDE BY SIDE. Same defect and same remedy as .ar-close__card.
+   MEASURED 2026-08-27 on about at 1440: the card is 1132px wide, the statement is
+   held to max-width:22ch (452px) and the acts sat UNDERNEATH it, so content filled
+   0.44 of the content box and ~640px was empty.
+   BREAKPOINT MEASURED, NOT GUESSED. The first draft opened this at 820px and made
+   the card WORSE in the 820-1023 band: 452 + 398 + a 64px gap overruns the content
+   box there, so the acts wrapped to a second row and the card GREW (249 -> 289 at
+   820, 258 -> 298 at 900). They first fit at 1024.
+   AFTER: fill 0.44 -> 1.00 and height 327 -> 251 at 1440, 274 -> 198 at 1024;
+   unchanged at 900/820/768/600/390, no spill at any of the eight widths. */
+@media (min-width:1024px){
+  .co-close{
+    flex-direction:row;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--ds-space-xl);
+  }
+  .co-close > .rs-acts{flex:0 0 auto;}
 }
 
 /* ---- 8 . BREAKPOINTS. Additive max-width steps only. --------------------- */
