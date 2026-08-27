@@ -1301,6 +1301,36 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
 .col--prose-span > p.rs-lede,
 .col--prose-span > p.cc-arg__lead{max-width:none;}
 
+/* ---- .prose-span: any container may spend its idle width on the prose ------------
+   Owner 2026-08-27: "make use of the whole container", then "do that for the other
+   pages that have a similar situation".
+   .col--prose-span above only reaches a .col whose children are ALL <p>. The same
+   situation occurs one and two levels down -- inside .rs-stack, .cc-arg, .lg-index --
+   so this is the parent-agnostic form and is what new work should use. The older
+   col-scoped rule is left in place because three pages already carry it.
+
+   THE TEST FOR APPLYING IT IS MEASURED, NEVER ASSUMED. Every page was rendered at
+   1440 with the cap lifted and the resulting LINE COUNT recorded. A group qualifies
+   only when >=75% of its paragraphs then set to a SINGLE line, because the 45-75ch
+   guidance exists to protect the eye's return sweep to the start of the next line and
+   a one-line paragraph never makes that sweep.
+   Of 21 prose groups with >=150px of idle width, 10 qualified and 11 did NOT and keep
+   their measure -- offer.html's bands stay at 4 and 5 lines even when widened,
+   periodontal-disease goes 6/4 -> 3/3, onlay-restorations 4122 -> 2121. Widening those
+   would set ~110ch of genuinely multi-line prose, which is the bug, not the fix.
+
+   DELIBERATELY EXCLUDED: .cc-faq__item. One invisalign accordion answer qualified on
+   the numbers, but the site carries 132 of them; widening a single one would leave the
+   other 131 capped and the component inconsistent. That is a component-level decision,
+   not a per-page one.
+
+   CLASS-QUALIFIED to (0,2,1) for the reason documented on .col--prose-span: the bare
+   (0,1,1) form loses on source order to p.cc-arg__lead's 26ch further down the sheet,
+   which is how north-decatur once shipped still capped and passed the local gates. */
+.prose-span > p.rs-copy,
+.prose-span > p.rs-lede,
+.prose-span > p.cc-arg__lead{max-width:none;}
+
 /* ==========================================================================
    7 . T-FEATURE TEMPLATE  -  tournament winner, concept C "Scannable and
    Decisive" (owner pick 2026-08-14).
@@ -4563,6 +4593,27 @@ p.co-lead-in{
   align-items:center;
 }
 .co-values__copy{display:flex;flex-direction:column;gap:var(--ds-space-md);}
+
+/* SPEND THE STRETCH, DO NOT REMOVE IT.
+   OWNER 2026-08-27, on about: "this section looks out of place".
+   MEASURED at 1440: the statement is 171px of type sitting in a 345px row beside a
+   345px photo, pinned to the TOP with 174px of dead band under it -- so the section
+   read as a short line abandoned in the corner of a tall row.
+   THE CAUSE IS NOT .co-values{align-items:center} ABOVE -- that rule is overridden by
+   the media-equalisation block further down this sheet, which sets align-items:stretch
+   on .cc-hero/.hb-cost/.co-hero/.co-values so the FRAME can fill the row (the row is
+   set by the text column and the frame takes height:100%). Reverting that stretch would
+   put the photograph back to a letterboxed strip, which is the bug it was added to fix.
+   So the stretch stays and the COPY centres inside its stretched cell instead -- the
+   same remedy already taken on p.hb-why__is and .cc-inhouse > .cc-evidence.
+   justify-content, not align-items: .co-values__copy is a flex COLUMN, so the vertical
+   axis is its MAIN axis.
+   AFTER: T0/B174 -> T87/B87 at 1440, T0/B158 -> T79/B79 at 1060, and the figure's
+   height is byte-identical at 1440/1200/1060/1000/768/390. Gated at 1060 because below
+   it the grid is one column, the copy is not stretched, and there is nothing to spend. */
+@media (min-width:1060px){
+  .co-values__copy{justify-content:center;}
+}
 /* the statement is the section's focal object: display face, one step under the
    sentence heading, held to a short measure so it reads as a held line. */
 p.co-values__say,
