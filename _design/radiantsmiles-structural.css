@@ -1015,6 +1015,50 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    with the ramp thinning to the right, so the image stays legible. */
 .rs-hero--bleed .rs-hero__copy{max-width:34rem;}
 
+/* ---- THE HERO OPENS ON THE CTA (owner 2026-08-27) -------------------------
+   OWNER: put "Seven" and "neighbourhoods." on one line, drop the lede's size, and get
+   the CTA above the fold on load without scrolling.
+
+   MEASURED BEFORE: the h1 was ONE string wrapping at max-width:15ch, which broke it as
+   "Six specialties." / "Seven" / "neighbourhoods." / "One practice." -- FOUR lines with
+   "Seven" orphaned on its own. Section 788px, and with the 165px sticky header above it
+   the CTA's bottom edge landed at 825px: visible at 1440x900, but BELOW THE FOLD at
+   1440x789 (+36), 1366x768 (+57) and 1280x720 (+105).
+
+   WHY THE HEADLINE SHRINKS AND THE COLUMN DOES NOT. "Seven neighbourhoods." measures
+   663px at 62px, and this hero's copy column is 544px. One of the two has to give. The
+   544px (34rem) cap is an OWNER DECISION from 2026-08-21 -- the full-width experiment
+   was reverted that day because a wider copy column forced a heavier scrim and
+   suppressed the photograph. So the column is left exactly as approved and the headline
+   comes down to 50px, at which the sentence sets 535px and fits inside 544px.
+   Verified against the alternative: keeping 62px needs a 44rem column, and even then the
+   CTA still sits 25px below the fold at 1280x720. 54px/38rem clears the fold but puts
+   the button flush against the viewport edge with no breathing room.
+
+   max-width:none is REQUIRED here, not tidying. .rs-h1's own 15ch cap computes to 428px
+   at 50px -- narrower than the 535px the sentence needs -- so leaving it would re-break
+   the line the spans exist to fix. The column's 34rem is what bounds the measure now.
+
+   AFTER: section 788 -> 670px, CTA bottom 825 -> 707px, visible at 1440x900, 1440x789,
+   1512x832, 1366x768 and 1280x720. */
+.rs-hero--bleed .rs-h1{
+  font-size:clamp(38px,4.6vw,50px);
+  max-width:none;
+}
+/* one sentence per line. Left as a BLOCK at every width on purpose: on a phone the
+   column is ~358px and "Seven neighbourhoods." cannot fit on one line at any readable
+   size, so the span wraps internally and the headline sets the same 4 lines it already
+   set there -- measured, not assumed. */
+.rs-h1__l{display:block;}
+/* The lede: 22px -> 17px (owner asked twice -- "reduce", then "a bit smaller").
+   MEASURED: the step that actually matters is 19 -> 18, where the lede stops being
+   THREE lines and becomes two -- 94px -> 59px, a 35px saving. Past that the returns
+   flatten (18 -> 17 buys 3px, 17 -> 16 another 3), so 17px is chosen for the visible
+   size drop the owner asked for rather than for height. It sits one step under the
+   18px body copy, which is right for a line now secondary to a 50px headline.
+   No WCAG threshold is crossed: 19px and 17px are both "normal text" at 4.5:1. */
+.rs-hero--bleed .rs-hero__copy > .rs-lede{font-size:17px;}
+
 /* THE META CAPSULE (owner request 2026-08-21, structure copied from the supplied reference).
    NOTE THE DOUBLED CLASS: .rs-float.rs-float--meta, not .rs-float--meta. The base .rs-float rule
    lives LATER in this sheet (line ~1032) and sets flex-direction:column; at equal specificity the

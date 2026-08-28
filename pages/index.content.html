@@ -55,7 +55,13 @@
     <div class="row">
       <div class="col">
         <div class="rs-hero__copy">
-          <h1 class="rs-h1">Six specialties. Seven neighbourhoods. One practice.</h1>
+          <!-- OWNER 2026-08-27: each sentence gets its own line. The headline was ONE string
+               wrapping naturally, and at the 15ch measure it broke as "Six specialties." /
+               "Seven" / "neighbourhoods." / "One practice." -- four lines with "Seven"
+               orphaned. The spans are display:block (see .rs-h1__l) so the break lands at the
+               sentence, not wherever the measure runs out.
+               NO WORDS CHANGED: textContent is byte-identical, the single spaces included. -->
+          <h1 class="rs-h1"><span class="rs-h1__l">Six specialties.</span> <span class="rs-h1__l">Seven neighbourhoods.</span> <span class="rs-h1__l">One practice.</span></h1>
           <p class="rs-lede">General, cosmetic, restorative, surgical, periodontic and orthodontic care, delivered in house by one clinical roster across seven offices.</p>
           <div class="rs-float rs-float--meta">
             <p class="rs-meta__pair">
