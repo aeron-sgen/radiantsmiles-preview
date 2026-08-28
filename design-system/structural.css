@@ -1015,6 +1015,50 @@ a.rs-chip:hover{border-color:var(--ds-signature);background:var(--ds-primary-sof
    with the ramp thinning to the right, so the image stays legible. */
 .rs-hero--bleed .rs-hero__copy{max-width:34rem;}
 
+/* ---- THE HERO OPENS ON THE CTA (owner 2026-08-27) -------------------------
+   OWNER: put "Seven" and "neighbourhoods." on one line, drop the lede's size, and get
+   the CTA above the fold on load without scrolling.
+
+   MEASURED BEFORE: the h1 was ONE string wrapping at max-width:15ch, which broke it as
+   "Six specialties." / "Seven" / "neighbourhoods." / "One practice." -- FOUR lines with
+   "Seven" orphaned on its own. Section 788px, and with the 165px sticky header above it
+   the CTA's bottom edge landed at 825px: visible at 1440x900, but BELOW THE FOLD at
+   1440x789 (+36), 1366x768 (+57) and 1280x720 (+105).
+
+   WHY THE HEADLINE SHRINKS AND THE COLUMN DOES NOT. "Seven neighbourhoods." measures
+   663px at 62px, and this hero's copy column is 544px. One of the two has to give. The
+   544px (34rem) cap is an OWNER DECISION from 2026-08-21 -- the full-width experiment
+   was reverted that day because a wider copy column forced a heavier scrim and
+   suppressed the photograph. So the column is left exactly as approved and the headline
+   comes down to 50px, at which the sentence sets 535px and fits inside 544px.
+   Verified against the alternative: keeping 62px needs a 44rem column, and even then the
+   CTA still sits 25px below the fold at 1280x720. 54px/38rem clears the fold but puts
+   the button flush against the viewport edge with no breathing room.
+
+   max-width:none is REQUIRED here, not tidying. .rs-h1's own 15ch cap computes to 428px
+   at 50px -- narrower than the 535px the sentence needs -- so leaving it would re-break
+   the line the spans exist to fix. The column's 34rem is what bounds the measure now.
+
+   AFTER: section 788 -> 670px, CTA bottom 825 -> 707px, visible at 1440x900, 1440x789,
+   1512x832, 1366x768 and 1280x720. */
+.rs-hero--bleed .rs-h1{
+  font-size:clamp(38px,4.6vw,50px);
+  max-width:none;
+}
+/* one sentence per line. Left as a BLOCK at every width on purpose: on a phone the
+   column is ~358px and "Seven neighbourhoods." cannot fit on one line at any readable
+   size, so the span wraps internally and the headline sets the same 4 lines it already
+   set there -- measured, not assumed. */
+.rs-h1__l{display:block;}
+/* The lede: 22px -> 17px (owner asked twice -- "reduce", then "a bit smaller").
+   MEASURED: the step that actually matters is 19 -> 18, where the lede stops being
+   THREE lines and becomes two -- 94px -> 59px, a 35px saving. Past that the returns
+   flatten (18 -> 17 buys 3px, 17 -> 16 another 3), so 17px is chosen for the visible
+   size drop the owner asked for rather than for height. It sits one step under the
+   18px body copy, which is right for a line now secondary to a 50px headline.
+   No WCAG threshold is crossed: 19px and 17px are both "normal text" at 4.5:1. */
+.rs-hero--bleed .rs-hero__copy > .rs-lede{font-size:17px;}
+
 /* THE META CAPSULE (owner request 2026-08-21, structure copied from the supplied reference).
    NOTE THE DOUBLED CLASS: .rs-float.rs-float--meta, not .rs-float--meta. The base .rs-float rule
    lives LATER in this sheet (line ~1032) and sets flex-direction:column; at equal specificity the
@@ -3826,6 +3870,119 @@ p.ix-case-p{
   line-height:1.72;
   color:var(--ds-ink-soft);
 }
+/* ---- .ix-rev: the review CARD SHAPE, with placeholder content ---------------------
+   Owner 2026-08-27: "display placeholder reviews and make it look like actual google
+   reviews". This is the card a review platform renders -- avatar, name, star row,
+   date/platform line, body -- so the layout is finished and real reviews drop in.
+
+   IT IS STYLED AS A PLACEHOLDER ON PURPOSE, in the language .ix-slot below already
+   establishes: dashed edge, the ds grid texture, mono meta. proofPolicy puts reviews,
+   testimonials, star ratings and review counts under real_only_for, so this must not be
+   mistakable for content at a glance, and the visual language is what carries that
+   beyond the words.
+
+   THE STARS ARE OUTLINES AND STAY OUTLINES. A filled row asserts a rating. currentColor
+   at the soft ink keeps them legible without reading as a score; do not add a fill when
+   real reviews arrive unless the real per-review rating comes with them. */
+.ix-rev{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  list-style:none;
+  margin:var(--ds-space-lg) 0 0;
+  padding:0;
+}
+.ix-rev__card{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  padding:var(--ds-space-lg);
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  background-color:var(--ds-canvas);
+  background-image:var(--ds-grid);
+  background-size:var(--ds-grid-size);
+  box-shadow:var(--ds-shadow-rest),var(--ds-inset-hi);
+}
+.ix-rev__head{display:flex;align-items:center;gap:var(--ds-space-sm);}
+/* the avatar well: an empty ring, never an initial or a face -- both would invent a person */
+.ix-rev__avatar{
+  flex:none;
+  width:44px;height:44px;
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-bg-surface);
+}
+.ix-rev__who{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.ix-rev__name{
+  font-family:var(--ds-font-display);
+  font-size:17px;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+.ix-rev__meta{
+  font-family:var(--ds-font-mono);
+  font-size:13px;
+  letter-spacing:.07em;
+  color:var(--ds-ink-soft);
+}
+.ix-rev__stars{display:flex;align-items:center;gap:4px;color:var(--ds-ink-soft);}
+.ix-rev__star{width:18px;height:18px;flex:none;}
+/* A CARD HOLDING A REAL REVIEW DROPS THE PLACEHOLDER TREATMENT.
+   The dashed edge and grid texture exist to say "not content". Once a card carries a
+   real, sourced review it must NOT wear them, or the site understates its own proof. */
+.ix-rev__card--real{
+  border-style:solid;
+  border-color:var(--rs-card-line);
+  background-image:none;
+  background-color:var(--rs-card-bg);
+}
+/* A FILLED STAR IS A RATING CLAIM. It ships ONLY on a card whose rating was captured
+   from the source -- see the per-card source note in the markup. Cards without a
+   captured rating carry NO star row at all rather than an empty or invented one. */
+.ix-rev__star--on{fill:currentColor;}
+.ix-rev__card--real .ix-rev__stars{color:var(--ds-accent-ink,var(--ds-primary));}
+/* the per-card provenance line: where this review is published, and when it was read */
+.ix-rev__src{
+  margin-top:auto;
+  padding-top:var(--ds-space-xs);
+  font-family:var(--ds-font-mono);
+  font-size:12px;
+  letter-spacing:.05em;
+  color:var(--ds-ink-soft);
+}
+p.ix-rev__body{
+  margin:0;
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ds-ink-soft);
+}
+/* THE REVIEW SPENDS THE CARD'S SLACK (owner 2026-08-27: "this text should fill its
+   container"). The cards stretch to the tallest in the row, so a short review left the
+   space UNDER it empty: measured at 1440, the gap between the text and the source line
+   ran 142px on three of the six, 91px and 69px on two more, against 14px on the longest.
+   The text already filled the card's WIDTH (238 of 240) -- the slack was vertical only.
+   Growing the card's own height is not available: these sit in a carousel where ragged
+   card heights read as broken, and the source line is deliberately pinned to a common
+   baseline across cards. So the slack is SPENT, not removed -- the same remedy already
+   taken on p.hb-why__is, .cc-inhouse > .cc-evidence, .cc-proof__col and .co-values__copy.
+   align-content, not align-items: the review is an anonymous grid item, and align-items
+   would size and place that item's box rather than distribute the free space around the
+   whole content.
+   AFTER at 1440: 17/18, 55/56, 81/82, 81/82, 81/82, 44/45 above/below -- symmetric on
+   every card, at 1440, 768 and 375, with card heights and text wrapping unchanged. */
+.ix-rev__card > .ix-rev__body{
+  flex:1 1 auto;
+  display:grid;
+  align-content:center;
+}
+@media (max-width:1023px){
+  .ix-rev{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:767px){
+  .ix-rev{grid-template-columns:minmax(0,1fr);}
+}
+
 .ix-slot{
   display:flex;
   flex-direction:column;
@@ -4982,6 +5139,28 @@ main .col > .ar-wash + *{margin-top:0;}
 .cc-carousel__track::-webkit-scrollbar-track{background:var(--ds-line);border-radius:var(--ds-r-pill);}
 .cc-carousel__track::-webkit-scrollbar-thumb{background:var(--ds-primary-deep);border-radius:var(--ds-r-pill);}
 .cc-carousel__track:focus-visible{outline:3px solid var(--ds-accent);outline-offset:4px;}
+
+/* ---- THE REVIEW LIST RIDES THE SAME TRACK (owner 2026-08-27) ---------------------
+   "make this into a carousel and do the same where its seen." The six reviews shipped
+   as a 3x2 grid; they now scroll sideways on the carousel already built for the areas
+   of care, rather than a second scroller being invented beside it. Same snap, same
+   gutter-matched bleed, same zero JS.
+
+   .ix-rev sets display:grid and .cc-carousel__track sets display:flex. Both are (0,1,0),
+   so this works ONLY because the track rule sits LATER in this sheet -- the same
+   equal-specificity source-order rule that has bitten this build repeatedly. The grid
+   template columns in .ix-rev's max-width queries are inert under flex and are left
+   alone rather than deleted, so removing the carousel restores the grid intact.
+
+   The card needs a WIDTH because a flex item with no basis collapses to its content;
+   the clamp is the one .cc-card already uses, so the two carousels track together. */
+.cc-carousel__track > .ix-rev__card{
+  flex:0 0 auto;
+  width:clamp(255px,74vw,320px);
+  scroll-snap-align:start;
+}
+/* the list keeps its own focus ring: it is focusable so a keyboard can scroll it */
+.ix-rev.cc-carousel__track:focus-visible{outline:3px solid var(--ds-accent);outline-offset:4px;}
 
 .cc-card{
   flex:0 0 auto;
