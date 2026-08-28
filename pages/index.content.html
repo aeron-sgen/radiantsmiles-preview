@@ -684,62 +684,103 @@
          render directly below it, so the old line had become FALSE. A stale honesty claim
          is worse than the gap it described. The replacement states exactly what ships:
          three reviews, verbatim, each with its own source line. -->
-          <h2 class="rs-h2">Three reviews, quoted as their authors published them.</h2>
+          <h2 class="rs-h2">Six reviews, quoted as their authors published them.</h2>
           <!-- COPY CORRECTED 2026-08-27. This heading previously asserted that no review had
          been captured / published. Real reviews were pulled from source that day and now
          render directly below it, so the old line had become FALSE. A stale honesty claim
          is worse than the gap it described. The replacement states exactly what ships:
          three reviews, verbatim, each with its own source line. -->
-          <p class="rs-lede">Each one carries its source and its date. Two show no star rating, because the source published none.</p>
+          <p class="rs-lede">Each one names the office it belongs to, the platform it was published on and its date. All six are five star; the practice&rsquo;s full distribution is on Birdeye.</p>
 
-          <!-- REAL REVIEWS, pulled from source 2026-08-27 and reproduced VERBATIM.
-               Every one was verified to exist in the raw page before it was used here:
-                 wendy sanders / Wendy Ipina  -- published on Google, syndicated by Birdeye
-                   https://reviews.birdeye.com/radiant-smiles-v-155333130420099
-                 Debra R -- the practice's own site, radiantsmilesnv.com
-               NOTHING IS TIDIED. "they really Go out there way" keeps its capitalisation and
-               grammar, because correcting a review is editing someone's words.
-               STARS SHIP ONLY WHERE THE SOURCE SHOWED A RATING. Birdeye reports wendy sanders
-               as its highest-rated review at 5 on 3 Mar 2026, so that card carries five filled
-               stars. The other two showed NO per-review rating, so they carry NO star row --
-               an invented or empty rating is exactly what proofPolicy bars.
-               DATES: only Mar 3 2026 was given absolutely. Birdeye showed the others as
-               relative ("5 months ago"), so they are stated as the month, not a false day. -->
+          <!-- SIX REVIEWS, ALL FIVE FIELDS PRESENT (2026-08-27). This page spent the whole build
+               saying no review carried a reviewer, a platform, a date AND an office. That is now
+               satisfied, because Birdeye publishes a SEPARATE page per office and each one states
+               its street address, so a review can be tied to a named office:
+                 7469 W Lake Mead Blvd Ste 270, 89128            -> Lone Mountain
+                 8961 West Sahara Avenue Ste 108, 89117          -> Summerlin
+                 1825 S Nellis Blvd                              -> Sunrise Manor
+               Each address was matched against this site's own office pages before use.
+               ONE DISCREPANCY, NOT SILENTLY RESOLVED: Birdeye gives the Nellis office as 89104,
+               this site's Sunrise Manor page gives 89107. Street and city agree, so it is the same
+               place and one of the two zips is wrong. Flagged to the owner, not corrected here.
+               ALL SIX ARE VERBATIM and every rating was counted from the source DOM (style_on__),
+               not read as text -- reading it as text is how an earlier pass missed them entirely.
+               DATES ARE MONTHS, NOT DAYS. Birdeye showed these relatively ("2 weeks ago", "3 days
+               ago"), so the month is stated and no precise day is invented.
+               Cristian Arag&oacute;n's review is left in Spanish. Translating it would be putting words
+               in his mouth, and the practice states two of its dentists are fluent in Spanish. -->
           <ul class="ix-rev">
             <li class="ix-rev__card ix-rev__card--real">
               <div class="ix-rev__head">
                 <span class="ix-rev__avatar" aria-hidden="true"></span>
                 <span class="ix-rev__who">
+                  <span class="ix-rev__name">Mahshid Moss</span>
+                  <span class="ix-rev__meta">August 2026 &middot; Google &middot; Summerlin</span>
+                </span>
+              </div>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Excellent dental office! Everyone is welcoming and helpful, especially Bridget, who went above and beyond to make sure I felt comfortable. Thank you for such wonderful care! Highly recommend ⭐️⭐️⭐️⭐️⭐️</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
+            </li>
+            <li class="ix-rev__card ix-rev__card--real">
+              <div class="ix-rev__head">
+                <span class="ix-rev__avatar" aria-hidden="true"></span>
+                <span class="ix-rev__who">
+                  <span class="ix-rev__name">Vega Bond</span>
+                  <span class="ix-rev__meta">August 2026 &middot; Google &middot; Summerlin</span>
+                </span>
+              </div>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Amazing service. Very kind group. Would highly recommend. Will be back in 3 months for my check up.</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
+            </li>
+            <li class="ix-rev__card ix-rev__card--real">
+              <div class="ix-rev__head">
+                <span class="ix-rev__avatar" aria-hidden="true"></span>
+                <span class="ix-rev__who">
+                  <span class="ix-rev__name">Cristian Arag&oacute;n</span>
+                  <span class="ix-rev__meta">August 2026 &middot; Google &middot; Summerlin</span>
+                </span>
+              </div>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Muy profesionales en todo el servicio, me encant&oacute;</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
+            </li>
+            <li class="ix-rev__card ix-rev__card--real">
+              <div class="ix-rev__head">
+                <span class="ix-rev__avatar" aria-hidden="true"></span>
+                <span class="ix-rev__who">
+                  <span class="ix-rev__name">Vera Ferrara</span>
+                  <span class="ix-rev__meta">August 2026 &middot; Google &middot; Sunrise Manor</span>
+                </span>
+              </div>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Chelsea and Dr adraden did a great job, very professional.</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
+            </li>
+            <li class="ix-rev__card ix-rev__card--real">
+              <div class="ix-rev__head">
+                <span class="ix-rev__avatar" aria-hidden="true"></span>
+                <span class="ix-rev__who">
+                  <span class="ix-rev__name">Lil Skan</span>
+                  <span class="ix-rev__meta">August 2026 &middot; Google &middot; Sunrise Manor</span>
+                </span>
+              </div>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Chelsie &amp; Ariel where great today I had a great experience</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
+            </li>
+            <li class="ix-rev__card ix-rev__card--real">
+              <div class="ix-rev__head">
+                <span class="ix-rev__avatar" aria-hidden="true"></span>
+                <span class="ix-rev__who">
                   <span class="ix-rev__name">wendy sanders</span>
-                  <span class="ix-rev__meta">3 March 2026 &middot; Google</span>
+                  <span class="ix-rev__meta">3 March 2026 &middot; Google &middot; Lone Mountain</span>
                 </span>
               </div>
               <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
               <p class="ix-rev__body">absolutely a great place they really Go out there way to accommodate you for whatever your service needs are</p>
               <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
-            </li>
-            <li class="ix-rev__card ix-rev__card--real">
-              <div class="ix-rev__head">
-                <span class="ix-rev__avatar" aria-hidden="true"></span>
-                <span class="ix-rev__who">
-                  <span class="ix-rev__name">Wendy Ipina</span>
-                  <span class="ix-rev__meta">March 2026 &middot; Google</span>
-                </span>
-              </div>
-              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-              <p class="ix-rev__body">Really nice people</p>
-              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
-            </li>
-            <li class="ix-rev__card ix-rev__card--real">
-              <div class="ix-rev__head">
-                <span class="ix-rev__avatar" aria-hidden="true"></span>
-                <span class="ix-rev__who">
-                  <span class="ix-rev__name">Debra R</span>
-                  <span class="ix-rev__meta">Radiant Smiles website</span>
-                </span>
-              </div>
-              <p class="ix-rev__body">Exquisite patient care &amp; customer relations! The entire staff is courteous, respectful &amp; kind. Most awesome experience I&rsquo;ve ever had at a dental office.</p>
-              <p class="ix-rev__src">radiantsmilesnv.com &middot; no date or rating published</p>
             </li>
           </ul>
 
