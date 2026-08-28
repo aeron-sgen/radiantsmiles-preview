@@ -3870,6 +3870,77 @@ p.ix-case-p{
   line-height:1.72;
   color:var(--ds-ink-soft);
 }
+/* ---- .ix-rev: the review CARD SHAPE, with placeholder content ---------------------
+   Owner 2026-08-27: "display placeholder reviews and make it look like actual google
+   reviews". This is the card a review platform renders -- avatar, name, star row,
+   date/platform line, body -- so the layout is finished and real reviews drop in.
+
+   IT IS STYLED AS A PLACEHOLDER ON PURPOSE, in the language .ix-slot below already
+   establishes: dashed edge, the ds grid texture, mono meta. proofPolicy puts reviews,
+   testimonials, star ratings and review counts under real_only_for, so this must not be
+   mistakable for content at a glance, and the visual language is what carries that
+   beyond the words.
+
+   THE STARS ARE OUTLINES AND STAY OUTLINES. A filled row asserts a rating. currentColor
+   at the soft ink keeps them legible without reading as a score; do not add a fill when
+   real reviews arrive unless the real per-review rating comes with them. */
+.ix-rev{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:var(--ds-space-md);
+  list-style:none;
+  margin:var(--ds-space-lg) 0 0;
+  padding:0;
+}
+.ix-rev__card{
+  display:flex;
+  flex-direction:column;
+  gap:var(--ds-space-sm);
+  padding:var(--ds-space-lg);
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-surface);
+  background-color:var(--ds-canvas);
+  background-image:var(--ds-grid);
+  background-size:var(--ds-grid-size);
+  box-shadow:var(--ds-shadow-rest),var(--ds-inset-hi);
+}
+.ix-rev__head{display:flex;align-items:center;gap:var(--ds-space-sm);}
+/* the avatar well: an empty ring, never an initial or a face -- both would invent a person */
+.ix-rev__avatar{
+  flex:none;
+  width:44px;height:44px;
+  border:1px dashed var(--ds-line-control);
+  border-radius:var(--ds-r-pill);
+  background:var(--ds-bg-surface);
+}
+.ix-rev__who{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.ix-rev__name{
+  font-family:var(--ds-font-display);
+  font-size:17px;
+  font-weight:600;
+  color:var(--ds-ink-heading);
+}
+.ix-rev__meta{
+  font-family:var(--ds-font-mono);
+  font-size:13px;
+  letter-spacing:.07em;
+  color:var(--ds-ink-soft);
+}
+.ix-rev__stars{display:flex;align-items:center;gap:4px;color:var(--ds-ink-soft);}
+.ix-rev__star{width:18px;height:18px;flex:none;}
+p.ix-rev__body{
+  margin:0;
+  font-size:16px;
+  line-height:1.6;
+  color:var(--ds-ink-soft);
+}
+@media (max-width:1023px){
+  .ix-rev{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media (max-width:767px){
+  .ix-rev{grid-template-columns:minmax(0,1fr);}
+}
+
 .ix-slot{
   display:flex;
   flex-direction:column;
