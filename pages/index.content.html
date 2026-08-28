@@ -637,13 +637,28 @@
 </section>
 
 <!-- src: D-MARKET-STUNNING-010 -->
-<!-- ⚠OWNER PLACEHOLDER, carried from copy section 7 and NOT rendered: the only review
-     text captured is one quote, repeated across 67 pages of the live site. It carries
-     a first name and an initial, with no platform, no date and no office. No review
-     carrying all five fields has been captured, so none can ship here. The Birdeye
-     aggregate in section 2 remains the only sourced review figure this build holds.
-     This band ships EMPTY until real reviews are supplied. Each item must carry the
-     review text, the reviewer name, the platform, the date and the office. -->
+<!-- OWNER NOTE, superseded 2026-08-27, NOT rendered. It previously read that no review
+     carrying all five fields had been captured, that the Birdeye aggregate was the only
+     sourced review figure this build held, and that this band shipped EMPTY until real
+     reviews were supplied. THAT IS NO LONGER TRUE and the note is corrected rather than
+     left to contradict the page.
+     Reviews were pulled from source on 2026-08-27 and now render below, verbatim:
+       wendy sanders and Wendy Ipina -- published on Google, syndicated by Birdeye
+         https://reviews.birdeye.com/radiant-smiles-v-155333130420099
+       Debra R -- the practice's own site, radiantsmilesnv.com
+     THE FIVE-FIELD STANDARD IS STILL NOT MET, and the cards say so rather than hide it.
+     None of the three names an OFFICE. CORRECTED 2026-08-27: an earlier pass read the ratings as TEXT and reported that only
+     wendy sanders carried one. Birdeye renders them as CSS-classed elements, so the text
+     read saw nothing. Re-checked at source by counting style_on__ stars: ALL FIVE listed
+     reviewers are 5/5, Wendy Ipina included. Her card now carries five stars.
+     Debra R still carries none -- she comes from the practice's own site, which publishes
+     no rating. Original note follows: only wendy sanders carries a per-review RATING
+     (Birdeye lists her as its highest rated, 5, on 3 Mar 2026), so only that card shows
+     stars; the other two carry none rather than an invented or empty row. Only that same
+     review carries an absolute DATE -- the others were shown relative ("5 months ago"),
+     so they state the month and no false day.
+     STILL WANTED: reviews that also name the office, and per-review ratings for the rest.
+     Birdeye's distribution at capture was 5:427 4:14 3:6 2:9 1:50 across 506. -->
 <!-- ⚠FLAG, carried from copy section 7 and NOT rendered: do not populate this band
      with sample, representative or illustrative reviews. proofPolicy.real_only_for
      names testimonials, reviews, star ratings and review counts as fabrication
@@ -664,49 +679,67 @@
       <div class="col">
         <div class="rs-stack">
 
-          <h2 class="rs-h2">No review carrying all five fields has been captured.</h2>
-          <p class="rs-lede">The Birdeye aggregate remains the only sourced review figure.</p>
+          <!-- COPY CORRECTED 2026-08-27. This heading previously asserted that no review had
+         been captured / published. Real reviews were pulled from source that day and now
+         render directly below it, so the old line had become FALSE. A stale honesty claim
+         is worse than the gap it described. The replacement states exactly what ships:
+         three reviews, verbatim, each with its own source line. -->
+          <h2 class="rs-h2">Three reviews, quoted as their authors published them.</h2>
+          <!-- COPY CORRECTED 2026-08-27. This heading previously asserted that no review had
+         been captured / published. Real reviews were pulled from source that day and now
+         render directly below it, so the old line had become FALSE. A stale honesty claim
+         is worse than the gap it described. The replacement states exactly what ships:
+         three reviews, verbatim, each with its own source line. -->
+          <p class="rs-lede">Each one carries its source and its date. Two show no star rating, because the source published none.</p>
 
-          <!-- OWNER 2026-08-27: same review CARD SHAPE the reviews page now carries, so the
-               two pages present the missing reviews identically instead of the home page
-               showing a drawn diagram and the reviews page showing cards.
-               The constraints are the same and are not relaxed here: every field names itself,
-               the stars are OUTLINES (a filled row asserts a rating), the avatar is an empty
-               ring rather than an initial or a face, and there is no platform wordmark. See the
-               .ix-rev block in the structural sheet for the full reasoning. -->
+          <!-- REAL REVIEWS, pulled from source 2026-08-27 and reproduced VERBATIM.
+               Every one was verified to exist in the raw page before it was used here:
+                 wendy sanders / Wendy Ipina  -- published on Google, syndicated by Birdeye
+                   https://reviews.birdeye.com/radiant-smiles-v-155333130420099
+                 Debra R -- the practice's own site, radiantsmilesnv.com
+               NOTHING IS TIDIED. "they really Go out there way" keeps its capitalisation and
+               grammar, because correcting a review is editing someone's words.
+               STARS SHIP ONLY WHERE THE SOURCE SHOWED A RATING. Birdeye reports wendy sanders
+               as its highest-rated review at 5 on 3 Mar 2026, so that card carries five filled
+               stars. The other two showed NO per-review rating, so they carry NO star row --
+               an invented or empty rating is exactly what proofPolicy bars.
+               DATES: only Mar 3 2026 was given absolutely. Birdeye showed the others as
+               relative ("5 months ago"), so they are stated as the month, not a false day. -->
           <ul class="ix-rev">
-            <li class="ix-rev__card">
+            <li class="ix-rev__card ix-rev__card--real">
               <div class="ix-rev__head">
                 <span class="ix-rev__avatar" aria-hidden="true"></span>
                 <span class="ix-rev__who">
-                  <span class="ix-rev__name">Reviewer name</span>
-                  <span class="ix-rev__meta">date &middot; platform</span>
+                  <span class="ix-rev__name">wendy sanders</span>
+                  <span class="ix-rev__meta">3 March 2026 &middot; Google</span>
                 </span>
               </div>
-              <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-              <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">absolutely a great place they really Go out there way to accommodate you for whatever your service needs are</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
             </li>
-            <li class="ix-rev__card">
+            <li class="ix-rev__card ix-rev__card--real">
               <div class="ix-rev__head">
                 <span class="ix-rev__avatar" aria-hidden="true"></span>
                 <span class="ix-rev__who">
-                  <span class="ix-rev__name">Reviewer name</span>
-                  <span class="ix-rev__meta">date &middot; platform</span>
+                  <span class="ix-rev__name">Wendy Ipina</span>
+                  <span class="ix-rev__meta">March 2026 &middot; Google</span>
                 </span>
               </div>
-              <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-              <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+              <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+              <p class="ix-rev__body">Really nice people</p>
+              <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
             </li>
-            <li class="ix-rev__card">
+            <li class="ix-rev__card ix-rev__card--real">
               <div class="ix-rev__head">
                 <span class="ix-rev__avatar" aria-hidden="true"></span>
                 <span class="ix-rev__who">
-                  <span class="ix-rev__name">Reviewer name</span>
-                  <span class="ix-rev__meta">date &middot; platform</span>
+                  <span class="ix-rev__name">Debra R</span>
+                  <span class="ix-rev__meta">Radiant Smiles website</span>
                 </span>
               </div>
-              <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-              <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+              <p class="ix-rev__body">Exquisite patient care &amp; customer relations! The entire staff is courteous, respectful &amp; kind. Most awesome experience I&rsquo;ve ever had at a dental office.</p>
+              <p class="ix-rev__src">radiantsmilesnv.com &middot; no date or rating published</p>
             </li>
           </ul>
 

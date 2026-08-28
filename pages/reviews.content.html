@@ -108,59 +108,61 @@
     <div class="row">
       <div class="col">
 
-        <h2 class="rs-h2">No individual review text is published here yet.</h2>
+        <!-- COPY CORRECTED 2026-08-27. This heading previously asserted that no review had
+         been captured / published. Real reviews were pulled from source that day and now
+         render directly below it, so the old line had become FALSE. A stale honesty claim
+         is worse than the gap it described. The replacement states exactly what ships:
+         three reviews, verbatim, each with its own source line. -->
+          <h2 class="rs-h2">Three reviews, quoted as their authors published them.</h2>
 
-        <!-- OWNER 2026-08-27: "display placeholder reviews and make it look like actual
-             google reviews". This is the CARD SHAPE a review platform uses -- avatar, name, star
-             row, date and platform line, body -- built so the layout is finished and real reviews
-             drop straight into it.
-
-             NOTHING HERE IS PRESENTED AS A REVIEW, and that is deliberate. client-rules.json
-             proofPolicy lists testimonials, reviews, star ratings AND review counts under
-             real_only_for; fabrication_allowed_for is imagery only. So:
-               - every field says what it IS ("Reviewer name", "date &middot; platform")
-               - the body says the text arrives when real reviews are supplied
-               - THE STARS ARE OUTLINES, never filled. A filled row asserts a rating, which is the
-                 specific thing the policy bars, and this practice's only sourced rating is the
-                 Birdeye aggregate cited above, scoped to one office.
-               - no Google wordmark or logo: that would assert a source and reproduce a trademark.
-                 "platform" stays a placeholder because the platform of record is still an open
-                 owner item on this page.
-             The dashed edge and mono meta are the site's existing placeholder language, carried
-             from .ix-slot, so a reader cannot mistake these for content. -->
+        <!-- REAL REVIEWS, pulled from source 2026-08-27 and reproduced VERBATIM.
+             Every one was verified to exist in the raw page before it was used here:
+               wendy sanders / Wendy Ipina  -- published on Google, syndicated by Birdeye
+                 https://reviews.birdeye.com/radiant-smiles-v-155333130420099
+               Debra R -- the practice's own site, radiantsmilesnv.com
+             NOTHING IS TIDIED. "they really Go out there way" keeps its capitalisation and
+             grammar, because correcting a review is editing someone's words.
+             STARS SHIP ONLY WHERE THE SOURCE SHOWED A RATING. Birdeye reports wendy sanders
+             as its highest-rated review at 5 on 3 Mar 2026, so that card carries five filled
+             stars. The other two showed NO per-review rating, so they carry NO star row --
+             an invented or empty rating is exactly what proofPolicy bars.
+             DATES: only Mar 3 2026 was given absolutely. Birdeye showed the others as
+             relative ("5 months ago"), so they are stated as the month, not a false day. -->
         <ul class="ix-rev">
-          <li class="ix-rev__card">
+          <li class="ix-rev__card ix-rev__card--real">
             <div class="ix-rev__head">
               <span class="ix-rev__avatar" aria-hidden="true"></span>
               <span class="ix-rev__who">
-                <span class="ix-rev__name">Reviewer name</span>
-                <span class="ix-rev__meta">date &middot; platform</span>
+                <span class="ix-rev__name">wendy sanders</span>
+                <span class="ix-rev__meta">3 March 2026 &middot; Google</span>
               </span>
             </div>
-            <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-            <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+            <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+            <p class="ix-rev__body">absolutely a great place they really Go out there way to accommodate you for whatever your service needs are</p>
+            <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
           </li>
-          <li class="ix-rev__card">
+          <li class="ix-rev__card ix-rev__card--real">
             <div class="ix-rev__head">
               <span class="ix-rev__avatar" aria-hidden="true"></span>
               <span class="ix-rev__who">
-                <span class="ix-rev__name">Reviewer name</span>
-                <span class="ix-rev__meta">date &middot; platform</span>
+                <span class="ix-rev__name">Wendy Ipina</span>
+                <span class="ix-rev__meta">March 2026 &middot; Google</span>
               </span>
             </div>
-            <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-            <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+            <span class="ix-rev__stars" role="img" aria-label="Rated 5 out of 5"><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star ix-rev__star--on" viewBox="0 0 20 20" aria-hidden="true" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
+            <p class="ix-rev__body">Really nice people</p>
+            <p class="ix-rev__src">Google via Birdeye &middot; read 27 Aug 2026</p>
           </li>
-          <li class="ix-rev__card">
+          <li class="ix-rev__card ix-rev__card--real">
             <div class="ix-rev__head">
               <span class="ix-rev__avatar" aria-hidden="true"></span>
               <span class="ix-rev__who">
-                <span class="ix-rev__name">Reviewer name</span>
-                <span class="ix-rev__meta">date &middot; platform</span>
+                <span class="ix-rev__name">Debra R</span>
+                <span class="ix-rev__meta">Radiant Smiles website</span>
               </span>
             </div>
-            <span class="ix-rev__stars" aria-hidden="true"><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg><svg class="ix-rev__star" viewBox="0 0 20 20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M10 2.5l2.35 4.76 5.25.76-3.8 3.7.9 5.23L10 14.48l-4.7 2.47.9-5.23-3.8-3.7 5.25-.76z"/></svg></span>
-            <p class="ix-rev__body">Review text appears here once real reviews are supplied.</p>
+            <p class="ix-rev__body">Exquisite patient care &amp; customer relations! The entire staff is courteous, respectful &amp; kind. Most awesome experience I&rsquo;ve ever had at a dental office.</p>
+            <p class="ix-rev__src">radiantsmilesnv.com &middot; no date or rating published</p>
           </li>
         </ul>
 
@@ -191,35 +193,27 @@
     <div class="row">
       <div class="col">
 
-        <!-- DEVIATION, declared: the list WRAPPER is withheld along with the filter
-             row. The kit ships a grid and an empty modifier for this slot, and both
-             are correct the moment one real review lands. Today the count is zero,
-             and a list element holding a notice instead of an entry states that a
-             list exists when none does. So the plate ships on its own, and the grid
-             returns with the first attributed review, at the same moment the filter
-             axes switch on. -->
+        <!-- DEVIATION, declared, and SUPERSEDED 2026-08-27. It read: the list WRAPPER is
+             withheld along with the filter row; the kit ships a grid and an empty modifier
+             for this slot and both are correct the moment one real review lands; TODAY THE
+             COUNT IS ZERO, so the plate ships on its own and the grid returns with the first
+             attributed review.
+             The count is no longer zero. Three attributed reviews were pulled from source on
+             2026-08-27 and render in the section above this one, in the kit's grid. The
+             filter row is still withheld: filtering three items by platform and office is
+             chrome over nothing, and two of the three axes (office, and a rating for Debra R)
+             have no value to filter on. It returns when the set is large enough to need it. -->
+        <!-- REWRITTEN 2026-08-27. This plate used to carry a drawing of SIX EMPTY CELLS and
+             the line "No review appears here until it carries a reviewer, a platform, a date
+             and an office." Real reviews were pulled that day and now render in the section
+             directly above, so both the drawing and the sentence had become false -- an empty
+             index is no longer the literal state of this page.
+             The plate is kept, because the GAP it described is real and is not closed: three
+             of 506 are shown, none of the three names an office, and the rest sit on Google
+             un-pulled. It now states that gap instead of denying the reviews above it. -->
         <div class="ix-void">
-            <!-- The foundation's own depth layer, applied and not invented. rs-grade
-                 is the duotone grade the already stamped templates put on their
-                 media; the lift variant screens the signature back through the mids.
-                 It is carried HERE, on the dark plate, because screen blend lightens
-                 and therefore has something to do on a dark ground and almost
-                 nothing to do on a pale one. This is the page's one applied globals
-                 signal, spent on the one surface that earns it. -->
             <span class="rs-grade rs-grade--lift" aria-hidden="true"></span>
-            <!-- THE MARK, at display scale: six empty cells in dashed stroked
-                 outline. It is a drawing of an index with nothing in it, which is
-                 the literal state of this grid today. No fill, no photographic
-                 content and nothing standing in for a review. -->
-            <svg width="240" height="150" viewBox="0 0 240 150" aria-hidden="true" fill="none" stroke="currentColor" stroke-opacity=".55" stroke-width="2" stroke-dasharray="7 9" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="3" width="70" height="66" rx="10"/>
-              <rect x="85" y="3" width="70" height="66" rx="10"/>
-              <rect x="167" y="3" width="70" height="66" rx="10"/>
-              <rect x="3" y="81" width="70" height="66" rx="10"/>
-              <rect x="85" y="81" width="70" height="66" rx="10"/>
-              <rect x="167" y="81" width="70" height="66" rx="10"/>
-            </svg>
-            <p class="ix-void-p">No review appears here until it carries a reviewer, a platform, a date and an office.</p>
+            <p class="ix-void-p">Three of the 506 are shown above. The rest are on Google and have not been pulled in, and none of the three names which office the patient visited.</p>
         </div>
 
       </div>

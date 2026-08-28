@@ -3928,6 +3928,29 @@ p.ix-case-p{
 }
 .ix-rev__stars{display:flex;align-items:center;gap:4px;color:var(--ds-ink-soft);}
 .ix-rev__star{width:18px;height:18px;flex:none;}
+/* A CARD HOLDING A REAL REVIEW DROPS THE PLACEHOLDER TREATMENT.
+   The dashed edge and grid texture exist to say "not content". Once a card carries a
+   real, sourced review it must NOT wear them, or the site understates its own proof. */
+.ix-rev__card--real{
+  border-style:solid;
+  border-color:var(--rs-card-line);
+  background-image:none;
+  background-color:var(--rs-card-bg);
+}
+/* A FILLED STAR IS A RATING CLAIM. It ships ONLY on a card whose rating was captured
+   from the source -- see the per-card source note in the markup. Cards without a
+   captured rating carry NO star row at all rather than an empty or invented one. */
+.ix-rev__star--on{fill:currentColor;}
+.ix-rev__card--real .ix-rev__stars{color:var(--ds-accent-ink,var(--ds-primary));}
+/* the per-card provenance line: where this review is published, and when it was read */
+.ix-rev__src{
+  margin-top:auto;
+  padding-top:var(--ds-space-xs);
+  font-family:var(--ds-font-mono);
+  font-size:12px;
+  letter-spacing:.05em;
+  color:var(--ds-ink-soft);
+}
 p.ix-rev__body{
   margin:0;
   font-size:16px;
