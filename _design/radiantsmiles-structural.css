@@ -5309,6 +5309,42 @@ main .col > .ar-wash + *{margin-top:0;}
 /* the list keeps its own focus ring: it is focusable so a keyboard can scroll it */
 .ix-rev.cc-carousel__track:focus-visible{outline:3px solid var(--ds-accent);outline-offset:4px;}
 
+/* ---- THE ROSTER RIDES THE SAME TRACK, PHONE ONLY (owner 2026-09-01) --------------
+   "make it into a carousel similar to what we did to the other cards in the index.html
+   for mobile view."
+   WHY PHONE ONLY, where the care cards and the reviews are carousels at every width:
+   .rs-grid--4 already answers the wide cases on its own -- 1 column below 640, 2 up at
+   640, 4 up at 1024 -- and four cards that fit on one screen are better SEEN AT ONCE
+   than scrolled. The failure the owner photographed exists only below 640, where the
+   four portrait cards stack into one very tall run. So the track is handed back to the
+   grid at 640, which is .rs-grid--4's OWN first breakpoint and not a new one invented
+   here.
+   SCOPED BY A MODIFIER, NOT BY .rs-grid--4. That class is also on north-las-vegas, where
+   it carries six ICON cards for the specialty groups -- different content, no portraits,
+   and no complaint. Blanket-carouselling the class would have changed a page nobody
+   asked about.
+   SOURCE ORDER, the trap this build keeps hitting: .rs-grid sets display:grid at (0,1,0)
+   and .cc-carousel__track sets display:flex at (0,1,0), so the track only wins because it
+   sits LATER in this sheet. The restore below is (0,2,0) so it beats the track regardless
+   of order, and the grid-template-columns in .rs-grid--4's own queries are left untouched
+   -- they are simply inert under flex and come back the moment display:grid returns. */
+.cc-carousel__track > .rs-card{
+  flex:0 0 auto;
+  width:clamp(255px,74vw,320px);
+  scroll-snap-align:start;
+}
+@media (min-width:640px){
+  .cc-carousel--phone{margin-inline:0;}
+  .cc-carousel--phone > .cc-carousel__track{
+    display:grid;
+    overflow:visible;
+    scroll-snap-type:none;
+    padding-inline:0;
+    padding-block:0;
+  }
+  .cc-carousel--phone > .cc-carousel__track > .rs-card{width:auto;}
+}
+
 .cc-card{
   flex:0 0 auto;
   width:clamp(255px,74vw,320px);

@@ -571,7 +571,17 @@
 
     <div class="row">
       <div class="col">
-        <div class="rs-grid rs-grid--4">
+        <!-- OWNER 2026-09-01: "make it into a carousel similar to what we did to the other cards
+     ... for mobile view". Below 640 this grid is a SINGLE column, so the four portrait
+     cards stack into one very tall run. It now rides the SAME track the areas of care and
+     the reviews already use, rather than a third scroller being invented for it.
+     PHONE ONLY, unlike those two: .rs-grid--4 is already 2-up at 640 and 4-up at 1024, and
+     a four-card grid that fits on one screen is better than a carousel, so cc-carousel--phone
+     hands the grid back at 640. The 640 boundary is the component's OWN breakpoint, not a
+     new one. -->
+        <div class="cc-carousel cc-carousel--phone">
+          <div class="rs-grid rs-grid--4 cc-carousel__track" role="region" tabindex="0"
+               aria-label="Four dentists from the roster, scroll sideways for all four">
 
           <article class="rs-card">
             <div class="rs-card__body">
@@ -621,6 +631,7 @@
             </div>
           </article>
 
+        </div>
         </div>
       </div>
     </div>
