@@ -1999,7 +1999,29 @@ p.cc-proof__scope{
    THE CENTRING IS ON justify-content BECAUSE THE RAIL IS A FLEX ROW (see .cc-rail
    above, made a single wrapping row 2026-08-27). justify-content is its MAIN axis;
    align-items would only centre it vertically and leave it ranged left. */
-.rs-sec--close:has(.cc-offer) .cc-rail{justify-content:center;}
+/* CENTRED AS A BLOCK, RANGED LEFT INSIDE IT (owner 2026-09-01, "fix the rail zigzag").
+   justify-content:center on a WRAPPING flex row centres EACH LINE independently, so the
+   moment the rail wrapped its chips scattered. Measured left-edge spread across wrapped
+   lines, before: sirolaser 334px and periodontal-disease 298px at 1024, both 252 at 768;
+   insurance-financing 86 and faq 43 at 390. lone-mountain and sunrise-manor never
+   zigzagged (their chips happen to wrap flush).
+   THE WORST CASE WAS 1024, NOT MOBILE. An earlier pass reported 83-143px at 390 and
+   nothing above it; that metric grouped items by exact bounding-box TOP, and a 19px
+   label and a 48px pill on the SAME visual line have different tops, so it invented rows
+   and inflated the spread. Re-measured by clustering on vertical CENTRE (24px tolerance)
+   the real picture inverted. Cluster on centres, never on tops, when rows have mixed
+   child heights.
+   width:fit-content + margin-inline:auto keeps the SINGLE-line case shrink-wrapped and
+   centred on the band's axis exactly as before (centre offset measured 0 at every width),
+   while justify-content:flex-start gives every WRAPPED line one shared left edge.
+   Verified after: spread 0 on all six pages at 1440/1024/768/390, row counts unchanged.
+   The hairline above rides this box, so it spans the chips on one line and the column
+   when they wrap -- it reads as the tail's rule either way. */
+.rs-sec--close:has(.cc-offer) .cc-rail{
+  width:fit-content;
+  margin-inline:auto;
+  justify-content:flex-start;
+}
 @media (max-width:519px){
   .cc-rail__dot{display:none;}
 }
@@ -2706,7 +2728,17 @@ p.hb-book__line{
   .hb-route{grid-template-columns:minmax(0,104px) minmax(0,1fr);align-items:start;}
   .hb-route__shot{grid-column:1;grid-row:1;aspect-ratio:1 / 1;}
   .hb-route__body{grid-column:2;grid-row:1;}
-  .hb-route__go{grid-column:2;grid-row:2;width:44px;height:44px;margin-top:var(--ds-space-sm);}
+  /* THE ARROW TERMINATES THE ROW, IT DOES NOT FLOAT UNDER IT (owner 2026-09-01, on
+     locations at phone width: "the button looks weird"). Dropping to grid-row 2 is right
+     -- there is no room beside the text -- but it inherited the column's LEFT edge, so a
+     bare 44px circle sat 90px in from the row edge with nothing beside it, reading as a
+     stray control rather than the row's "go". On desktop the same affordance sits at the
+     row's right edge (measured 1080 of 1132). justify-self:end restores that relationship
+     at phone width: inset-from-right measured 224 -> 0 at 390, 209 -> 0 at 375, 154 -> 0
+     at 320, with 768 and 1440 already 0 and unchanged.
+     The circle is aria-hidden and the whole row is the <a>, so this moves a decoration,
+     not a control, and the 44px tap floor is untouched. */
+  .hb-route__go{grid-column:2;grid-row:2;width:44px;height:44px;margin-top:var(--ds-space-sm);justify-self:end;}
   .hb-why__args{grid-template-columns:minmax(0,1fr);}
   .hb-offices{grid-template-columns:minmax(0,1fr);}
   .hb-more{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
