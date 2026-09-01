@@ -2725,9 +2725,28 @@ p.hb-book__line{
   .hb-offices{gap:0 var(--ds-space-xl);}
 }
 @media (max-width:767px){
-  .hb-route{grid-template-columns:minmax(0,104px) minmax(0,1fr);align-items:start;}
-  .hb-route__shot{grid-column:1;grid-row:1;aspect-ratio:1 / 1;}
-  .hb-route__body{grid-column:2;grid-row:1;}
+  /* THE THUMBNAIL STANDS DOWN AT PHONE WIDTH SO THE ROW CAN BE ONE LINE OF BUSINESS.
+     OWNER 2026-09-01, on locations: "can we hide the thumbnails to make space for the
+     buttons here".
+     MEASURED FOUR WAYS at 390 and 320 before choosing (avg .hb-route height, locations):
+       current, thumb + arrow on its own row      284 / 335
+       hide thumb, arrow still on its own row     242 / 284
+       HIDE THUMB, ARROW BESIDE THE TEXT          195 / 225   <- chosen, -31% / -33%
+       KEEP thumb, arrow beside the text          276 / 434
+     The last one is the instructive failure: inlining the arrow WITHOUT dropping the
+     thumbnail puts three tracks in 320px, the copy column collapses and the row grows
+     to 434px -- worse than doing nothing. The thumbnail has to go for the arrow to come
+     up, which is exactly what the owner asked for.
+     THE ARROW NOW SITS WHERE IT DOES ON DESKTOP, at the row's right edge on the SAME
+     line as the copy, so the row reads as one tappable unit instead of a text block with
+     a detached control under it. margin-top is zeroed because it existed only to space
+     the arrow off the row above it.
+     COST, RECORDED: the seven office photographs do not render below 768. The address,
+     phone and hours all remain, and the row is still the <a>. The imagery gate is
+     unaffected -- it tests the page's markup, and display:none changes no markup. */
+  .hb-route{grid-template-columns:minmax(0,1fr) auto;align-items:center;}
+  .hb-route__shot{display:none;}
+  .hb-route__body{grid-column:1;grid-row:1;}
   /* THE ARROW TERMINATES THE ROW, IT DOES NOT FLOAT UNDER IT (owner 2026-09-01, on
      locations at phone width: "the button looks weird"). Dropping to grid-row 2 is right
      -- there is no room beside the text -- but it inherited the column's LEFT edge, so a
@@ -2738,13 +2757,16 @@ p.hb-book__line{
      at 320, with 768 and 1440 already 0 and unchanged.
      The circle is aria-hidden and the whole row is the <a>, so this moves a decoration,
      not a control, and the 44px tap floor is untouched. */
-  .hb-route__go{grid-column:2;grid-row:2;width:44px;height:44px;margin-top:var(--ds-space-sm);justify-self:end;}
+  .hb-route__go{grid-column:2;grid-row:1;width:44px;height:44px;margin-top:0;justify-self:end;align-self:center;}
   .hb-why__args{grid-template-columns:minmax(0,1fr);}
   .hb-offices{grid-template-columns:minmax(0,1fr);}
   .hb-more{grid-template-columns:minmax(0,1fr);gap:var(--ds-space-lg);}
 }
 @media (max-width:479px){
-  .hb-route{grid-template-columns:minmax(0,76px) minmax(0,1fr);gap:var(--ds-space-sm);}
+  /* SOURCE-ORDER TRAP: this block sits AFTER the 767 one at the SAME specificity, so a
+     stale 2-track value here would silently win and put the copy in the old 76px photo
+     track. It has to carry the same shape the 767 block sets, only tighter. */
+  .hb-route{grid-template-columns:minmax(0,1fr) auto;gap:var(--ds-space-sm);}
   .hb-fork__panel{margin-inline:var(--ds-space-xs);}
   p.hb-field__note{padding-left:var(--ds-space-sm);}
 }
