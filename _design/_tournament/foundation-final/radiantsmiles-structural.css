@@ -1956,6 +1956,51 @@ p.cc-proof__scope{
   .cc-rail__dot{display:none;}
 }
 
+/* THE CLOSING PARAGRAPH SHARES THE OFFER'S COLUMN.
+   OWNER 2026-09-01, on insurance-financing: "this looks out of place", naming both
+   .rs-copy and .cc-rail.
+   MEASURED CAUSE, and it is ONE element, not two. insurance-financing is the ONLY page
+   of the 66 whose close band carries a bare .rs-copy as a DIRECT child of the column.
+   Every other close-band paragraph sits inside .cc-offer, .cc-faq__item, .cc-arg or
+   .cc-evidence, where ranging left is correct -- those are untouched (scan 2026-09-01:
+   38 closes carry .cc-offer, 33 of those carry an .rs-copy, exactly 1 is a direct child).
+   .prose-span had lifted its cap to the full 1132px. That was honest by the one-line
+   rule -- it IS one line at 1440 -- but the close is a CENTRED composition (.cc-offer is
+   44rem/auto/centre, and the rail was centred 2026-08-27), so the paragraph became the
+   only left-ranged element in the band, overhanging the offer by 428px with its left
+   edge 214px outside it.
+   THE RAIL MEASURED INNOCENT: 605px of centred content, inset 49px INSIDE the offer's
+   own column. It read wrong only because it sat beside the outlier. No rail width
+   change was made on this page.
+   THE CAP IS THE OFFER'S OWN 44rem so the two share both column edges EXACTLY
+   (measured after: left-edge delta 0, width delta 0, at both 1440 and 1024).
+   COST, RECORDED: the paragraph goes 1 line -> 2. Accepted as the price of one axis.
+   TEXT CENTRING IS >=768 ONLY. Below that the column is already full-width and the
+   paragraph runs to 3 lines, so centring would buy no axis and cost the return sweep.
+   SPECIFICITY (0,4,1) deliberately beats .prose-span.prose-span > p at (0,2,1). */
+.rs-sec--close:has(.cc-offer) .col > p.rs-copy{
+  max-width:44rem;
+  margin-inline:auto;
+}
+@media (min-width:768px){
+  .rs-sec--close:has(.cc-offer) .col > p.rs-copy{text-align:center;}
+}
+
+/* THE RAIL IS THE TAIL OF THE CLOSE, NOT AN INTERRUPTION.
+   OWNER 2026-09-01. In all 6 closes that carry a rail it sat BETWEEN the concluding
+   sentence and the CTA -- measured at 160-216px of cross-link chips on a 390px phone,
+   wedged at the exact moment the page makes its ask. The chips are internal and
+   conversion-adjacent, so the remedy is PLACEMENT, not removal: the rail now follows
+   .cc-offer and is demoted to a navigational tail behind a hairline.
+   ORDER SAFETY: the copy-fidelity gate asserts fact PRESENCE, not block order, and
+   every label, chip and href is carried across unchanged -- only DOM position moves. */
+.rs-sec--close:has(.cc-offer) .cc-rail{
+  margin-top:var(--ds-space-lg);
+  padding-top:var(--ds-space-lg);
+  border-top:1px solid var(--ds-line);
+}
+
+
 /* ---- 8 . THE ACCORDION. Real disclosure, no script. ----------------------- */
 .cc-faq{display:grid;gap:var(--ds-space-md);}
 /* THE CARD FILLS ITS COLUMN (owner request 2026-08-20, applied site-wide).
