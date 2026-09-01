@@ -3610,6 +3610,37 @@ p.lg-stamp{margin-block-end:var(--ds-space-lg);}
   font-variant-numeric:tabular-nums;
 }
 .lg-t{min-width:0;}
+
+/* THE NUMBERED HEADING'S TEXT ALIGNS WITH THE PROSE UNDER IT (owner 2026-09-01, on
+   cookie-settings: "the text alignments look off ... both desktop and mobile").
+   MEASURED CAUSE. .bw-legal h2 is a flex row of .lg-num + .lg-t with a 14px gap, so the
+   heading TEXT started 40-44px right of the paragraphs it heads, at 1440, 1024 and 768.
+   The body copy lined up with the NUMBER instead of with the title, which is what reads
+   as crooked down a long document.
+   The number is now taken OUT OF FLOW and hung in the margin, so .lg-t begins exactly on
+   the paragraph edge: measured 44 -> 0 at 1440, 42 -> 0 at 1024, 40 -> 0 at 768.
+   THE NEGATIVE MARGIN IS NOT A NUDGE. .bw-legal h2 carries padding-inline-start:14px for
+   its :target highlight bar; without cancelling that the text still sat 14px proud. The
+   padding is kept (the highlight needs it) and offset by an equal negative margin, so the
+   highlight still hangs into the margin exactly as before while the text lands true.
+   >=768 ONLY, and the floor is MEASURED, not chosen. .lg-sheet's left padding is 40px at
+   768 but drops to 24px at 767 and 14px at 479, and the hang costs the numeral plus a
+   gap. The same hang was applied below 768 and measured, stress-tested with a two-digit
+   "10.": the numeral landed 15px outside the card at 767-480 and 25px outside at 414-320.
+   So below 768 it stays IN FLOW, which is the ordinary way a numbered heading reads
+   anyway -- the title indents past its own number, and the body aligns with the number. */
+@media (min-width:768px){
+  .bw-legal h2{
+    display:block;
+    position:relative;
+    margin-inline-start:calc(-1 * var(--ds-space-sm));
+  }
+  .bw-legal h2 > .lg-num{
+    position:absolute;
+    right:100%;
+    margin-right:var(--ds-space-2xs);
+  }
+}
 p.lg-p--sub{margin-block:var(--ds-space-lg) var(--ds-space-sm);}
 /* the section 9 directory. Label and number stay on one line each, exactly as
    the captured document sets them, but the pairs align on a grid so a reader
@@ -3648,6 +3679,13 @@ a.lg-a{
   padding-block:var(--ds-space-lg);
   border-block-end:1px solid var(--ds-line-control);
 }
+/* THE CLOSING HEADING AND ITS CONTACT LINE WERE FLUSH (owner 2026-09-01).
+   .lg-close is display:block and .rs-h2 ships margin-bottom:0, so the contact line sat at
+   a MEASURED 0px gap under a 44px heading -- and both are set in the display face, so they
+   merged into what looked like one wrapped title. The line already carries 24px beneath
+   it, so matching that above gives the band one even rhythm: heading, 24, line, 24, note.
+   All three legal pages carry this block and all three were wrong the same way. */
+.lg-close > .rs-h2{margin-bottom:var(--ds-space-md);}
 p.lg-close__line{
   font-family:var(--ds-font-display);
   font-size:clamp(20px,2.2vw,25px);
@@ -3682,7 +3720,12 @@ p.lg-close__note{
   .lg-meta{padding:var(--ds-space-sm);}
   .bw-toc{padding-inline:var(--ds-space-sm);}
   .lg-sheet{padding:var(--ds-space-sm) var(--ds-space-sm) var(--ds-space-md);}
-  .bw-legal h2{flex-direction:column;gap:var(--ds-space-2xs);align-items:flex-start;}
+  /* THE NUMERAL SITS ON THE HEADING'S LINE, NOT ALONE ABOVE IT (owner 2026-09-01).
+     Stacking put "1." on a line of its own with the title beneath, which reads as a
+     stray list marker rather than a numbered heading. Back to one line: at 320 and 390
+     the pair fits and wraps normally. The desktop hang does not apply here -- see the
+     >=768 note above -- so the numeral stays in flow and the title follows it. */
+  .bw-legal h2{flex-direction:row;gap:var(--ds-space-xs);align-items:baseline;}
 }
 
 /* ---- MOTION SAFETY. ------------------------------------------------------ */
